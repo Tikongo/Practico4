@@ -1,8 +1,6 @@
 package logicaPersistencia.valueObjects;
 
 import java.util.ArrayList;
-import valueObjects.VOFolio;
-import accesoBD.Examen;
 
 public class ListaVOFolios {
 	

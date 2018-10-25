@@ -1,7 +1,7 @@
 package logicaPersistencia.valueObjects;
 
 import java.util.ArrayList;
-import valueObjects.VORevision;
+import logicaPersistencia.valueObjects.*;
 
 public class ListaVORevisiones {
 	
