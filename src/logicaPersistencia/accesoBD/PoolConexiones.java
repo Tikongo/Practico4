@@ -3,7 +3,9 @@ package logicaPersistencia.accesoBD;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.*;
 import java.util.Properties;
+import logicaPersistencia.excepciones.*;
 
 public class PoolConexiones implements IPoolConexiones {
 	
@@ -17,7 +19,7 @@ public class PoolConexiones implements IPoolConexiones {
 	private int creadas;
 	private Conexion arrConexiones[];
 	
-	public PoolConexiones() {
+	public PoolConexiones() throws ExcepAccesoADatos {
 		/*Cargar tamaño de archivo de propiedades.*/
 		Properties prop = new Properties();
 		InputStream input = null;
@@ -52,20 +54,37 @@ public class PoolConexiones implements IPoolConexiones {
 		creadas = 0;
 	}
 	
-	public IConexion obtenerConexion(Boolean t) {
+	public IConexion obtenerConexion(Boolean t) throws ExcepAccesoADatos {
+		/* t=TRUE: MODIFICACION.
+		 * t=FALSE: LECTURA.*/
 		Conexion con = null;
 		/*PASO 1: Ver si hay conexiones libres.*/
 		if (tope > 0) {
 			//Devuelvo la conexión que está al final del arreglo.
 			con = arrConexiones[tope-1];
+			if (t) {
+				con.getConexion().setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			} else {
+				con.getConexion().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			}
+			tope = tope - 1;
 		} else {
 			/*PASO 2: Ver si puedo crear una conexión nueva.*/
 			if (creadas < TAM) {
 				//Creo una nueva conexión y la devuelvo.
+				Class.forName(driver);
+				Connection c = DriverManager.getConnection(url,user,pwd);
+				con = new Conexion(c);
+				creadas = creadas + 1;
+				if (t) {
+					con.getConexion().setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+				} else {
+					con.getConexion().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+				}
+			} else {
+				/*PASO 3: Mandar a dormir al usuario.*/
 			}
 		}
-		
-		/*PASO 3: Mandar a dormir al usuario.*/
 		return con;
 	}
 	
