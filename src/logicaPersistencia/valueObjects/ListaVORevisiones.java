@@ -1,9 +1,10 @@
 package logicaPersistencia.valueObjects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import logicaPersistencia.valueObjects.*;
 
-public class ListaVORevisiones {
+public class ListaVORevisiones implements Serializable {
 	
 	private ArrayList<VORevision> revisiones;
 
