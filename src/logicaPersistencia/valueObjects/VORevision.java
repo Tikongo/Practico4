@@ -1,6 +1,8 @@
 package logicaPersistencia.valueObjects;
 
-public class VORevision {
+import java.io.Serializable;
+
+public class VORevision implements Serializable{
 	
 	private int numero;
 	private String descripcion;
