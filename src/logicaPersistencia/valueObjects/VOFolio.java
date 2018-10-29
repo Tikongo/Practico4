@@ -1,6 +1,8 @@
 package logicaPersistencia.valueObjects;
 
-public class VOFolio {
+import java.io.Serializable;
+
+public class VOFolio implements Serializable{
 	
 	private String codigo;
 	private String caratula;
