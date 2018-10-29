@@ -1,6 +1,8 @@
 package logicaPersistencia.valueObjects;
 
-public class VOFolioMaxRev extends VOFolio {
+import java.io.Serializable;
+
+public class VOFolioMaxRev extends VOFolio implements Serializable{
 	
 	private int cantRevisiones;
 	
