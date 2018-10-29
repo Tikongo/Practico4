@@ -1,8 +1,9 @@
 package logicaPersistencia.valueObjects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ListaVOFolios {
+public class ListaVOFolios implements Serializable {
 	
 	private ArrayList<VOFolio> folios;
 
