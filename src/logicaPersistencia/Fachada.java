@@ -7,11 +7,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+<<<<<<< HEAD
 import logicaPersistencia.accesoBD.AccesoBD;
 import logicaPersistencia.excepciones.ExcepAccesoADatos;
 import logicaPersistencia.excepciones.ExcepFolioNoExiste;
 import logicaPersistencia.excepciones.ExcepFolioYaExiste;
+=======
+import logicaPersistencia.accesoBD.PoolConexiones;
+>>>>>>> d2e3b1b3580d9c3601fef8cc46fbe2bf1088526b
 import logicaPersistencia.valueObjects.*;
+import persistencia.daos.DAOFolios;
+
 import java.sql.*;
 
 public class Fachada {
@@ -20,7 +26,13 @@ public class Fachada {
 	private String urlBD;
 	private String userBD;
 	private String pwdBD;
+<<<<<<< HEAD
 	private Connection con;
+=======
+	private PoolConexiones pool;
+	private DAOFolios folio;
+	
+>>>>>>> d2e3b1b3580d9c3601fef8cc46fbe2bf1088526b
 	public Fachada(){
 		/*cargar valores desde archivo de propiedades.*/
 		
