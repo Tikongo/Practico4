@@ -2,6 +2,10 @@ package logicaPersistencia.accesoBD;
 
 public class Consultas {
 
+	public String existeFolio() {
+		String query = "SELECT codigo FROM Folios WHERE codigo = ?";
+		return query;
+	}
 	public String queryAgregarFolio() {
 		String query = "INSERT INTO Folios (codigo,caratula,pagina) values (?,?,?)";
 		return query;

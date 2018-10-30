@@ -1,6 +1,8 @@
 package logicaPersistencia.excepciones;
 
-public class ExcepFolioYaExiste extends Exception {
+import java.sql.SQLException;
+
+public class ExcepFolioYaExiste extends SQLException {
 	
 	private String mensaje;
 	

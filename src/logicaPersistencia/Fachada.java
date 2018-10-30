@@ -6,6 +6,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+
+import logicaPersistencia.accesoBD.AccesoBD;
+import logicaPersistencia.excepciones.ExcepAccesoADatos;
+import logicaPersistencia.excepciones.ExcepFolioNoExiste;
+import logicaPersistencia.excepciones.ExcepFolioYaExiste;
 import logicaPersistencia.valueObjects.*;
 import java.sql.*;
 
@@ -15,14 +20,46 @@ public class Fachada {
 	private String urlBD;
 	private String userBD;
 	private String pwdBD;
-	
+	private Connection con;
 	public Fachada(){
 		/*cargar valores desde archivo de propiedades.*/
 		
 	}
 	
-	public void agregarFolio(VOFolio voF){
-		
+	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste, ExcepAccesoADatos,SQLException{
+		try {
+			con = DriverManager.getConnection(urlBD, userBD, pwdBD);
+			con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			con.setAutoCommit(false);
+			
+			String codigo=voF.getCodigo();
+			String caratula=voF.caratula();
+			int paginas=voF.getPaginas();
+			
+			AccesoBD abd = new AccesoBD();
+			boolean existeCodigo =  abd.existeFolio(con, codigo);
+			
+			if(!existeCodigo) {
+				abd.agregarFolio(con,codigo,caratula,paginas);
+			}else {
+				//msjError = "Folio ya ingresado";
+				
+			}
+				
+			con.commit();
+			
+			
+		}catch(ExcepFolioYaExiste e){
+			con.rollback();
+			/*
+			errorPersistencia =  true;
+			msjError = "Error de Acceso a la BD";*/
+			
+		}
+		finally {
+			con.close();
+			
+		}
 	}
 	
 	public void agregarRevision(String codF, String desc){
