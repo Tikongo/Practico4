@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 import logicaPersistencia.accesoBD.PoolConexiones;
 import logicaPersistencia.valueObjects.*;
+import persistencia.daos.DAOFolios;
+
 import java.sql.*;
 
 public class Fachada {
@@ -18,6 +20,7 @@ public class Fachada {
 	private String userBD;
 	private String pwdBD;
 	private PoolConexiones pool;
+	private DAOFolios folio;
 	
 	public Fachada(){
 		/*cargar valores desde archivo de propiedades.*/
