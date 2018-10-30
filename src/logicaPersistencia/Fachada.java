@@ -11,6 +11,10 @@ import logicaPersistencia.excepciones.ExcepAccesoADatos;
 import logicaPersistencia.excepciones.ExcepFolioNoExiste;
 import logicaPersistencia.excepciones.ExcepFolioYaExiste;
 import logicaPersistencia.accesoBD.PoolConexiones;
+
+import logicaPersistencia.accesoBD.PoolConexiones;
+
+
 import logicaPersistencia.valueObjects.*;
 import persistencia.daos.DAOFolios;
 
@@ -25,7 +29,9 @@ public class Fachada {
 	private Connection con;
 	private PoolConexiones pool;
 	private DAOFolios folio;
+
 	
+
 	public Fachada(){
 		/*cargar valores desde archivo de propiedades.*/
 		
