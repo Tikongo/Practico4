@@ -10,7 +10,7 @@ import logicaPersistencia.valueObjects.*;
 import java.sql.*;
 
 public class Fachada {
-	//linea de prueba
+	//linea de prueba 888888
 	private String driverBD;
 	private String urlBD;
 	private String userBD;
