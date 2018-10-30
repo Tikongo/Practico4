@@ -1,6 +1,8 @@
 package logicaPersistencia.excepciones;
 
-public class ExcepAccesoADatos extends Exception {
+import java.sql.SQLException;
+
+public class ExcepAccesoADatos extends SQLException {
 	
 	private String mensaje;
 	

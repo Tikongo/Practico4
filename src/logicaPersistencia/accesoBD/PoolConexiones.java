@@ -54,7 +54,7 @@ public class PoolConexiones implements IPoolConexiones {
 		creadas = 0;
 	}
 	
-	public IConexion obtenerConexion(Boolean t) throws ExcepAccesoADatos {
+	public IConexion obtenerConexion(Boolean t) throws SQLException, ClassNotFoundException {
 		/* t=TRUE: MODIFICACION.
 		 * t=FALSE: LECTURA.*/
 		Conexion con = null;
