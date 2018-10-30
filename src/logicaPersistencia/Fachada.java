@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+
+import logicaPersistencia.accesoBD.PoolConexiones;
 import logicaPersistencia.valueObjects.*;
 import java.sql.*;
 
@@ -15,6 +17,7 @@ public class Fachada {
 	private String urlBD;
 	private String userBD;
 	private String pwdBD;
+	private PoolConexiones pool;
 	
 	public Fachada(){
 		/*cargar valores desde archivo de propiedades.*/
