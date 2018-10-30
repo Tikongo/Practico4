@@ -6,14 +6,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
-
 import logicaPersistencia.accesoBD.AccesoBD;
 import logicaPersistencia.excepciones.ExcepAccesoADatos;
 import logicaPersistencia.excepciones.ExcepFolioNoExiste;
 import logicaPersistencia.excepciones.ExcepFolioYaExiste;
+import logicaPersistencia.accesoBD.PoolConexiones;
 
 import logicaPersistencia.accesoBD.PoolConexiones;
+
 
 import logicaPersistencia.valueObjects.*;
 //import persistencia.daos.DAOFolios;
@@ -26,11 +26,10 @@ public class Fachada {
 	private String urlBD;
 	private String userBD;
 	private String pwdBD;
-
 	private Connection con;
-
 	private PoolConexiones pool;
 	private DAOFolios folio;
+
 	
 
 	public Fachada(){
