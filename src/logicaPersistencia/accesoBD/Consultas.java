@@ -40,4 +40,9 @@ public class Consultas {
 		String query = "SELECT * FROM Folios f,Revisiones r where f.codigo=r.codigoFolio GROUP BY r.numero ORDER BY COUNT (r.numero) DESC LIMIT 1 ";
 		return query;
 	}
+	
+	public String queryFindFolio() {
+		String query = "SELECT * FROM Folios where codigo = ?";
+		return query;
+	}
 }

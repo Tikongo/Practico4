@@ -1,6 +1,8 @@
 package logicaPersistencia.excepciones;
 
-public class ExcepRevisionNoExiste extends Exception {
+import java.sql.SQLException;
+
+public class ExcepRevisionNoExiste extends SQLException {
 
 	private String mensaje;
 	

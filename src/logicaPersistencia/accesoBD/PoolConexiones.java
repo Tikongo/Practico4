@@ -37,9 +37,13 @@ public class PoolConexiones implements IPoolConexiones {
 			pwd = prop.getProperty("dbpassword");
 			driver = prop.getProperty("driver");
 			TAM = Integer.parseInt(prop.getProperty("TAM"));
+			Class.forName(driver);
 			
 		} catch (IOException ex) {
 			ex.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
 			if (input != null) {
 				try {
@@ -54,38 +58,51 @@ public class PoolConexiones implements IPoolConexiones {
 		creadas = 0;
 	}
 	
-	public IConexion obtenerConexion(Boolean t) throws SQLException, ClassNotFoundException {
+	public IConexion obtenerConexion(Boolean t) throws SQLException{
 		/* t=TRUE: MODIFICACION.
 		 * t=FALSE: LECTURA.*/
 		Conexion con = null;
 		/*PASO 1: Ver si hay conexiones libres.*/
-		if (tope > 0) {
-			//Devuelvo la conexión que está al final del arreglo.
-			con = arrConexiones[tope-1];
-			if (t) {
-				con.getConexion().setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-			} else {
-				con.getConexion().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			}
-			tope = tope - 1;
-		} else {
-			/*PASO 2: Ver si puedo crear una conexión nueva.*/
-			if (creadas < TAM) {
-				//Creo una nueva conexión y la devuelvo.
-				Class.forName(driver);
-				Connection c = DriverManager.getConnection(url,user,pwd);
-				con = new Conexion(c);
-				creadas = creadas + 1;
+		try {
+			if (tope > 0) {
+				//Devuelvo la conexión que está al final del arreglo.
+				con = arrConexiones[tope-1];
+				
 				if (t) {
 					con.getConexion().setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 				} else {
 					con.getConexion().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 				}
+				tope = tope - 1;
+								
 			} else {
-				/*PASO 3: Mandar a dormir al usuario.*/
+				/*PASO 2: Ver si puedo crear una conexión nueva.*/
+				if (creadas < TAM) {
+					//Creo una nueva conexión y la devuelvo.
+						Connection c=null;
+						try {
+							c = DriverManager.getConnection(url,user,pwd);
+						} catch (SQLException e) {
+							throw new ExcepAccesoADatos("Error de Acceso a la BD");
+							
+						}
+						con = new Conexion(c);
+						creadas = creadas + 1;
+						if (t) {
+							con.getConexion().setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+						} else {
+							con.getConexion().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+						}
+				} else {
+					/*PASO 3: Mandar a dormir al usuario.*/
+				}
 			}
+			
+		}catch (SQLException e) {
+			throw new ExcepAccesoADatos("Error de Acceso a la BD");
 		}
 		return con;
+		
 	}
 	
 	public void liberarConexion(IConexion iC, Boolean t) {

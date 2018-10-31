@@ -15,12 +15,12 @@ public class Folio {
 	private DAORevisiones secuencia;
 	
 	
-	public Folio(String codigo, String caratula, int paginas, DAORevisiones secuencia) {
+	public Folio(String codigo, String caratula, int paginas) {
 		super();
 		this.codigo = codigo;
 		this.caratula = caratula;
 		this.paginas = paginas;
-		this.secuencia = secuencia;
+		this.secuencia = new DAORevisiones(codigo);
 	}
 
 

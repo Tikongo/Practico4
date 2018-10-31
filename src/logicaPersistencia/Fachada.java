@@ -17,6 +17,7 @@ import logicaPersistencia.accesoBD.PoolConexiones;
 
 import logicaPersistencia.valueObjects.*;
 //import persistencia.daos.DAOFolios;
+import persistencia.daos.DAOFolios;
 
 import java.sql.*;
 
