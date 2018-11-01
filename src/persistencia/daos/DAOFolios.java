@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.naming.ldap.UnsolicitedNotificationListener;
 
-import com.mysql.*;
+
 
 import logicaPersistencia.Folio;
 import logicaPersistencia.accesoBD.Conexion;
