@@ -19,17 +19,27 @@ public class PoolConexiones implements IPoolConexiones {
 	private int creadas;
 	private Conexion arrConexiones[];
 	
-	private Conexion setTransactionIsolation(boolean t, Conexion con) {
+	private Conexion setTransactionIsolation (boolean t, Conexion con) {
 		if (t) {
-			con.getConexion().setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			try {
+				con.getConexion().setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
-			con.getConexion().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			try {
+				con.getConexion().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return con;
 	}
 	
 	public PoolConexiones() throws ExcepAccesoADatos {
-		/*Cargar tamaño de archivo de propiedades.*/
+		/*Cargar tamaï¿½o de archivo de propiedades.*/
 		Properties prop = new Properties();
 		InputStream input = null;
 		
@@ -74,14 +84,14 @@ public class PoolConexiones implements IPoolConexiones {
 		/*PASO 1: Ver si hay conexiones libres.*/
 		try {
 			if (tope > 0) {
-				//Devuelvo la conexión que está al final del arreglo.
+				//Devuelvo la conexiï¿½n que estï¿½ al final del arreglo.
 				con = arrConexiones[tope-1];
 				con = setTransactionIsolation(t, con);
 				tope = tope - 1;
 			} else {
-				/*PASO 2: Ver si puedo crear una conexión nueva.*/
+				/*PASO 2: Ver si puedo crear una conexiï¿½n nueva.*/
 				if (creadas < TAM) {
-					//Creo una nueva conexión y la devuelvo.
+					//Creo una nueva conexiï¿½n y la devuelvo.
 					Connection c = null;
 					try {
 						c = DriverManager.getConnection(url,user,pwd);
