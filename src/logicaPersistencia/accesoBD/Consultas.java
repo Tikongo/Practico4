@@ -3,7 +3,7 @@ package logicaPersistencia.accesoBD;
 public class Consultas {
 
 	public String existeFolio() {
-		String query = "SELECT codigo FROM Folios WHERE codigo = ?";
+		String query = "SELECT codigo FROM Folios WHERE codigo = (?)";
 		return query;
 	}
 	public String queryAgregarFolio() {
@@ -17,12 +17,12 @@ public class Consultas {
 	}
 	
 	public String queryBorrarFolioRevisiones() {
-		String query = "DELETE FROM Revisiones WHERE codigoFolio= ? ";
+		String query = "DELETE FROM Revisiones WHERE codigoFolio= (?) ";
 		return query;
 	}
 	
 	public String queryDarDescripcion() {
-		String query = "SELECT descripcion FROM Revisiones where codigoFolio= ? AND numero = ?";
+		String query = "SELECT descripcion FROM Revisiones where codigoFolio= (?) AND numero = (?)";
 		return query;
 	}
 	
@@ -32,7 +32,7 @@ public class Consultas {
 	}
 	
 	public String queryListarRevisiones() {
-		String query = "SELECT * FROM Revisiones where codigoFolio = ?  ORDER BY numero";
+		String query = "SELECT * FROM Revisiones where codigoFolio = (?)  ORDER BY numero";
 		return query;
 	}
 	
@@ -42,7 +42,7 @@ public class Consultas {
 	}
 	
 	public String queryFindFolio() {
-		String query = "SELECT * FROM Folios where codigo = ?";
+		String query = "SELECT * FROM Folios where codigo = (?)";
 		return query;
 	}
 }
