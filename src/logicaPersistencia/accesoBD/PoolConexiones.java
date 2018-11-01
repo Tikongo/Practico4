@@ -19,6 +19,15 @@ public class PoolConexiones implements IPoolConexiones {
 	private int creadas;
 	private Conexion arrConexiones[];
 	
+	private Conexion setTransactionIsolation(boolean t, Conexion con) {
+		if (t) {
+			con.getConexion().setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+		} else {
+			con.getConexion().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+		}
+		return con;
+	}
+	
 	public PoolConexiones() throws ExcepAccesoADatos {
 		/*Cargar tamaño de archivo de propiedades.*/
 		Properties prop = new Properties();
@@ -67,38 +76,27 @@ public class PoolConexiones implements IPoolConexiones {
 			if (tope > 0) {
 				//Devuelvo la conexión que está al final del arreglo.
 				con = arrConexiones[tope-1];
-				
-				if (t) {
-					con.getConexion().setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-				} else {
-					con.getConexion().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-				}
+				con = setTransactionIsolation(t, con);
 				tope = tope - 1;
-								
 			} else {
 				/*PASO 2: Ver si puedo crear una conexión nueva.*/
 				if (creadas < TAM) {
 					//Creo una nueva conexión y la devuelvo.
-						Connection c=null;
-						try {
-							c = DriverManager.getConnection(url,user,pwd);
-						} catch (SQLException e) {
-							throw new ExcepAccesoADatos("Error de Acceso a la BD");
-							
-						}
-						con = new Conexion(c);
-						creadas = creadas + 1;
-						if (t) {
-							con.getConexion().setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-						} else {
-							con.getConexion().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-						}
+					Connection c = null;
+					try {
+						c = DriverManager.getConnection(url,user,pwd);
+					} catch (SQLException e) {
+						throw new ExcepAccesoADatos("Error de Acceso a la BD");
+					}
+					con = new Conexion(c);
+					creadas = creadas + 1;
+					con = setTransactionIsolation(t, con);
 				} else {
 					/*PASO 3: Mandar a dormir al usuario.*/
 				}
 			}
 			
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new ExcepAccesoADatos("Error de Acceso a la BD");
 		}
 		return con;
