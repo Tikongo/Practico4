@@ -97,8 +97,21 @@ public class Fachada {
 		return desc;
 	}
 	
-	public List<VOFolio> listarFolios(){
-		List<VOFolio> listaFolios = new ArrayList<>();
+	public List<VOFolio> listarFolios() throws ExcepAccesoADatos{
+		List<VOFolio> listaFolios = null;
+		IConexion icon=null;
+		String msjError="Error de Acceso a los datos";
+		try {
+			icon = pool.obtenerConexion (false);
+			listaFolios=folio.listarFolios(icon);
+			pool.liberarConexion (icon, true);
+			
+		}catch(Exception e) {
+			if (icon != null) 
+				pool.liberarConexion (icon, false);
+            throw new ExcepAccesoADatos(msjError);
+		}
+		
 		return listaFolios;
 	}
 	
