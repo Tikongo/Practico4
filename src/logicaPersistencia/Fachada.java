@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import logicaPersistencia.accesoBD.AccesoBD;
+import logicaPersistencia.accesoBD.IConexion;
 import logicaPersistencia.excepciones.ExcepAccesoADatos;
 import logicaPersistencia.excepciones.ExcepFolioNoExiste;
 import logicaPersistencia.excepciones.ExcepFolioYaExiste;
@@ -27,7 +28,7 @@ public class Fachada {
 	private String urlBD;
 	private String userBD;
 	private String pwdBD;
-	private Connection con;
+	//private Connection con;
 	private PoolConexiones pool;
 	private DAOFolios folio;
 
@@ -39,37 +40,46 @@ public class Fachada {
 	}
 	
 	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste, ExcepAccesoADatos,SQLException{
+		
+		IConexion icon=null;
+		String msjError="";
+		boolean existeCodigo=false;
+		boolean errorPersistencia=false;
 		try {
-			con = DriverManager.getConnection(urlBD, userBD, pwdBD);
-			con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-			con.setAutoCommit(false);
-			
+			/*con = DriverManager.getConnection(urlBD, userBD, pwdBD);
+			  con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			  con.setAutoCommit(false);*/
+			icon = pool.obtenerConexion(true);
 			String codigo=voF.getCodigo();
 			String caratula=voF.caratula();
 			int paginas=voF.getPaginas();
 			
-			AccesoBD abd = new AccesoBD();
-			boolean existeCodigo =  abd.existeFolio(con, codigo);
+			//AccesoBD abd = new AccesoBD();
+			//boolean existeCodigo =  abd.existeFolio(con, codigo);
+			
+			existeCodigo=folio.member(icon, codigo);
 			
 			if(!existeCodigo) {
-				abd.agregarFolio(con,codigo,caratula,paginas);
+				//abd.agregarFolio(con,codigo,caratula,paginas);
+				Folio fol = new Folio(codigo,caratula,paginas);
+				folio.insert(icon, fol);
 			}else {
-				//msjError = "Folio ya ingresado";
-				
-			}
-				
-			con.commit();
-			
+				msjError = "Folio ya ingresado";
+				  
+				}
+			pool.liberarConexion(icon, true);	
 			
 		}catch(ExcepFolioYaExiste e){
-			con.rollback();
-			/*
-			errorPersistencia =  true;
-			msjError = "Error de Acceso a la BD";*/
+			pool.liberarConexion(icon, true);
+			errorPersistencia=true;
+			msjError = "Error de Acceso a los datos";
 			
 		}
 		finally {
-			con.close();
+			if (existeCodigo) 
+				throw new ExcepFolioYaExiste(msjError);
+			if (errorPersistencia)
+				throw new ExcepAccesoADatos(msjError);
 			
 		}
 	}
