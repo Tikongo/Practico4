@@ -113,7 +113,7 @@ public class PoolConexiones implements IPoolConexiones {
 		creadas = 0;
 	}
 	
-	public IConexion obtenerConexion(Boolean t) throws SQLException{
+	public synchronized IConexion obtenerConexion(Boolean t) throws SQLException{
 		/* t=TRUE: MODIFICACION.
 		 * t=FALSE: LECTURA.*/
 		Conexion con = null;
@@ -139,7 +139,12 @@ public class PoolConexiones implements IPoolConexiones {
 					con = setTransactionIsolation(t, con);
 				} else {
 					/*PASO 3: Mandar a dormir al usuario.*/
-					
+					try
+					{
+						wait();
+					}
+					catch(InterruptedException iExc)
+					{	}
 				}
 			}
 			
@@ -147,11 +152,20 @@ public class PoolConexiones implements IPoolConexiones {
 			throw new ExcepAccesoADatos("Error de Acceso a la BD");
 		}
 		return con;
-		
 	}
 	
-	public void liberarConexion(IConexion iC, Boolean t) {
-		/*HACER*/
+	public synchronized void liberarConexion(IConexion iC, Boolean t) {
+		try {
+			if (tope < TAM) {
+				arrConexiones[tope] = (Conexion)iC;
+				tope++;
+				notify();
+			} else {
+				iC.getConexion().close();
+			}
+		} catch (SQLException e) {
+			
+		}
 		
 	}
 }

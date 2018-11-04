@@ -13,8 +13,7 @@ public class Folio {
 	private String caratula;
 	private int paginas;
 	private DAORevisiones secuencia;
-	
-	
+		
 	public Folio(String codigo, String caratula, int paginas) {
 		super();
 		this.codigo = codigo;
@@ -23,22 +22,17 @@ public class Folio {
 		this.secuencia = new DAORevisiones(codigo);
 	}
 
-
 	public String getCodigo() {
 		return codigo;
 	}
-
-
 
 	public String getCaratula() {
 		return caratula;
 	}
 
-
 	public int getPaginas() {
 		return paginas;
 	}
-
 
 	public boolean tieneRevision(int numR) {
 		boolean tiene =false;

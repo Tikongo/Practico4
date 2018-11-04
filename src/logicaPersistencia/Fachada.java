@@ -12,36 +12,28 @@ import logicaPersistencia.excepciones.ExcepAccesoADatos;
 import logicaPersistencia.excepciones.ExcepFolioNoExiste;
 import logicaPersistencia.excepciones.ExcepFolioYaExiste;
 import logicaPersistencia.accesoBD.PoolConexiones;
-
 import logicaPersistencia.accesoBD.PoolConexiones;
-
-
 import logicaPersistencia.valueObjects.*;
-//import persistencia.daos.DAOFolios;
 import persistencia.daos.DAOFolios;
 
 import java.sql.*;
 
 public class Fachada {
 	//linea de prueba
-	private String driverBD;
-	private String urlBD;
-	private String userBD;
-	private String pwdBD;
+	//private String driverBD;
+	//private String urlBD;
+	//private String userBD;
+	//private String pwdBD;
 	//private Connection con;
 	private PoolConexiones pool;
 	private DAOFolios folio;
 
-	
-
 	public Fachada(){
-		/*cargar valores desde archivo de propiedades.*/
-		
+		/*cargar valores desde archivo de propiedades.*/	
 	}
 	
-	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste, ExcepAccesoADatos,SQLException{
-		
-		IConexion icon=null;
+	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste, ExcepAccesoADatos,SQLException {
+		IConexion iCon=null;
 		String msjError="";
 		boolean existeCodigo=false;
 		boolean errorPersistencia=false;
@@ -49,38 +41,37 @@ public class Fachada {
 			/*con = DriverManager.getConnection(urlBD, userBD, pwdBD);
 			  con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			  con.setAutoCommit(false);*/
-			icon = pool.obtenerConexion(true);
-			String codigo=voF.getCodigo();
-			String caratula=voF.caratula();
-			int paginas=voF.getPaginas();
+			iCon = pool.obtenerConexion(true);
+			String codigo = voF.getCodigo();
+			String caratula = voF.caratula();
+			int paginas = voF.getPaginas();
 			
 			//AccesoBD abd = new AccesoBD();
 			//boolean existeCodigo =  abd.existeFolio(con, codigo);
 			
-			existeCodigo=folio.member(icon, codigo);
+			existeCodigo = folio.member(iCon, codigo);
 			
 			if(!existeCodigo) {
 				//abd.agregarFolio(con,codigo,caratula,paginas);
 				Folio fol = new Folio(codigo,caratula,paginas);
-				folio.insert(icon, fol);
-			}else {
-				msjError = "Folio ya ingresado";
-				  
-				}
-			pool.liberarConexion(icon, true);	
+				folio.insert(iCon, fol);
+			} else {
+				msjError = "Folio ya ingresado";  
+			}
+			pool.liberarConexion(iCon, true);	
 			
-		}catch(ExcepFolioYaExiste e){
-			pool.liberarConexion(icon, true);
+		} catch(ExcepFolioYaExiste e) {
+			pool.liberarConexion(iCon, true);
 			errorPersistencia=true;
 			msjError = "Error de Acceso a los datos";
-			
 		}
 		finally {
-			if (existeCodigo) 
+			if (existeCodigo) { 
 				throw new ExcepFolioYaExiste(msjError);
-			if (errorPersistencia)
+			}
+			if (errorPersistencia) {
 				throw new ExcepAccesoADatos(msjError);
-			
+			}
 		}
 	}
 	
