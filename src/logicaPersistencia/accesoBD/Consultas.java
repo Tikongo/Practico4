@@ -21,6 +21,11 @@ public class Consultas {
 		return query;
 	}
 	
+	public String queryBorrarFolio() {
+		String query = "DELETE FROM Folios WHERE codigo= (?) ";
+		return query;
+	}
+	
 	public String queryDarDescripcion() {
 		String query = "SELECT descripcion FROM Revisiones where codigoFolio= (?) AND numero = (?)";
 		return query;
@@ -43,6 +48,11 @@ public class Consultas {
 	
 	public String queryFindFolio() {
 		String query = "SELECT * FROM Folios where codigo = (?)";
+		return query;
+	}
+	
+	public String queryDarRevision() {
+		String query = "SELECT * FROM Revisiones where codigoFolio= (?) AND numero = (?)";
 		return query;
 	}
 }
