@@ -63,7 +63,7 @@ public class DAOFolios {
 			pstmt.setString(1, fol.getCodigo());
 			pstmt.setString(2, fol.getCaratula());
 			pstmt.setInt(3, fol.getPaginas());
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 			pstmt.close();
 			
 		}catch (SQLException e) {
@@ -105,7 +105,7 @@ public class DAOFolios {
 				String delete = consultas.queryBorrarFolioRevisiones();
 				PreparedStatement pstmt = con.prepareStatement(delete);
 				pstmt.setString(1, cod);
-				pstmt.executeQuery();
+				pstmt.executeUpdate();
 				pstmt.close();
 				
 			}catch (SQLException e) {
