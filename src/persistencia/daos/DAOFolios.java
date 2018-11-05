@@ -179,7 +179,7 @@ public class DAOFolios {
 				int cantRev = rs.getInt("cantRevisiones");
 				unFolio = new VOFolioMaxRev(codigo, caratula, paginas,cantRev);
 			}
-					
+			rs.close();			
 			pstmt.close();
 			
 		}catch (SQLException e) {
