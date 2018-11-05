@@ -88,7 +88,7 @@ public class DAOFolios {
 				int paginas = rs.getInt("paginas");
 				unFolio = new Folio(codigo, caratula, paginas);
 			}
-					
+			rs.close();		
 			pstmt.close();
 			
 		}catch (SQLException e) {
