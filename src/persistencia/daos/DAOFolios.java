@@ -102,7 +102,7 @@ public class DAOFolios {
 			try {
 				Consultas consultas = new Consultas();
 				Connection con= ((Conexion) icon).getConexion();
-				String delete = consultas.queryBorrarFolioRevisiones();
+				String delete = consultas.queryBorrarFolio();
 				PreparedStatement pstmt = con.prepareStatement(delete);
 				pstmt.setString(1, cod);
 				pstmt.executeUpdate();
