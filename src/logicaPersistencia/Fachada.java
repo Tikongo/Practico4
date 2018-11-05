@@ -18,7 +18,7 @@ import persistencia.daos.DAOFolios;
 
 import java.sql.*;
 
-public class Fachada {
+public class Fachada implements IFachada {
 	//linea de prueba
 	//private String driverBD;
 	//private String urlBD;
@@ -32,7 +32,11 @@ public class Fachada {
 		/*cargar valores desde archivo de propiedades.*/	
 	}
 	
-	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste, ExcepAccesoADatos,SQLException {
+	/* (non-Javadoc)
+	 * @see logicaPersistencia.IFachada#agregarFolio(logicaPersistencia.valueObjects.VOFolio)
+	 */
+	@Override
+	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste, ExcepAccesoADatos {
 		IConexion iCon=null;
 		String msjError="";
 		boolean existeCodigo=false;
@@ -60,7 +64,10 @@ public class Fachada {
 			}
 			pool.liberarConexion(iCon, true);	
 			
-		} catch(ExcepFolioYaExiste e) {
+		} catch (ExcepFolioYaExiste e) {
+			pool.liberarConexion(iCon, true);
+			msjError = "El folio que se intenta ingresar ya está registrado";
+		} catch (ExcepAccesoADatos e) {
 			pool.liberarConexion(iCon, true);
 			errorPersistencia=true;
 			msjError = "Error de Acceso a los datos";
@@ -75,19 +82,35 @@ public class Fachada {
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see logicaPersistencia.IFachada#agregarRevision(java.lang.String, java.lang.String)
+	 */
+	@Override
 	public void agregarRevision(String codF, String desc){
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see logicaPersistencia.IFachada#borrarFolioRevisiones(java.lang.String)
+	 */
+	@Override
 	public void borrarFolioRevisiones(String codF){
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see logicaPersistencia.IFachada#darDescripcion(java.lang.String, int)
+	 */
+	@Override
 	public String darDescripcion(String codF,int numR){
 		String desc = null;
 		return desc;
 	}
 	
+	/* (non-Javadoc)
+	 * @see logicaPersistencia.IFachada#listarFolios()
+	 */
+	@Override
 	public List<VOFolio> listarFolios() throws ExcepAccesoADatos{
 		List<VOFolio> listaFolios = null;
 		IConexion icon=null;
@@ -106,11 +129,19 @@ public class Fachada {
 		return listaFolios;
 	}
 	
+	/* (non-Javadoc)
+	 * @see logicaPersistencia.IFachada#listarRevisiones()
+	 */
+	@Override
 	public List<VORevision> listarRevisiones(){
 		List<VORevision> listaRevisiones = new ArrayList<>();
 		return listaRevisiones;
 	}
 	
+	/* (non-Javadoc)
+	 * @see logicaPersistencia.IFachada#folioMasRevisado()
+	 */
+	@Override
 	public VOFolioMaxRev folioMasRevisado(){
 		VOFolioMaxRev voFMR = new VOFolioMaxRev();
 		return voFMR;

@@ -6,13 +6,22 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+import com.jgoodies.forms.factories.FormFactory;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class VentPrincipal {
 
-	private JFrame frame;
+	private JFrame ventPrincipal;
 
 	/**
 	 * Launch the application.
@@ -22,7 +31,7 @@ public class VentPrincipal {
 			public void run() {
 				try {
 					VentPrincipal window = new VentPrincipal();
-					window.frame.setVisible(true);
+					window.ventPrincipal.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -41,12 +50,22 @@ public class VentPrincipal {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ventPrincipal = new JFrame();
+		ventPrincipal.setBounds(100, 100, 450, 300);
+		ventPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		ventPrincipal.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				JFrame frame = (JFrame)e.getSource();
+				int result = JOptionPane.showConfirmDialog(frame,"¿Está seguro que desea cerrar Expedienpress?","Cerrar Expedienpress",JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				}  
+			}
+		});
 		
 		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
+		ventPrincipal.setJMenuBar(menuBar);
 		
 		JMenu mnArchivo = new JMenu("Archivo");
 		menuBar.add(mnArchivo);
@@ -54,11 +73,25 @@ public class VentPrincipal {
 		JMenuItem mntmSalir = new JMenuItem("Salir");
 		mnArchivo.add(mntmSalir);
 		
+		mntmSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource() == mntmSalir) {
+					int result = JOptionPane.showConfirmDialog(ventPrincipal,"¿Está seguro que desea cerrar Expedienpress?","Cerrar Expedienpress",JOptionPane.YES_NO_OPTION);
+					if (result == JOptionPane.YES_OPTION) {
+						ventPrincipal.dispose();
+					}
+				}
+			}
+		});	
+		
+		/*MENU INGRESO DE DATOS*/
 		JMenu mnIngresoDeDatos = new JMenu("Datos");
 		menuBar.add(mnIngresoDeDatos);
 		
 		JMenuItem mntmAgregarFolios = new JMenuItem("Agregar Folio");
 		mnIngresoDeDatos.add(mntmAgregarFolios);
+		
+		
 		
 		JMenuItem mntmBorrarFolio = new JMenuItem("Borrar Folio");
 		mnIngresoDeDatos.add(mntmBorrarFolio);
@@ -80,8 +113,50 @@ public class VentPrincipal {
 		
 		JMenuItem mntmVerFolioMas = new JMenuItem("Ver Folio mas Revisado");
 		mnListados.add(mntmVerFolioMas);
-		frame.getContentPane().setLayout(new FormLayout(new ColumnSpec[] {},
-			new RowSpec[] {}));
+		ventPrincipal.getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,},
+			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
+		
+		JLabel lblExpedienpress = new JLabel("EXPEDIENPRESS");
+		lblExpedienpress.setFont(new Font("Agency FB", Font.BOLD, 55));
+		ventPrincipal.getContentPane().add(lblExpedienpress, "8, 6, center, default");
+		
+		JLabel lblSoftwareParaEstudio = new JLabel("Software para Estudios Jur\u00EDdicos");
+		lblSoftwareParaEstudio.setFont(new Font("Agency FB", Font.PLAIN, 24));
+		ventPrincipal.getContentPane().add(lblSoftwareParaEstudio, "8, 8, center, default");
 	}
 
 }
