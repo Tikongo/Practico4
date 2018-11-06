@@ -25,7 +25,7 @@ public class VOFolio implements Serializable{
 		return codigo;
 	}
 	
-	public String caratula(){
+	public String getCaratula(){
 		return caratula;
 	}
 	

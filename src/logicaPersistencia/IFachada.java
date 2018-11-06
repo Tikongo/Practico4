@@ -2,12 +2,9 @@ package logicaPersistencia;
 
 import java.sql.SQLException;
 import java.util.List;
-
 import logicaPersistencia.excepciones.ExcepAccesoADatos;
 import logicaPersistencia.excepciones.ExcepFolioYaExiste;
-import logicaPersistencia.valueObjects.VOFolio;
-import logicaPersistencia.valueObjects.VOFolioMaxRev;
-import logicaPersistencia.valueObjects.VORevision;
+import logicaPersistencia.valueObjects.*;
 
 public interface IFachada {
 
@@ -19,9 +16,9 @@ public interface IFachada {
 
 	String darDescripcion(String codF, int numR);
 
-	List<VOFolio> listarFolios() throws ExcepAccesoADatos;
+	ListaVOFolios listarFolios() throws ExcepAccesoADatos;
 
-	List<VORevision> listarRevisiones(String codF) throws ExcepAccesoADatos;
+	ListaVORevisiones listarRevisiones(String codF) throws ExcepAccesoADatos;
 
 	VOFolioMaxRev folioMasRevisado() throws ExcepAccesoADatos;
 

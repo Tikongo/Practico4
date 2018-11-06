@@ -47,7 +47,7 @@ public class Fachada implements IFachada {
 			  con.setAutoCommit(false);*/
 			iCon = pool.obtenerConexion(true);
 			String codigo = voF.getCodigo();
-			String caratula = voF.caratula();
+			String caratula = voF.getCaratula();
 			int paginas = voF.getPaginas();
 			
 			//AccesoBD abd = new AccesoBD();
@@ -65,7 +65,7 @@ public class Fachada implements IFachada {
 			
 		} catch (ExcepFolioYaExiste e) {
 			pool.liberarConexion(iCon, false);
-			msjError = "El folio que se intenta ingresar ya est� registrado";
+			msjError = "El folio que se intenta ingresar ya estï¿½ registrado";
 		} catch (ExcepAccesoADatos e) {
 			pool.liberarConexion(iCon, false);
 			errorPersistencia=true;
@@ -92,7 +92,7 @@ public class Fachada implements IFachada {
 	/* (non-Javadoc)
 	 * @see logicaPersistencia.IFachada#borrarFolioRevisiones(java.lang.String)
 	 */
-	@Override   //precondicion que el folio con ese código esté registrado.
+	@Override   //precondicion que el folio con ese coÌ�digo esteÌ� registrado.
 	public void borrarFolioRevisiones(String codF)throws ExcepFolioYaExiste, ExcepAccesoADatos ,SQLException{
 		IConexion icon=null;
 		String msjError="";
@@ -112,7 +112,7 @@ public class Fachada implements IFachada {
 			
 		} catch (ExcepFolioYaExiste e) {
 			pool.liberarConexion(icon, false);
-			msjError = "El folio que se intenta buscar no est� registrado";
+			msjError = "El folio que se intenta buscar no estï¿½ registrado";
 		} catch (ExcepAccesoADatos e) {
 			pool.liberarConexion(icon, false);
 			errorPersistencia=true;
@@ -132,7 +132,7 @@ public class Fachada implements IFachada {
 	/* (non-Javadoc)
 	 * @see logicaPersistencia.IFachada#darDescripcion(java.lang.String, int)
 	 */
-	@Override   //precondicion que el folio exista y tenga una revisión con ese número
+	@Override   //precondicion que el folio exista y tenga una revisioÌ�n con ese nuÌ�mero
 	public String darDescripcion(String codF,int numR){
 		String desc = null;
 		return desc;
@@ -142,8 +142,8 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#listarFolios()
 	 */
 	@Override
-	public List<VOFolio> listarFolios() throws ExcepAccesoADatos{
-		List<VOFolio> listaFolios = null;
+	public ListaVOFolios listarFolios() throws ExcepAccesoADatos{
+		ListaVOFolios listaFolios = null;
 		IConexion icon=null;
 		String msjError="Error de Acceso a los datos";
 		try {
@@ -164,8 +164,8 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#listarRevisiones()
 	 */
 	@Override   //precondicion que el folio este registrado.
-	public List<VORevision> listarRevisiones(String codF) throws ExcepAccesoADatos{
-		List<VORevision> listaRevisiones = null;
+	public ListaVORevisiones listarRevisiones(String codF) throws ExcepAccesoADatos{
+		ListaVORevisiones listaRevisiones = null;
 		IConexion icon=null;
 		String msjError="Error de Acceso a los datos";
 		try {
