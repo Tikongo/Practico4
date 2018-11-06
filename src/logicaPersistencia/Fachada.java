@@ -11,6 +11,9 @@ import logicaPersistencia.accesoBD.IConexion;
 import logicaPersistencia.excepciones.ExcepAccesoADatos;
 import logicaPersistencia.excepciones.ExcepFolioNoExiste;
 import logicaPersistencia.excepciones.ExcepFolioYaExiste;
+import logicaPersistencia.excepciones.ExcepNoHayFoliosRegistrados;
+import logicaPersistencia.excepciones.ExcepPersistencia;
+import logicaPersistencia.excepciones.ExcepRevisionNoExiste;
 import logicaPersistencia.accesoBD.PoolConexiones;
 import logicaPersistencia.accesoBD.PoolConexiones;
 import logicaPersistencia.valueObjects.*;
@@ -65,7 +68,7 @@ public class Fachada implements IFachada {
 			
 		} catch (ExcepFolioYaExiste e) {
 			pool.liberarConexion(iCon, false);
-			msjError = "El folio que se intenta ingresar ya est� registrado";
+			msjError = "El folio que se intenta ingresar ya estï¿½ registrado";
 		} catch (ExcepAccesoADatos e) {
 			pool.liberarConexion(iCon, false);
 			errorPersistencia=true;
@@ -85,14 +88,57 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#agregarRevision(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void agregarRevision(String codF, String desc){
-		
+	/*REVISAR!!!*/
+	public void agregarRevision(VOFolio voF,VORevision voR) throws ExcepFolioNoExiste, ExcepNoHayFoliosRegistrados, SQLException {
+		IConexion iCon=null;
+		String msjError="";
+		boolean existeCodigo=false;
+		boolean errorPersistencia=false;
+		try {
+			/*con = DriverManager.getConnection(urlBD, userBD, pwdBD);
+			  con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			  con.setAutoCommit(false);*/
+			iCon = pool.obtenerConexion(true);
+			int numero = voR.getNumero();
+			String descripcion = voR.getDescripcion();
+			String codFolio = voR.getCodFolio();
+			
+			//AccesoBD abd = new AccesoBD();
+			//boolean existeCodigo =  abd.existeFolio(con, codigo);
+			
+			existeCodigo = folio.member(iCon, codFolio);
+			
+			if(existeCodigo) {
+				Revision rev = new Revision(numero+1, descripcion);
+				Folio unFolio = folio.find(iCon, codFolio);
+				unFolio.addRevision(iCon, rev);
+			} else {
+				msjError = "No existe Folio";  
+			}
+			pool.liberarConexion(iCon, true);	
+			
+		} catch (ExcepFolioYaExiste e) {
+			pool.liberarConexion(iCon, false);
+			msjError = "El folio que se intenta ingresar ya estï¿½ registrado";
+		} catch (ExcepAccesoADatos e) {
+			pool.liberarConexion(iCon, false);
+			errorPersistencia=true;
+			msjError = "Error de Acceso a los datos";
+		}
+		finally {
+			if (existeCodigo) { 
+				throw new ExcepFolioYaExiste(msjError);
+			}
+			if (errorPersistencia) {
+				throw new ExcepAccesoADatos(msjError);
+			}
+		}
 	}
 	
 	/* (non-Javadoc)
 	 * @see logicaPersistencia.IFachada#borrarFolioRevisiones(java.lang.String)
 	 */
-	@Override   //precondicion que el folio con ese código esté registrado.
+	@Override   //precondicion que el folio con ese coÌ�digo esteÌ� registrado.
 	public void borrarFolioRevisiones(String codF)throws ExcepFolioYaExiste, ExcepAccesoADatos ,SQLException{
 		IConexion icon=null;
 		String msjError="";
@@ -112,7 +158,7 @@ public class Fachada implements IFachada {
 			
 		} catch (ExcepFolioYaExiste e) {
 			pool.liberarConexion(icon, false);
-			msjError = "El folio que se intenta buscar no est� registrado";
+			msjError = "El folio que se intenta buscar no estï¿½ registrado";
 		} catch (ExcepAccesoADatos e) {
 			pool.liberarConexion(icon, false);
 			errorPersistencia=true;
@@ -132,7 +178,7 @@ public class Fachada implements IFachada {
 	/* (non-Javadoc)
 	 * @see logicaPersistencia.IFachada#darDescripcion(java.lang.String, int)
 	 */
-	@Override   //precondicion que el folio exista y tenga una revisión con ese número
+	@Override   //precondicion que el folio exista y tenga una revisioÌ�n con ese nuÌ�mero
 	public String darDescripcion(String codF,int numR){
 		String desc = null;
 		return desc;
