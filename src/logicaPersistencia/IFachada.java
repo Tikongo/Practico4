@@ -15,14 +15,14 @@ public interface IFachada {
 
 	void agregarRevision(String codF, String desc);
 
-	void borrarFolioRevisiones(String codF);
+	void borrarFolioRevisiones(String codF)throws ExcepFolioYaExiste, ExcepAccesoADatos ,SQLException;
 
 	String darDescripcion(String codF, int numR);
 
 	List<VOFolio> listarFolios() throws ExcepAccesoADatos;
 
-	List<VORevision> listarRevisiones();
+	List<VORevision> listarRevisiones(String codF) throws ExcepAccesoADatos;
 
-	VOFolioMaxRev folioMasRevisado();
+	VOFolioMaxRev folioMasRevisado() throws ExcepAccesoADatos;
 
 }
