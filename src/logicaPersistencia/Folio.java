@@ -60,9 +60,14 @@ public class Folio {
 		}
 	}
 	
-	public Revision obtenerRevision(IConexion icon,int numR) {
+	public Revision obtenerRevision(IConexion icon,int numR) throws ExcepPersistencia {
 		Revision rev=null;
-		return rev;
+		try {
+			rev=secuencia.kesimo(icon, numR);
+		} catch (ExcepPersistencia e) {
+			throw new ExcepPersistencia("Error de conexion");
+		}
+		return rev; 
 	}
 	
 	public List<VORevision> listarRevisiones(IConexion icon) throws ExcepPersistencia{
