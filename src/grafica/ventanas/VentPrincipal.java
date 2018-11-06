@@ -51,6 +51,7 @@ public class VentPrincipal {
 	 */
 	private void initialize() {
 		ventPrincipal = new JFrame();
+		ventPrincipal.setTitle("Expedienpress - Principal");
 		ventPrincipal.setBounds(100, 100, 450, 300);
 		ventPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -90,8 +91,6 @@ public class VentPrincipal {
 		
 		JMenuItem mntmAgregarFolios = new JMenuItem("Agregar Folio");
 		mnIngresoDeDatos.add(mntmAgregarFolios);
-		
-		
 		
 		JMenuItem mntmBorrarFolio = new JMenuItem("Borrar Folio");
 		mnIngresoDeDatos.add(mntmBorrarFolio);
@@ -152,11 +151,11 @@ public class VentPrincipal {
 		
 		JLabel lblExpedienpress = new JLabel("EXPEDIENPRESS");
 		lblExpedienpress.setFont(new Font("Agency FB", Font.BOLD, 55));
-		ventPrincipal.getContentPane().add(lblExpedienpress, "8, 6, center, default");
+		ventPrincipal.getContentPane().add(lblExpedienpress, "6, 6, center, default");
 		
 		JLabel lblSoftwareParaEstudio = new JLabel("Software para Estudios Jur\u00EDdicos");
 		lblSoftwareParaEstudio.setFont(new Font("Agency FB", Font.PLAIN, 24));
-		ventPrincipal.getContentPane().add(lblSoftwareParaEstudio, "8, 8, center, default");
+		ventPrincipal.getContentPane().add(lblSoftwareParaEstudio, "6, 8, center, default");
 	}
 
 }
