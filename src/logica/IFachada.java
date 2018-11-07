@@ -19,7 +19,7 @@ public interface IFachada {
 	
 	void borrarFolioRevisiones(String codF)throws ExcepFolioNoExiste, ExcepAccesoADatos;
 
-	String darDescripcion(String codF, int numR);
+	String darDescripcion(String codF, int numR) throws ExcepAccesoADatos;
 
 	ListaVOFolios listarFolios() throws ExcepAccesoADatos;
 

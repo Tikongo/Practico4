@@ -155,8 +155,21 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#darDescripcion(java.lang.String, int)
 	 */
 	@Override   //precondicion que el folio exista y tenga una revisioÌ�n con ese nuÌ�mero
-	public String darDescripcion(String codF,int numR){
+	public String darDescripcion(String codF,int numR) throws ExcepAccesoADatos{
 		String desc = null;
+		IConexion icon=null;
+		String msjError="Error de Acceso a los datos";
+		try {
+			icon = ipool.obtenerConexion (true);
+			Folio fol=folio.find(icon, codF);
+			Revision rev=fol.obtenerRevision(icon, numR);
+			desc=rev.getDescripcion();
+			ipool.liberarConexion (icon, true);
+		}catch(ExcepAccesoADatos e) {
+			if (icon != null) 
+				ipool.liberarConexion (icon, false);
+            throw new ExcepAccesoADatos(msjError);
+		}
 		return desc;
 	}
 	
@@ -173,7 +186,7 @@ public class Fachada implements IFachada {
 			listaFolios=(ListaVOFolios) folio.listarFolios(icon);
 			ipool.liberarConexion (icon, true);
 			
-		}catch(Exception e) {
+		}catch(ExcepAccesoADatos e) {
 			if (icon != null) 
 				ipool.liberarConexion (icon, false);
             throw new ExcepAccesoADatos(msjError);
@@ -196,7 +209,7 @@ public class Fachada implements IFachada {
 			listaRevisiones=(ListaVORevisiones) fol.listarRevisiones(icon);
 			ipool.liberarConexion (icon, true);
 			
-		}catch(Exception e) {
+		}catch(ExcepAccesoADatos e) {
 			if (icon != null) 
 				ipool.liberarConexion (icon, false);
             throw new ExcepAccesoADatos(msjError);
@@ -217,7 +230,7 @@ public class Fachada implements IFachada {
 			voFMR=folio.folioMasRevisado(icon);
 			ipool.liberarConexion (icon, true);
 			
-		}catch(Exception e) {
+		}catch(ExcepAccesoADatos e) {
 			if (icon != null) 
 				ipool.liberarConexion (icon, false);
             throw new ExcepAccesoADatos(msjError);
