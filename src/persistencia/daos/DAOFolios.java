@@ -9,9 +9,7 @@ import java.util.List;
 
 import javax.naming.ldap.UnsolicitedNotificationListener;
 
-
-
-import logicaPersistencia.Folio;
+import logica.Folio;
 import logicaPersistencia.accesoBD.Conexion;
 import logicaPersistencia.accesoBD.Consultas;
 import logicaPersistencia.accesoBD.IConexion;

@@ -1,10 +1,11 @@
 package grafica.controladores;
 
 import java.rmi.RemoteException;
-import logicaPersistencia.IFachada;
+
 import logicaPersistencia.excepciones.ExcepAccesoADatos;
 import logicaPersistencia.excepciones.ExcepFolioNoExiste;
 import grafica.ventanas.VentBorrarFolio;
+import logica.IFachada;
 
 public class ContBorrarFolio {
 

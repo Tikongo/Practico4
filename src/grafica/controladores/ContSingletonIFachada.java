@@ -6,7 +6,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.util.Properties;
-import logicaPersistencia.IFachada;
+
+import logica.IFachada;
 
 public class ContSingletonIFachada {
 

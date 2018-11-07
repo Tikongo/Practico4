@@ -1,6 +1,8 @@
 package logicaPersistencia.excepciones;
 
-public class ExcepNoHayFoliosRegistrados extends Exception {
+import java.sql.SQLException;
+
+public class ExcepNoHayFoliosRegistrados extends SQLException {
 
 	private String mensaje;
 	

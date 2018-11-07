@@ -1,6 +1,8 @@
 package logicaPersistencia.excepciones;
 
-public class ExcepFolioSinRevisiones extends Exception{
+import java.sql.SQLException;
+
+public class ExcepFolioSinRevisiones extends SQLException{
 	
 	private String mensaje;
 	

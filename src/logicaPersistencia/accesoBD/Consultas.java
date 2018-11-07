@@ -55,4 +55,9 @@ public class Consultas {
 		String query = "SELECT * FROM Revisiones where codigoFolio= (?) AND numero = (?)";
 		return query;
 	}
+	
+	public String queryCantRevision() {
+		String query = "SELECT COUNT(*) FROM Revisiones where codigoFolio= (?) ";
+		return query;
+	}
 }

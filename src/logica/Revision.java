@@ -1,4 +1,4 @@
-package logicaPersistencia;
+package logica;
 
 public class Revision {
 	

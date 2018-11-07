@@ -1,4 +1,4 @@
-package logicaPersistencia;
+package logica;
 
 import java.util.List;
 import java.util.Properties;
@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import logicaPersistencia.accesoBD.AccesoBD;
 import logicaPersistencia.accesoBD.IConexion;
 import logicaPersistencia.excepciones.ExcepAccesoADatos;
 import logicaPersistencia.excepciones.ExcepFolioNoExiste;
@@ -28,7 +27,7 @@ public class Fachada implements IFachada {
 	//private String userBD;
 	//private String pwdBD;
 	//private Connection con;
-	private PoolConexiones pool;
+	private PoolConexiones ipool;
 	private DAOFolios folio;
 
 	public Fachada(){
@@ -39,57 +38,52 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#agregarFolio(logicaPersistencia.valueObjects.VOFolio)
 	 */
 	@Override
-	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste, ExcepAccesoADatos ,SQLException{
+	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste,ExcepAccesoADatos, ExcepPersistencia{
 		IConexion iCon=null;
 		String msjError="";
 		boolean existeCodigo=false;
 		boolean errorPersistencia=false;
-		try {
-			/*con = DriverManager.getConnection(urlBD, userBD, pwdBD);
-			  con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-			  con.setAutoCommit(false);*/
-			iCon = pool.obtenerConexion(true);
-			String codigo = voF.getCodigo();
-			String caratula = voF.getCaratula();
-			int paginas = voF.getPaginas();
+
 			
-			//AccesoBD abd = new AccesoBD();
-			//boolean existeCodigo =  abd.existeFolio(con, codigo);
-			
-			existeCodigo = folio.member(iCon, codigo);
-			
-			if(!existeCodigo) {
-				Folio fol = new Folio(codigo,caratula,paginas);
-				folio.insert(iCon, fol);
-			} else {
-				msjError = "Folio ya ingresado";  
+			try {
+				iCon = ipool.obtenerConexion(true);
+				String codigo = voF.getCodigo();
+				String caratula = voF.getCaratula();
+				int paginas = voF.getPaginas();
+				
+				//AccesoBD abd = new AccesoBD();
+				//boolean existeCodigo =  abd.existeFolio(con, codigo);
+				
+				existeCodigo = folio.member(iCon, codigo);
+				if(!existeCodigo) {
+					Folio fol = new Folio(codigo,caratula,paginas);
+					folio.insert(iCon, fol);
+				} else {
+					msjError = "Folio ya ingresado";
+				}
+				ipool.liberarConexion(iCon, true);	
+			}  catch (ExcepAccesoADatos e) {
+				ipool.liberarConexion(iCon, false);
+				errorPersistencia=true;
+				msjError = "Error de Acceso a los datos";
 			}
-			pool.liberarConexion(iCon, true);	
-			
-		} catch (ExcepFolioYaExiste e) {
-			pool.liberarConexion(iCon, false);
-			msjError = "El folio que se intenta ingresar ya estï¿½ registrado";
-		} catch (ExcepAccesoADatos e) {
-			pool.liberarConexion(iCon, false);
-			errorPersistencia=true;
-			msjError = "Error de Acceso a los datos";
-		}
-		finally {
-			if (existeCodigo) { 
-				throw new ExcepFolioYaExiste(msjError);
+			finally {
+				if (existeCodigo) { 
+					throw new ExcepFolioYaExiste(msjError);
 			}
 			if (errorPersistencia) {
 				throw new ExcepAccesoADatos(msjError);
 			}
 		}
-	}
+		}
+	
 	
 	/* (non-Javadoc)
 	 * @see logicaPersistencia.IFachada#agregarRevision(java.lang.String, java.lang.String)
 	 */
 	@Override
 	/*REVISAR!!!*/
-	public void agregarRevision(VOFolio voF,VORevision voR) throws ExcepFolioNoExiste, ExcepNoHayFoliosRegistrados, SQLException {
+	public void agregarRevision(String codF,String descripcion) throws ExcepFolioNoExiste, ExcepNoHayFoliosRegistrados,ExcepFolioYaExiste,ExcepAccesoADatos {
 		IConexion iCon=null;
 		String msjError="";
 		boolean existeCodigo=false;
@@ -98,30 +92,24 @@ public class Fachada implements IFachada {
 			/*con = DriverManager.getConnection(urlBD, userBD, pwdBD);
 			  con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			  con.setAutoCommit(false);*/
-			iCon = pool.obtenerConexion(true);
-			int numero = voR.getNumero();
-			String descripcion = voR.getDescripcion();
-			String codFolio = voR.getCodFolio();
+			iCon = ipool.obtenerConexion(true);
 			
-			//AccesoBD abd = new AccesoBD();
-			//boolean existeCodigo =  abd.existeFolio(con, codigo);
-			
-			existeCodigo = folio.member(iCon, codFolio);
+			existeCodigo = folio.member(iCon, codF);
 			
 			if(existeCodigo) {
-				Revision rev = new Revision(numero+1, descripcion);
-				Folio unFolio = folio.find(iCon, codFolio);
-				unFolio.addRevision(iCon, rev);
+				Folio fol=folio.find(iCon, codF);
+				Revision rev = new Revision(fol.cantidadRevisiones(iCon), descripcion);
+				fol.addRevision(iCon, rev);
 			} else {
 				msjError = "No existe Folio";  
 			}
-			pool.liberarConexion(iCon, true);	
+			ipool.liberarConexion(iCon, true);	
 			
-		} catch (ExcepFolioYaExiste e) {
-			pool.liberarConexion(iCon, false);
-			msjError = "El folio que se intenta ingresar ya estï¿½ registrado";
 		} catch (ExcepAccesoADatos e) {
-			pool.liberarConexion(iCon, false);
+			ipool.liberarConexion(iCon, false);
+			errorPersistencia=true;
+			msjError = "Error de Acceso a los datos";
+		} catch (ExcepPersistencia e) {
 			errorPersistencia=true;
 			msjError = "Error de Acceso a los datos";
 		}
@@ -139,13 +127,13 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#borrarFolioRevisiones(java.lang.String)
 	 */
 	@Override   //precondicion que el folio con ese coÌ�digo esteÌ� registrado.
-	public void borrarFolioRevisiones(String codF)throws ExcepFolioYaExiste, ExcepAccesoADatos ,SQLException{
+	public void borrarFolioRevisiones(String codF)throws ExcepAccesoADatos, ExcepFolioYaExiste, ExcepPersistencia {
 		IConexion icon=null;
 		String msjError="";
 		boolean existeCodigo=false;
 		boolean errorPersistencia=false;
 		try {
-			icon = pool.obtenerConexion(true);
+			icon = ipool.obtenerConexion(true);
 			existeCodigo = folio.member(icon, codF);
 			if(existeCodigo) {
 				Folio fol = folio.find(icon, codF);
@@ -154,15 +142,13 @@ public class Fachada implements IFachada {
 			} else {
 				msjError = "Folio no registrado";  
 			}
-			pool.liberarConexion(icon, true);	
+			ipool.liberarConexion(icon, true);	
 			
-		} catch (ExcepFolioYaExiste e) {
-			pool.liberarConexion(icon, false);
-			msjError = "El folio que se intenta buscar no estï¿½ registrado";
 		} catch (ExcepAccesoADatos e) {
-			pool.liberarConexion(icon, false);
+			ipool.liberarConexion(icon, false);
 			errorPersistencia=true;
 			msjError = "Error de Acceso a los datos";
+			
 		}
 		finally {
 			if (existeCodigo) { 
@@ -193,13 +179,13 @@ public class Fachada implements IFachada {
 		IConexion icon=null;
 		String msjError="Error de Acceso a los datos";
 		try {
-			icon = pool.obtenerConexion (true);
-			listaFolios=folio.listarFolios(icon);
-			pool.liberarConexion (icon, true);
+			icon = ipool.obtenerConexion (true);
+			listaFolios=(ListaVOFolios) folio.listarFolios(icon);
+			ipool.liberarConexion (icon, true);
 			
 		}catch(Exception e) {
 			if (icon != null) 
-				pool.liberarConexion (icon, false);
+				ipool.liberarConexion (icon, false);
             throw new ExcepAccesoADatos(msjError);
 		}
 		
@@ -215,14 +201,14 @@ public class Fachada implements IFachada {
 		IConexion icon=null;
 		String msjError="Error de Acceso a los datos";
 		try {
-			icon = pool.obtenerConexion (true);
+			icon = ipool.obtenerConexion (true);
 			Folio fol=folio.find(icon, codF);
-			listaRevisiones=fol.listarRevisiones(icon);
-			pool.liberarConexion (icon, true);
+			listaRevisiones=(ListaVORevisiones) fol.listarRevisiones(icon);
+			ipool.liberarConexion (icon, true);
 			
 		}catch(Exception e) {
 			if (icon != null) 
-				pool.liberarConexion (icon, false);
+				ipool.liberarConexion (icon, false);
             throw new ExcepAccesoADatos(msjError);
 		}
 		return listaRevisiones;
@@ -237,13 +223,13 @@ public class Fachada implements IFachada {
 		IConexion icon=null;
 		String msjError="Error de Acceso a los datos";
 		try {
-			icon = pool.obtenerConexion (true);
+			icon = ipool.obtenerConexion (true);
 			voFMR=folio.folioMasRevisado(icon);
-			pool.liberarConexion (icon, true);
+			ipool.liberarConexion (icon, true);
 			
 		}catch(Exception e) {
 			if (icon != null) 
-				pool.liberarConexion (icon, false);
+				ipool.liberarConexion (icon, false);
             throw new ExcepAccesoADatos(msjError);
 		}
 		return voFMR;

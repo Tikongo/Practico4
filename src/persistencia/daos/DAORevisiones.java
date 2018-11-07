@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import logicaPersistencia.Folio;
-import logicaPersistencia.Revision;
+import logica.Folio;
+import logica.Revision;
 import logicaPersistencia.accesoBD.Conexion;
 import logicaPersistencia.accesoBD.Consultas;
 import logicaPersistencia.accesoBD.IConexion;
@@ -33,6 +33,23 @@ public class DAORevisiones {
 	
 	public int largo (IConexion icon) throws ExcepPersistencia{
 		int largo=0;
+		Consultas consultas = new Consultas();
+		Connection con= ((Conexion) icon).getConexion();
+		String cantR = consultas.queryCantRevision();
+		PreparedStatement pstmt;
+		try {
+			pstmt = con.prepareStatement(cantR); 
+		pstmt.setString(1, codigoFolio);
+		ResultSet rs = pstmt.executeQuery();
+		while (rs.next()) {
+			largo++;
+			
+		}
+		rs.close();	
+		pstmt.close();
+		}catch (SQLException e) {
+			throw new ExcepPersistencia("Error de conexion");
+		}
 		return largo;
 	}
 

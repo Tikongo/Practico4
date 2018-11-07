@@ -113,7 +113,7 @@ public class PoolConexiones implements IPoolConexiones {
 		creadas = 0;
 	}
 	
-	public synchronized IConexion obtenerConexion(Boolean t) throws SQLException{
+	public synchronized IConexion obtenerConexion(Boolean t) throws ExcepAccesoADatos{
 		/* t=TRUE: MODIFICACION.
 		 * t=FALSE: LECTURA.*/
 		Conexion con = null;

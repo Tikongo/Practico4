@@ -1,9 +1,10 @@
 package grafica.controladores;
 
 import java.rmi.RemoteException;
-import logicaPersistencia.IFachada;
+
 import logicaPersistencia.excepciones.*;
 import grafica.ventanas.VentListarFolios;
+import logica.IFachada;
 import logicaPersistencia.valueObjects.VOFolio;
 import logicaPersistencia.valueObjects.ListaVOFolios;
 

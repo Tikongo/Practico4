@@ -1,4 +1,4 @@
-package logicaPersistencia;
+package logica;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +36,11 @@ public class Folio {
 		return paginas;
 	}
 
-	public boolean tieneRevision(int numR) {
+	public boolean tieneRevision(IConexion icon,int numR) throws ExcepPersistencia{
 		boolean tiene =false;
-		
+		Revision rev=secuencia.kesimo(icon, numR);
+		if (rev!=null)
+			tiene=true;
 		return tiene;
 	}
 	
