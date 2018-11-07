@@ -3,7 +3,7 @@ package grafica.controladores;
 import logicaPersistencia.valueObjects.*;
 import grafica.ventanas.VentDarDescripcion;
 import java.rmi.RemoteException;
-import logicaPersistencia.IFachada;
+import logica.IFachada;
 import logicaPersistencia.excepciones.*;
 
 

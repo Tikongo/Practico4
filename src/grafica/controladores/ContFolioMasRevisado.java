@@ -1,7 +1,7 @@
 package grafica.controladores;
 
 import java.rmi.RemoteException;
-import logicaPersistencia.IFachada;
+import logica.IFachada;
 import logicaPersistencia.excepciones.*;
 import grafica.ventanas.VentFolioMasRevisado;
 import logicaPersistencia.valueObjects.VOFolioMaxRev;
@@ -20,14 +20,12 @@ public class ContFolioMasRevisado {
 		VOFolioMaxRev voFMR = null;
 		try {
 			voFMR = interfazFachada.folioMasRevisado();
+		} catch (ExcepAccesoADatos e) {
+			ventana.mostrarError(e.darMensaje());
+		} catch (RemoteException remEx) {
+			ventana.mostrarError(remEx.toString());
 		}
 		return voFMR;
-	}
-	
-	public int cantidadRevisiones(String codF) {
-		int cantR = 0;
-		
-		return cantR;
 	}
 	
 }

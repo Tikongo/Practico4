@@ -6,13 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import logica.Folio;
 import logica.Revision;
 import logicaPersistencia.accesoBD.Conexion;
 import logicaPersistencia.accesoBD.Consultas;
 import logicaPersistencia.accesoBD.IConexion;
-import logicaPersistencia.excepciones.ExcepPersistencia;
+import logicaPersistencia.excepciones.*;
 import logicaPersistencia.valueObjects.VOFolio;
 import logicaPersistencia.valueObjects.VORevision;
 
@@ -27,11 +26,11 @@ public class DAORevisiones {
 		this.codigoFolio = codigoFolio;
 	}
 	
-	public void insBack (IConexion icon,Revision rev) throws ExcepPersistencia{
+	public void insBack (IConexion icon,Revision rev) throws ExcepAccesoADatos{
 		
 	}
 	
-	public int largo (IConexion icon) throws ExcepPersistencia{
+	public int largo (IConexion icon) throws ExcepAccesoADatos{
 		int largo=0;
 		Consultas consultas = new Consultas();
 		Connection con= ((Conexion) icon).getConexion();
@@ -48,12 +47,12 @@ public class DAORevisiones {
 		rs.close();	
 		pstmt.close();
 		}catch (SQLException e) {
-			throw new ExcepPersistencia("Error de conexion");
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		}
 		return largo;
 	}
 
-	public Revision kesimo(IConexion icon,int numero) throws ExcepPersistencia{
+	public Revision kesimo(IConexion icon,int numero) throws ExcepAccesoADatos{
 		Revision rev=null;
 		try {
 			Consultas consultas = new Consultas();
@@ -72,13 +71,13 @@ public class DAORevisiones {
 			pstmt.close();
 			
 		}catch (SQLException e) {
-			throw new ExcepPersistencia("Error de conexion");
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		}
 		return rev;
 		
 	}
 	
-    public List<VORevision> listarRevisiones(IConexion icon) throws ExcepPersistencia{
+    public List<VORevision> listarRevisiones(IConexion icon) throws ExcepAccesoADatos{
 		
 		List<VORevision> listaRevisiones = new ArrayList<>();
 		try {
@@ -100,12 +99,12 @@ public class DAORevisiones {
 			pstmt.close();
 			
 		}catch (SQLException e) {
-			throw new ExcepPersistencia("Error de conexion");
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		}
 		return listaRevisiones;
 	}
     
-    public void borrarRevisiones (IConexion icon) throws ExcepPersistencia{
+    public void borrarRevisiones (IConexion icon) throws ExcepAccesoADatos{
     	try {
 			Consultas consultas = new Consultas();
 			Connection con= ((Conexion) icon).getConexion();
@@ -116,7 +115,7 @@ public class DAORevisiones {
 			pstmt.close();
 			
 		}catch (SQLException e) {
-			throw new ExcepPersistencia("Error de conexion");
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		}
     }
 }

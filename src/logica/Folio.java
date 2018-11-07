@@ -2,9 +2,8 @@ package logica;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import logicaPersistencia.accesoBD.IConexion;
-import logicaPersistencia.excepciones.ExcepPersistencia;
+import logicaPersistencia.excepciones.*;
 import logicaPersistencia.valueObjects.VOFolio;
 import logicaPersistencia.valueObjects.VORevision;
 import persistencia.daos.DAORevisiones;
@@ -36,7 +35,7 @@ public class Folio {
 		return paginas;
 	}
 
-	public boolean tieneRevision(IConexion icon,int numR) throws ExcepPersistencia{
+	public boolean tieneRevision(IConexion icon,int numR) throws ExcepAccesoADatos{
 		boolean tiene =false;
 		Revision rev=secuencia.kesimo(icon, numR);
 		if (rev!=null)
@@ -44,50 +43,50 @@ public class Folio {
 		return tiene;
 	}
 	
-	public int cantidadRevisiones(IConexion icon) throws ExcepPersistencia{
+	public int cantidadRevisiones(IConexion icon) throws ExcepAccesoADatos{
 		int cant=0;
 		try {
 			cant= secuencia.largo(icon);
-		} catch (ExcepPersistencia e) {
-			throw new ExcepPersistencia("Error de conexion");
+		} catch (ExcepAccesoADatos e) {
+			throw new ExcepAccesoADatos("Error de conexion");
 		}
 		return cant;
 	}
 	
-	public void addRevision (IConexion icon,Revision rev) throws ExcepPersistencia{
+	public void addRevision (IConexion icon,Revision rev) throws ExcepAccesoADatos{
 		try {
 			secuencia.insBack(icon, rev);
-		} catch (ExcepPersistencia e) {
-			throw new ExcepPersistencia("Error de conexion");
+		} catch (ExcepAccesoADatos e) {
+			throw new ExcepAccesoADatos("Error de conexion");
 		}
 	}
 	
-	public Revision obtenerRevision(IConexion icon,int numR) throws ExcepPersistencia {
+	public Revision obtenerRevision(IConexion icon,int numR) throws ExcepAccesoADatos {
 		Revision rev=null;
 		try {
 			rev=secuencia.kesimo(icon, numR);
-		} catch (ExcepPersistencia e) {
-			throw new ExcepPersistencia("Error de conexion");
+		} catch (ExcepAccesoADatos e) {
+			throw new ExcepAccesoADatos("Error de conexion");
 		}
 		return rev; 
 	}
 	
-	public List<VORevision> listarRevisiones(IConexion icon) throws ExcepPersistencia{
+	public List<VORevision> listarRevisiones(IConexion icon) throws ExcepAccesoADatos{
 	
 		List<VORevision> listaRevisiones=null;
 		try {
 			listaRevisiones = secuencia.listarRevisiones(icon);
-		} catch (ExcepPersistencia e) {
-			throw new ExcepPersistencia("Error de conexion");
+		} catch (ExcepAccesoADatos e) {
+			throw new ExcepAccesoADatos("Error de conexion");
 		}
 		return listaRevisiones;
 	}
 	
-	public void borrarRevisiones(IConexion icon) throws ExcepPersistencia{
+	public void borrarRevisiones(IConexion icon) throws ExcepAccesoADatos{
 		try {
 			secuencia.borrarRevisiones(icon);
-		} catch (ExcepPersistencia e) {
-			throw new ExcepPersistencia("Error de conexion");
+		} catch (ExcepAccesoADatos e) {
+			throw new ExcepAccesoADatos("Error de conexion");
 		}
 	}
 

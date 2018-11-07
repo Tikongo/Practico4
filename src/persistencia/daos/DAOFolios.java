@@ -6,16 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.naming.ldap.UnsolicitedNotificationListener;
-
 import logica.Folio;
 import logicaPersistencia.accesoBD.Conexion;
 import logicaPersistencia.accesoBD.Consultas;
 import logicaPersistencia.accesoBD.IConexion;
 import logicaPersistencia.accesoBD.IPoolConexiones;
-import logicaPersistencia.excepciones.ExcepFolioYaExiste;
-import logicaPersistencia.excepciones.ExcepPersistencia;
+import logicaPersistencia.excepciones.*;
 import logicaPersistencia.valueObjects.VOFolio;
 import logicaPersistencia.valueObjects.VOFolioMaxRev;
 import logicaPersistencia.valueObjects.VORevision;
@@ -30,7 +27,7 @@ public class DAOFolios {
 	}
 	
 	//Verifico si existe el folio
-	public boolean member(IConexion icon, String cod) throws ExcepPersistencia{
+	public boolean member(IConexion icon, String cod) throws ExcepAccesoADatos{
 		boolean esta=false;
 		try {
 			Consultas consultas = new Consultas();
@@ -46,13 +43,13 @@ public class DAOFolios {
 			pstmt.close();
 			
 		}catch (SQLException e) {
-			throw new ExcepPersistencia("Error de conexion");
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		}
 		return esta;
 	} 
 	
 	//Insertar un Folio
-	public void insert(IConexion icon, Folio fol) throws ExcepPersistencia{
+	public void insert(IConexion icon, Folio fol) throws ExcepAccesoADatos{
 		try {
 			Consultas consultas = new Consultas();
 			Connection con= ((Conexion) icon).getConexion();
@@ -65,12 +62,12 @@ public class DAOFolios {
 			pstmt.close();
 			
 		}catch (SQLException e) {
-			throw new ExcepPersistencia("Error de conexion");
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		}
 	}
 	
 	//Devuelvo el Folio
-	public Folio find(IConexion icon, String cod) throws ExcepPersistencia {
+	public Folio find(IConexion icon, String cod) throws ExcepAccesoADatos {
 		Folio unFolio=null;
 		try {
 			Consultas consultas = new Consultas();
@@ -90,13 +87,13 @@ public class DAOFolios {
 			pstmt.close();
 			
 		}catch (SQLException e) {
-			throw new ExcepPersistencia("Error de conexion");
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		}
 		return unFolio;
 	}
 	
 	//Eliminar Folio
-	public void delete (IConexion icon, String cod) throws ExcepPersistencia{
+	public void delete (IConexion icon, String cod) throws ExcepAccesoADatos {
 			try {
 				Consultas consultas = new Consultas();
 				Connection con= ((Conexion) icon).getConexion();
@@ -107,12 +104,12 @@ public class DAOFolios {
 				pstmt.close();
 				
 			}catch (SQLException e) {
-				throw new ExcepPersistencia("Error de conexion");
+				throw new ExcepAccesoADatos("Error de acceso a los datos");
 			}
 	}
 	
 	//Listar todos los folios
-	public List<VOFolio> listarFolios(IConexion icon) throws ExcepPersistencia{
+	public List<VOFolio> listarFolios(IConexion icon) throws ExcepAccesoADatos{
 		
 		List<VOFolio> listaFolios = new ArrayList<>();
 		
@@ -135,13 +132,13 @@ public class DAOFolios {
 			pstmt.close();
 			
 		}catch (SQLException e) {
-			throw new ExcepPersistencia("Error de conexion");
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		}
 		return listaFolios;
 	}
 	
 	//Verifico si hay al menos un folio
-	public boolean esVacio(IConexion icon) throws ExcepPersistencia{
+	public boolean esVacio(IConexion icon) throws ExcepAccesoADatos{
 		boolean existe=false;
 		try {
 			Consultas consultas = new Consultas();
@@ -155,13 +152,13 @@ public class DAOFolios {
 				existe=true;
 			
 		}catch (SQLException e) {
-			throw new ExcepPersistencia("Error de conexion");
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		}
 		return existe;
 	}
 	
 	//Devuelvo folio con mas revisiones
-	public VOFolioMaxRev folioMasRevisado(IConexion icon) throws ExcepPersistencia {
+	public VOFolioMaxRev folioMasRevisado(IConexion icon) throws ExcepAccesoADatos {
 		VOFolioMaxRev unFolio=null;
 		try {
 			Consultas consultas = new Consultas();
@@ -181,7 +178,7 @@ public class DAOFolios {
 			pstmt.close();
 			
 		}catch (SQLException e) {
-			throw new ExcepPersistencia("Error de conexion");
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		}
 		return unFolio;
 	}

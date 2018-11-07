@@ -7,12 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import logicaPersistencia.accesoBD.IConexion;
-import logicaPersistencia.excepciones.ExcepAccesoADatos;
-import logicaPersistencia.excepciones.ExcepFolioNoExiste;
-import logicaPersistencia.excepciones.ExcepFolioYaExiste;
-import logicaPersistencia.excepciones.ExcepNoHayFoliosRegistrados;
-import logicaPersistencia.excepciones.ExcepPersistencia;
-import logicaPersistencia.excepciones.ExcepRevisionNoExiste;
+import logicaPersistencia.excepciones.*;
 import logicaPersistencia.accesoBD.PoolConexiones;
 import logicaPersistencia.accesoBD.PoolConexiones;
 import logicaPersistencia.valueObjects.*;
@@ -38,7 +33,7 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#agregarFolio(logicaPersistencia.valueObjects.VOFolio)
 	 */
 	@Override
-	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste,ExcepAccesoADatos, ExcepPersistencia{
+	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste,ExcepAccesoADatos{
 		IConexion iCon=null;
 		String msjError="";
 		boolean existeCodigo=false;
@@ -83,7 +78,7 @@ public class Fachada implements IFachada {
 	 */
 	@Override
 	/*REVISAR!!!*/
-	public void agregarRevision(String codF,String descripcion) throws ExcepFolioNoExiste, ExcepNoHayFoliosRegistrados,ExcepFolioYaExiste,ExcepAccesoADatos {
+	public void agregarRevision(String codF,String descripcion) throws ExcepFolioNoExiste,ExcepAccesoADatos {
 		IConexion iCon=null;
 		String msjError="";
 		boolean existeCodigo=false;
@@ -109,13 +104,9 @@ public class Fachada implements IFachada {
 			ipool.liberarConexion(iCon, false);
 			errorPersistencia=true;
 			msjError = "Error de Acceso a los datos";
-		} catch (ExcepPersistencia e) {
-			errorPersistencia=true;
-			msjError = "Error de Acceso a los datos";
-		}
-		finally {
-			if (existeCodigo) { 
-				throw new ExcepFolioYaExiste(msjError);
+		} finally {
+			if (!existeCodigo) { 
+				throw new ExcepFolioNoExiste(msjError);
 			}
 			if (errorPersistencia) {
 				throw new ExcepAccesoADatos(msjError);
@@ -127,7 +118,7 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#borrarFolioRevisiones(java.lang.String)
 	 */
 	@Override   //precondicion que el folio con ese coÌ�digo esteÌ� registrado.
-	public void borrarFolioRevisiones(String codF)throws ExcepAccesoADatos, ExcepFolioYaExiste, ExcepPersistencia {
+	public void borrarFolioRevisiones(String codF)throws ExcepAccesoADatos, ExcepFolioNoExiste {
 		IConexion icon=null;
 		String msjError="";
 		boolean existeCodigo=false;
@@ -148,11 +139,10 @@ public class Fachada implements IFachada {
 			ipool.liberarConexion(icon, false);
 			errorPersistencia=true;
 			msjError = "Error de Acceso a los datos";
-			
 		}
 		finally {
-			if (existeCodigo) { 
-				throw new ExcepFolioYaExiste(msjError);
+			if (!existeCodigo) { 
+				throw new ExcepFolioNoExiste(msjError);
 			}
 			if (errorPersistencia) {
 				throw new ExcepAccesoADatos(msjError);
