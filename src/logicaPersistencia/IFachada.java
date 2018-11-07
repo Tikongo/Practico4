@@ -5,14 +5,11 @@ import java.util.List;
 import logicaPersistencia.excepciones.ExcepAccesoADatos;
 import logicaPersistencia.excepciones.ExcepFolioNoExiste;
 import logicaPersistencia.excepciones.ExcepFolioYaExiste;
-<<<<<<< HEAD
 import logicaPersistencia.valueObjects.*;
-=======
 import logicaPersistencia.excepciones.ExcepNoHayFoliosRegistrados;
 import logicaPersistencia.valueObjects.VOFolio;
 import logicaPersistencia.valueObjects.VOFolioMaxRev;
 import logicaPersistencia.valueObjects.VORevision;
->>>>>>> ee7e7f853dff7f001b78c2aa6ba26861d2e23e10
 
 public interface IFachada {
 
