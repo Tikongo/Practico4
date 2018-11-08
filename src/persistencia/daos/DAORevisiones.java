@@ -15,7 +15,7 @@ import logicaPersistencia.excepciones.*;
 import logicaPersistencia.valueObjects.VOFolio;
 import logicaPersistencia.valueObjects.VORevision;
 
-public class DAORevisiones {
+public class DAORevisiones implements IDAORevisiones{
 	
 	//  atributos para acceso a BD
 	
@@ -25,11 +25,24 @@ public class DAORevisiones {
 		super();
 		this.codigoFolio = codigoFolio;
 	}
-	
+	@Override
 	public void insBack (IConexion icon,Revision rev) throws ExcepAccesoADatos{
-		
+		try {
+			Consultas consultas = new Consultas();
+			Connection con= ((Conexion) icon).getConexion();
+			String insert = consultas.queryAgregarRevision();
+			PreparedStatement pstmt = con.prepareStatement(insert);
+			pstmt.setInt(1, rev.getNumero());
+			pstmt.setString(2, codigoFolio);
+			pstmt.setString(3, rev.getDescripcion());
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+		}catch (SQLException e) {
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
+		}
 	}
-	
+	@Override
 	public int largo (IConexion icon) throws ExcepAccesoADatos{
 		int largo=0;
 		Consultas consultas = new Consultas();
@@ -44,6 +57,7 @@ public class DAORevisiones {
 			largo++;
 			
 		}
+		largo=largo+1;
 		rs.close();	
 		pstmt.close();
 		}catch (SQLException e) {
@@ -51,7 +65,7 @@ public class DAORevisiones {
 		}
 		return largo;
 	}
-
+	@Override
 	public Revision kesimo(IConexion icon,int numero) throws ExcepAccesoADatos{
 		Revision rev=null;
 		try {
@@ -76,7 +90,7 @@ public class DAORevisiones {
 		return rev;
 		
 	}
-	
+	@Override
     public List<VORevision> listarRevisiones(IConexion icon) throws ExcepAccesoADatos{
 		
 		List<VORevision> listaRevisiones = new ArrayList<>();
@@ -103,7 +117,7 @@ public class DAORevisiones {
 		}
 		return listaRevisiones;
 	}
-    
+	@Override
     public void borrarRevisiones (IConexion icon) throws ExcepAccesoADatos{
     	try {
 			Consultas consultas = new Consultas();

@@ -17,7 +17,7 @@ import logicaPersistencia.valueObjects.VOFolio;
 import logicaPersistencia.valueObjects.VOFolioMaxRev;
 import logicaPersistencia.valueObjects.VORevision;
 
-public class DAOFolios {
+public class DAOFolios implements IDAOFolios{
 	
 	// atributos para acceso a BD
 	
@@ -27,6 +27,7 @@ public class DAOFolios {
 	}
 	
 	//Verifico si existe el folio
+	@Override
 	public boolean member(IConexion icon, String cod) throws ExcepAccesoADatos{
 		boolean esta=false;
 		try {
@@ -49,6 +50,7 @@ public class DAOFolios {
 	} 
 	
 	//Insertar un Folio
+	@Override
 	public void insert(IConexion icon, Folio fol) throws ExcepAccesoADatos{
 		try {
 			Consultas consultas = new Consultas();
@@ -67,6 +69,7 @@ public class DAOFolios {
 	}
 	
 	//Devuelvo el Folio
+	@Override
 	public Folio find(IConexion icon, String cod) throws ExcepAccesoADatos {
 		Folio unFolio=null;
 		try {
@@ -93,6 +96,7 @@ public class DAOFolios {
 	}
 	
 	//Eliminar Folio
+	@Override
 	public void delete (IConexion icon, String cod) throws ExcepAccesoADatos {
 			try {
 				Consultas consultas = new Consultas();
@@ -109,6 +113,7 @@ public class DAOFolios {
 	}
 	
 	//Listar todos los folios
+	@Override
 	public List<VOFolio> listarFolios(IConexion icon) throws ExcepAccesoADatos{
 		
 		List<VOFolio> listaFolios = new ArrayList<>();
@@ -138,6 +143,7 @@ public class DAOFolios {
 	}
 	
 	//Verifico si hay al menos un folio
+	@Override
 	public boolean esVacio(IConexion icon) throws ExcepAccesoADatos{
 		boolean existe=false;
 		try {
@@ -158,6 +164,7 @@ public class DAOFolios {
 	}
 	
 	//Devuelvo folio con mas revisiones
+	@Override
 	public VOFolioMaxRev folioMasRevisado(IConexion icon) throws ExcepAccesoADatos {
 		VOFolioMaxRev unFolio=null;
 		try {

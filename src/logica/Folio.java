@@ -7,13 +7,14 @@ import logicaPersistencia.excepciones.*;
 import logicaPersistencia.valueObjects.VOFolio;
 import logicaPersistencia.valueObjects.VORevision;
 import persistencia.daos.DAORevisiones;
+import persistencia.daos.IDAORevisiones;
 
 public class Folio {
 	
 	private String codigo;
 	private String caratula;
 	private int paginas;
-	private DAORevisiones secuencia;
+	private IDAORevisiones secuencia;
 		
 	public Folio(String codigo, String caratula, int paginas) {
 		super();
