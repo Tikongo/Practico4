@@ -25,6 +25,8 @@ public class ContBorrarFolio {
 			ventana.mostrarError(e.darMensaje());
 		} catch (ExcepAccesoADatos e) {
 			ventana.mostrarError(e.darMensaje());
+		} catch (RemoteException remEx) {
+			ventana.mostrarError(remEx.toString());
 		}
 	}
 	

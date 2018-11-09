@@ -10,21 +10,22 @@ import logicaPersistencia.excepciones.*;
 import logicaPersistencia.valueObjects.VOFolio;
 import logicaPersistencia.valueObjects.VOFolioMaxRev;
 import logicaPersistencia.valueObjects.VORevision;
+import java.rmi.RemoteException;
 
 public interface IFachada {
 
-	void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste, ExcepAccesoADatos;
+	void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste, ExcepAccesoADatos, RemoteException;
 
-	public void agregarRevision(String codF,String descripcion) throws ExcepFolioNoExiste, ExcepAccesoADatos;
+	public void agregarRevision(String codF,String descripcion) throws ExcepFolioNoExiste, ExcepAccesoADatos, RemoteException;
 	
-	void borrarFolioRevisiones(String codF)throws ExcepFolioNoExiste, ExcepAccesoADatos;
+	void borrarFolioRevisiones(String codF)throws ExcepFolioNoExiste, ExcepAccesoADatos, RemoteException;
 
-	String darDescripcion(String codF, int numR) throws ExcepAccesoADatos;
+	String darDescripcion(String codF, int numR) throws ExcepAccesoADatos, RemoteException, ExcepFolioNoExiste, ExcepRevisionNoExiste;
 
-	ListaVOFolios listarFolios() throws ExcepAccesoADatos;
+	ListaVOFolios listarFolios() throws ExcepAccesoADatos, RemoteException, ExcepNoHayFoliosRegistrados;
 
-	ListaVORevisiones listarRevisiones(String codF) throws ExcepAccesoADatos;
+	ListaVORevisiones listarRevisiones(String codF) throws ExcepAccesoADatos, RemoteException, ExcepFolioNoExiste, ExcepFolioSinRevisiones;
 
-	VOFolioMaxRev folioMasRevisado() throws ExcepAccesoADatos;
+	VOFolioMaxRev folioMasRevisado() throws ExcepAccesoADatos, RemoteException;
 
 }

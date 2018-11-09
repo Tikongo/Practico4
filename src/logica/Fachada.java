@@ -12,6 +12,7 @@ import logicaPersistencia.accesoBD.IPoolConexiones;
 import logicaPersistencia.excepciones.*;
 import logicaPersistencia.valueObjects.*;
 import persistencia.daos.DAOFolios;
+import java.rmi.RemoteException;
 
 import java.sql.*;
 
@@ -47,7 +48,7 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#agregarFolio(logicaPersistencia.valueObjects.VOFolio)
 	 */
 	@Override
-	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste,ExcepAccesoADatos{
+	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste,ExcepAccesoADatos, RemoteException{
 		IConexion iCon=null;
 		String msjError="";
 		boolean existeCodigo=false;
@@ -92,7 +93,7 @@ public class Fachada implements IFachada {
 	 */
 	@Override
 	/*REVISAR!!!*/
-	public void agregarRevision(String codF,String descripcion) throws ExcepFolioNoExiste,ExcepAccesoADatos {
+	public void agregarRevision(String codF,String descripcion) throws ExcepFolioNoExiste,ExcepAccesoADatos, RemoteException {
 		IConexion iCon=null;
 		String msjError="";
 		boolean existeCodigo=false;
@@ -132,7 +133,7 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#borrarFolioRevisiones(java.lang.String)
 	 */
 	@Override   //precondicion que el folio con ese coÌ�digo esteÌ� registrado.
-	public void borrarFolioRevisiones(String codF)throws ExcepAccesoADatos, ExcepFolioNoExiste {
+	public void borrarFolioRevisiones(String codF)throws ExcepAccesoADatos, ExcepFolioNoExiste, RemoteException {
 		IConexion icon=null;
 		String msjError="";
 		boolean existeCodigo=false;
@@ -169,7 +170,7 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#darDescripcion(java.lang.String, int)
 	 */
 	@Override   //precondicion que el folio exista y tenga una revisioÌ�n con ese nuÌ�mero
-	public String darDescripcion(String codF,int numR) throws ExcepAccesoADatos{
+	public String darDescripcion(String codF,int numR) throws ExcepAccesoADatos, RemoteException, ExcepFolioNoExiste, ExcepRevisionNoExiste{
 		String desc = null;
 		IConexion icon=null;
 		String msjError="Error de Acceso a los datos";
@@ -191,7 +192,7 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#listarFolios()
 	 */
 	@Override
-	public ListaVOFolios listarFolios() throws ExcepAccesoADatos{
+	public ListaVOFolios listarFolios() throws ExcepAccesoADatos, RemoteException, ExcepNoHayFoliosRegistrados{
 		ListaVOFolios listaFolios = null;
 		IConexion icon=null;
 		String msjError="Error de Acceso a los datos";
@@ -213,7 +214,7 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#listarRevisiones()
 	 */
 	@Override   //precondicion que el folio este registrado.
-	public ListaVORevisiones listarRevisiones(String codF) throws ExcepAccesoADatos{
+	public ListaVORevisiones listarRevisiones(String codF) throws ExcepAccesoADatos, RemoteException, ExcepFolioNoExiste, ExcepFolioSinRevisiones{
 		ListaVORevisiones listaRevisiones = null;
 		IConexion icon=null;
 		String msjError="Error de Acceso a los datos";
@@ -235,7 +236,7 @@ public class Fachada implements IFachada {
 	 * @see logicaPersistencia.IFachada#folioMasRevisado()
 	 */
 	@Override  //precondicion existe al menos un folio.
-	public VOFolioMaxRev folioMasRevisado() throws ExcepAccesoADatos {
+	public VOFolioMaxRev folioMasRevisado() throws ExcepAccesoADatos, RemoteException {
 		VOFolioMaxRev voFMR = null;
 		IConexion icon=null;
 		String msjError="Error de Acceso a los datos";
