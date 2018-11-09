@@ -19,42 +19,7 @@ public class PoolConexiones implements IPoolConexiones {
 	private int creadas;
 	private Conexion arrConexiones[];
 	
-	public String getDriver() {
-		return driver;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public String getUser() {
-		return user;
-	}
-
-	public String getPwd() {
-		return pwd;
-	}
-
-	public int getNivelTran() {
-		return nivelTran;
-	}
-
-	public int getTAM() {
-		return TAM;
-	}
-
-	public int getTope() {
-		return tope;
-	}
-
-	public int getCreadas() {
-		return creadas;
-	}
-
-	public Conexion[] getArrConexiones() {
-		return arrConexiones;
-	}
-
+	
 	private Conexion setTransactionIsolation (boolean t, Conexion con) {
 		if (t) {
 			try {
