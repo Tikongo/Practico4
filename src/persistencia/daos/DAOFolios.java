@@ -6,13 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.ldap.UnsolicitedNotificationListener;
+
 import logica.Folio;
-import logicaPersistencia.accesoBD.Conexion;
-import logicaPersistencia.accesoBD.Consultas;
 import logicaPersistencia.accesoBD.IConexion;
-import logicaPersistencia.accesoBD.IPoolConexiones;
-import logicaPersistencia.excepciones.*;
+
+import logicaPersistencia.excepciones.ExcepAccesoADatos;
 import logicaPersistencia.valueObjects.VOFolio;
 import logicaPersistencia.valueObjects.VOFolioMaxRev;
 import logicaPersistencia.valueObjects.VORevision;
@@ -31,14 +29,14 @@ public class DAOFolios implements IDAOFolios{
 	public boolean member(IConexion icon, String cod) throws ExcepAccesoADatos{
 		boolean esta=false;
 		try {
-			Consultas consultas = new Consultas();
+			persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
 			String query = consultas.existeFolio();
-			Connection con= ((Conexion) icon).getConexion();
+			Connection con= (icon).getConexion();
 			PreparedStatement pstmt = con.prepareStatement(query);
 			pstmt.setString(1, cod);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
-				esta = true;
+				esta = true; 
 			}
 			rs.close();
 			pstmt.close();
@@ -53,8 +51,8 @@ public class DAOFolios implements IDAOFolios{
 	@Override
 	public void insert(IConexion icon, Folio fol) throws ExcepAccesoADatos{
 		try {
-			Consultas consultas = new Consultas();
-			Connection con= ((Conexion) icon).getConexion();
+			persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
+			Connection con= (icon).getConexion();
 			String insert = consultas.queryAgregarFolio();
 			PreparedStatement pstmt = con.prepareStatement(insert);
 			pstmt.setString(1, fol.getCodigo());
@@ -73,8 +71,8 @@ public class DAOFolios implements IDAOFolios{
 	public Folio find(IConexion icon, String cod) throws ExcepAccesoADatos {
 		Folio unFolio=null;
 		try {
-			Consultas consultas = new Consultas();
-			Connection con= ((Conexion) icon).getConexion();
+			persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
+			Connection con= (icon).getConexion();
 			String devolerF = consultas.queryFindFolio();
 			PreparedStatement pstmt = con.prepareStatement(devolerF);
 			pstmt.setString(1, cod);
@@ -99,8 +97,8 @@ public class DAOFolios implements IDAOFolios{
 	@Override
 	public void delete (IConexion icon, String cod) throws ExcepAccesoADatos {
 			try {
-				Consultas consultas = new Consultas();
-				Connection con= ((Conexion) icon).getConexion();
+				persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
+				Connection con= (icon).getConexion();
 				String delete = consultas.queryBorrarFolio();
 				PreparedStatement pstmt = con.prepareStatement(delete);
 				pstmt.setString(1, cod);
@@ -119,8 +117,8 @@ public class DAOFolios implements IDAOFolios{
 		List<VOFolio> listaFolios = new ArrayList<>();
 		
 		try {
-			Consultas consultas = new Consultas();
-			Connection con= ((Conexion) icon).getConexion();
+			persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
+			Connection con= (icon).getConexion();
 			String listarFolios = consultas.queryListarFolios();
 			PreparedStatement pstmt = con.prepareStatement(listarFolios);
 					
@@ -147,8 +145,8 @@ public class DAOFolios implements IDAOFolios{
 	public boolean esVacio(IConexion icon) throws ExcepAccesoADatos{
 		boolean existe=false;
 		try {
-			Consultas consultas = new Consultas();
-			Connection con= ((Conexion) icon).getConexion();
+			persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
+			Connection con= (icon).getConexion();
 			String listarFolios = consultas.queryListarFolios();
 			PreparedStatement pstmt = con.prepareStatement(listarFolios);
 					
@@ -168,8 +166,8 @@ public class DAOFolios implements IDAOFolios{
 	public VOFolioMaxRev folioMasRevisado(IConexion icon) throws ExcepAccesoADatos {
 		VOFolioMaxRev unFolio=null;
 		try {
-			Consultas consultas = new Consultas();
-			Connection con= ((Conexion) icon).getConexion();
+			persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
+			Connection con= (icon).getConexion();
 			String folioMaxRev = consultas.queryFolioMasRevisado();
 			PreparedStatement pstmt = con.prepareStatement(folioMaxRev);
 			

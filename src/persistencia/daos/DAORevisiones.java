@@ -8,12 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import logica.Folio;
 import logica.Revision;
-import logicaPersistencia.accesoBD.Conexion;
-import logicaPersistencia.accesoBD.Consultas;
 import logicaPersistencia.accesoBD.IConexion;
 import logicaPersistencia.excepciones.*;
 import logicaPersistencia.valueObjects.VOFolio;
 import logicaPersistencia.valueObjects.VORevision;
+import persistencia.consultas.Consultas;
 
 public class DAORevisiones implements IDAORevisiones{
 	
@@ -29,7 +28,7 @@ public class DAORevisiones implements IDAORevisiones{
 	public void insBack (IConexion icon,Revision rev) throws ExcepAccesoADatos{
 		try {
 			Consultas consultas = new Consultas();
-			Connection con= ((Conexion) icon).getConexion();
+			Connection con= (icon).getConexion();
 			String insert = consultas.queryAgregarRevision();
 			PreparedStatement pstmt = con.prepareStatement(insert);
 			pstmt.setInt(1, rev.getNumero());
@@ -46,7 +45,7 @@ public class DAORevisiones implements IDAORevisiones{
 	public int largo (IConexion icon) throws ExcepAccesoADatos{
 		int largo=0;
 		Consultas consultas = new Consultas();
-		Connection con= ((Conexion) icon).getConexion();
+		Connection con= (icon).getConexion();
 		String cantR = consultas.queryCantRevision();
 		PreparedStatement pstmt;
 		try {
@@ -70,7 +69,7 @@ public class DAORevisiones implements IDAORevisiones{
 		Revision rev=null;
 		try {
 			Consultas consultas = new Consultas();
-			Connection con= ((Conexion) icon).getConexion();
+			Connection con= (icon).getConexion();
 			String devolerR = consultas.queryDarRevision();
 			PreparedStatement pstmt = con.prepareStatement(devolerR);
 			pstmt.setString(1, codigoFolio);
@@ -96,7 +95,7 @@ public class DAORevisiones implements IDAORevisiones{
 		List<VORevision> listaRevisiones = new ArrayList<>();
 		try {
 			Consultas consultas = new Consultas();
-			Connection con= ((Conexion) icon).getConexion();
+			Connection con= (icon).getConexion();
 			String listarRevisiones = consultas.queryListarRevisiones();
 			PreparedStatement pstmt = con.prepareStatement(listarRevisiones);
 			pstmt.setString(1, codigoFolio);		
@@ -121,7 +120,7 @@ public class DAORevisiones implements IDAORevisiones{
     public void borrarRevisiones (IConexion icon) throws ExcepAccesoADatos{
     	try {
 			Consultas consultas = new Consultas();
-			Connection con= ((Conexion) icon).getConexion();
+			Connection con= (icon).getConexion();
 			String delete = consultas.queryBorrarFolioRevisiones();
 			PreparedStatement pstmt = con.prepareStatement(delete);
 			pstmt.setString(1, codigoFolio);

@@ -12,16 +12,16 @@ public class Main {
 		// TODO Auto-generated method stub
 	
 		try {
-			/*1. cargo dinamicamente el driver de MySQL*/ 
+			//1. cargo dinamicamente el driver de MySQL/ 
 			String driver = "com.mysql.jdbc.Driver";
 			Class.forName(driver);
 			
-			/* 2. una vez cargado el driver, me conecto con el motor de la base, de forma genérica 
-			 * porque vamos a crear la base en el próximo paso.*/
+			/* 2. una vez cargado el driver, me conecto con el motor de la base, de forma genï¿½rica 
+			 * porque vamos a crear la base en el prï¿½ximo paso.*/
 			String url = "jdbc:mysql://localhost:3306/";
 			Connection con = DriverManager.getConnection(url,"root","BD32018");
 			
-			/*3. creo un PreparedStatement para crear la base de datos.*/ 
+			//3. creo un PreparedStatement para crear la base de datos./ 
 			String qCreateDB = "CREATE DATABASE ESTUDIOJURIDICO";
 			PreparedStatement pstmtCreateDB = con.prepareStatement(qCreateDB);
 			pstmtCreateDB.executeUpdate();
@@ -41,8 +41,8 @@ public class Main {
 			pstmtCreateTableExamenes.close();
 			pstmtCreateTableResultados.close();
 			
-			/* 5. insertamos la información de los examenes.*/
-			String qInsertExamenes = "INSERT INTO Folios (codigo,caratula,paginas) VALUES (\"FGH-0015\",\"La comuna contra la señora con 38 gatos\",5),(\"BBD-1278\",\"Adolescentes descontrolados hasta las 5 AM\",2),(\"JJ-202\",\"Vecinos reclaman por heces de perro en el hall\",9),(\"CEFJ-63\",\"Vecinas rivales se tiran macetas con frecuencia\",463)";
+			/* 5. insertamos la informaciï¿½n de los examenes.*/
+			String qInsertExamenes = "INSERT INTO Folios (codigo,caratula,paginas) VALUES (\"FGH-0015\",\"La comuna contra la seï¿½ora con 38 gatos\",5),(\"BBD-1278\",\"Adolescentes descontrolados hasta las 5 AM\",2),(\"JJ-202\",\"Vecinos reclaman por heces de perro en el hall\",9),(\"CEFJ-63\",\"Vecinas rivales se tiran macetas con frecuencia\",463)";
 			PreparedStatement pstmtInsertExamenes = con2.prepareStatement(qInsertExamenes);
 			pstmtInsertExamenes.executeUpdate();
 			pstmtInsertExamenes.close();
@@ -61,4 +61,3 @@ public class Main {
 	}
 
 }
-

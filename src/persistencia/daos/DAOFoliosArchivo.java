@@ -1,18 +1,22 @@
 package persistencia.daos;
 
+
 import java.util.List;
 
 import logica.Folio;
 import logicaPersistencia.accesoBD.IConexion;
 import logicaPersistencia.excepciones.ExcepAccesoADatos;
+import logicaPersistencia.excepciones.ExcepArchivoNoEncontrado;
 import logicaPersistencia.valueObjects.VOFolio;
 import logicaPersistencia.valueObjects.VOFolioMaxRev;
 
+
 public class DAOFoliosArchivo implements IDAOFolios{
 
+	
 	@Override
 	public boolean member(IConexion icon, String cod) throws ExcepAccesoADatos {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
