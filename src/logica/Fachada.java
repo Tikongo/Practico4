@@ -3,30 +3,44 @@ package logica;
 import java.util.List;
 import java.util.Properties;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import logicaPersistencia.accesoBD.IConexion;
+import logicaPersistencia.accesoBD.IPoolConexiones;
 import logicaPersistencia.excepciones.*;
-import logicaPersistencia.accesoBD.PoolConexiones;
-import logicaPersistencia.accesoBD.PoolConexiones;
 import logicaPersistencia.valueObjects.*;
 import persistencia.daos.DAOFolios;
 
 import java.sql.*;
 
 public class Fachada implements IFachada {
-	//linea de prueba
-	//private String driverBD;
-	//private String urlBD;
-	//private String userBD;
-	//private String pwdBD;
-	//private Connection con;
-	private PoolConexiones ipool;
+	
+	private IPoolConexiones ipool;
 	private DAOFolios folio;
 
-	public Fachada(){
-		/*cargar valores desde archivo de propiedades.*/	
+	public Fachada() {
+		Properties prop = new Properties();
+		InputStream input = null;
+		try {
+			input = new FileInputStream("dbEstudioJuridico.properties");
+			String poolConcreto=prop.getProperty("nombrePool");
+			ipool = (IPoolConexiones) Class.forName(poolConcreto).newInstance();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	/* (non-Javadoc)
