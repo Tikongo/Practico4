@@ -1,10 +1,12 @@
-package logicaPersistencia.accesoBD;
+package persistencia.accesoDB;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
+
+import logica.excepciones.ExcepAccesoADatos;
 import logicaPersistencia.excepciones.*;
 
 public class PoolConexiones implements IPoolConexiones {

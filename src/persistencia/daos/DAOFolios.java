@@ -8,12 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import logica.Folio;
-import logicaPersistencia.accesoBD.IConexion;
-
-import logicaPersistencia.excepciones.ExcepAccesoADatos;
-import logicaPersistencia.valueObjects.VOFolio;
-import logicaPersistencia.valueObjects.VOFolioMaxRev;
-import logicaPersistencia.valueObjects.VORevision;
+import logica.excepciones.ExcepAccesoADatos;
+import logica.valueObjects.VOFolio;
+import logica.valueObjects.VOFolioMaxRev;
+import logica.valueObjects.VORevision;
+import persistencia.accesoDB.IConexion;
 
 public class DAOFolios implements IDAOFolios{
 	

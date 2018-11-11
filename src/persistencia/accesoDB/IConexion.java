@@ -1,4 +1,4 @@
-package logicaPersistencia.accesoBD;
+package persistencia.accesoDB;
 
 import java.sql.Connection;
 

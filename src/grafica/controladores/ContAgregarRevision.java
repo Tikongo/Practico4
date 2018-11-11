@@ -2,11 +2,11 @@ package grafica.controladores;
 
 import java.rmi.RemoteException;
 
-import logicaPersistencia.excepciones.ExcepAccesoADatos;
-import logicaPersistencia.excepciones.ExcepFolioNoExiste;
-import logicaPersistencia.excepciones.ExcepFolioYaExiste;
 import grafica.ventanas.VentAgregarRevision;
 import logica.IFachada;
+import logica.excepciones.ExcepAccesoADatos;
+import logica.excepciones.ExcepFolioNoExiste;
+import logica.excepciones.ExcepFolioYaExiste;
 import logicaPersistencia.excepciones.*;
 
 public class ContAgregarRevision {

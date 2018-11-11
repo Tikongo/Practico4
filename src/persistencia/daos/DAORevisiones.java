@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import logica.Folio;
 import logica.Revision;
-import logicaPersistencia.accesoBD.IConexion;
+import logica.excepciones.ExcepAccesoADatos;
+import logica.valueObjects.VOFolio;
+import logica.valueObjects.VORevision;
 import logicaPersistencia.excepciones.*;
-import logicaPersistencia.valueObjects.VOFolio;
-import logicaPersistencia.valueObjects.VORevision;
+import persistencia.accesoDB.IConexion;
 import persistencia.consultas.Consultas;
 
 public class DAORevisiones implements IDAORevisiones{

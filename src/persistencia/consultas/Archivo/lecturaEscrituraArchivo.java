@@ -1,34 +1,29 @@
 package persistencia.consultas.Archivo;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
-import logicaPersistencia.excepciones.ExcepArchivoNoEncontrado;
+import logica.excepciones.ExcepAccesoADatos;
 
 public class lecturaEscrituraArchivo {
 
-	public void escribirArchivo (String nomArch, String texto) throws IOException{
+	public void escribirArchivo (String nomArch, String texto) throws ExcepAccesoADatos{
 		try
-			{ 
+		{ 
 			FileWriter f = new FileWriter(nomArch);
 			BufferedWriter b = new BufferedWriter(f);
-			
 			b.write(texto);
 			b.close();
 			f.close();
 		}
-		catch (ExcepArchivoNoEncontrado e){
+		catch (IOException e){
 			e.printStackTrace();
-			throw new ExcepArchivoNoEncontrado("Error al escribir archivo");
+			throw new ExcepAccesoADatos("Error al acceder a los datos");
 		}
 	}
 	
-	public void leer (String nomArch, String texto)	throws IOException{ 
+	public void leerArchivo (String nomArch, String texto)	throws ExcepAccesoADatos{ 
 		try
-			{ 
+		{ 
 			FileReader f = new FileReader(nomArch);
 			BufferedReader b = new BufferedReader(f);
 			
@@ -41,9 +36,9 @@ public class lecturaEscrituraArchivo {
 			b.close();
 			f.close();
 		}
-		catch (ExcepArchivoNoEncontrado e){ 
+		catch (IOException e){ 
 			e.printStackTrace();
-			throw new ExcepArchivoNoEncontrado("Error para leer archivo");
+			throw new ExcepAccesoADatos("Error al acceder a los datos");
 		}
 	}
 }

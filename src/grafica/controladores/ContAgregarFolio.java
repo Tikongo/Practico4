@@ -2,11 +2,11 @@ package grafica.controladores;
 
 import java.rmi.RemoteException;
 
-import logicaPersistencia.excepciones.ExcepAccesoADatos;
-import logicaPersistencia.excepciones.ExcepFolioYaExiste;
 import grafica.ventanas.VentAgregarFolio;
 import logica.IFachada;
-import logicaPersistencia.valueObjects.VOFolio;
+import logica.excepciones.ExcepAccesoADatos;
+import logica.excepciones.ExcepFolioYaExiste;
+import logica.valueObjects.VOFolio;
 
 public class ContAgregarFolio {
 

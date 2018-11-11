@@ -1,12 +1,12 @@
-package logicaPersistencia.excepciones;
+package logica.excepciones;
 
 import java.sql.SQLException;
 
-public class ExcepAccesoADatos extends SQLException {
+public class ExcepFolioYaExiste extends SQLException {
 	
 	private String mensaje;
 	
-	public ExcepAccesoADatos(String mensaje)
+	public ExcepFolioYaExiste(String mensaje)
 	{
 		this.mensaje=mensaje;
 	}

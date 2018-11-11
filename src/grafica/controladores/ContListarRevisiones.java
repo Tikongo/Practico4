@@ -5,8 +5,11 @@ import java.rmi.RemoteException;
 import logicaPersistencia.excepciones.*;
 import grafica.ventanas.VentListarRevisiones;
 import logica.IFachada;
-import logicaPersistencia.valueObjects.VORevision;
-import logicaPersistencia.valueObjects.ListaVORevisiones;
+import logica.excepciones.ExcepAccesoADatos;
+import logica.excepciones.ExcepFolioNoExiste;
+import logica.excepciones.ExcepFolioSinRevisiones;
+import logica.valueObjects.ListaVORevisiones;
+import logica.valueObjects.VORevision;
 
 public class ContListarRevisiones {
 	

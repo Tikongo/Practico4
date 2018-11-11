@@ -3,9 +3,9 @@ package persistencia.daos;
 import java.util.List;
 
 import logica.Revision;
-import logicaPersistencia.accesoBD.IConexion;
-import logicaPersistencia.excepciones.ExcepAccesoADatos;
-import logicaPersistencia.valueObjects.VORevision;
+import logica.excepciones.ExcepAccesoADatos;
+import logica.valueObjects.VORevision;
+import persistencia.accesoDB.IConexion;
 
 public class DAORevisionesArchivo implements IDAORevisiones{
 

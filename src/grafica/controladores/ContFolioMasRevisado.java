@@ -2,9 +2,10 @@ package grafica.controladores;
 
 import java.rmi.RemoteException;
 import logica.IFachada;
+import logica.excepciones.ExcepAccesoADatos;
+import logica.valueObjects.VOFolioMaxRev;
 import logicaPersistencia.excepciones.*;
 import grafica.ventanas.VentFolioMasRevisado;
-import logicaPersistencia.valueObjects.VOFolioMaxRev;
 
 public class ContFolioMasRevisado {
 	

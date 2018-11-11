@@ -1,8 +1,8 @@
-package logicaPersistencia.accesoBD;
+package persistencia.accesoDB;
 
 import java.sql.SQLException;
 
-import logicaPersistencia.excepciones.ExcepAccesoADatos;
+import logica.excepciones.ExcepAccesoADatos;
 
 public interface IPoolConexiones {
 	

@@ -4,6 +4,9 @@ import logicaPersistencia.valueObjects.*;
 import grafica.ventanas.VentDarDescripcion;
 import java.rmi.RemoteException;
 import logica.IFachada;
+import logica.excepciones.ExcepAccesoADatos;
+import logica.excepciones.ExcepFolioNoExiste;
+import logica.excepciones.ExcepRevisionNoExiste;
 import logicaPersistencia.excepciones.*;
 
 

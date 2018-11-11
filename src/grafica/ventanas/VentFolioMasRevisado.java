@@ -12,8 +12,9 @@ import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import logicaPersistencia.valueObjects.VOFolioMaxRev;
+
 import grafica.controladores.ContFolioMasRevisado;
+import logica.valueObjects.VOFolioMaxRev;
 
 public class VentFolioMasRevisado {
 

@@ -13,8 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import grafica.controladores.ContListarFolios;
-import logicaPersistencia.valueObjects.ListaVOFolios;
-import logicaPersistencia.valueObjects.VOFolio;
+import logica.valueObjects.ListaVOFolios;
+import logica.valueObjects.VOFolio;
 
 public class VentListarFolios {
 

@@ -2,14 +2,21 @@ package logica;
 
 import java.sql.SQLException;
 import java.util.List;
-import logicaPersistencia.excepciones.ExcepAccesoADatos;
-import logicaPersistencia.excepciones.ExcepFolioNoExiste;
-import logicaPersistencia.excepciones.ExcepFolioYaExiste;
+
+import logica.excepciones.ExcepAccesoADatos;
+import logica.excepciones.ExcepFolioNoExiste;
+import logica.excepciones.ExcepFolioSinRevisiones;
+import logica.excepciones.ExcepFolioYaExiste;
+import logica.excepciones.ExcepNoHayFoliosRegistrados;
+import logica.excepciones.ExcepRevisionNoExiste;
+import logica.valueObjects.ListaVOFolios;
+import logica.valueObjects.ListaVORevisiones;
+import logica.valueObjects.VOFolio;
+import logica.valueObjects.VOFolioMaxRev;
+import logica.valueObjects.VORevision;
 import logicaPersistencia.valueObjects.*;
 import logicaPersistencia.excepciones.*;
-import logicaPersistencia.valueObjects.VOFolio;
-import logicaPersistencia.valueObjects.VOFolioMaxRev;
-import logicaPersistencia.valueObjects.VORevision;
+
 import java.rmi.RemoteException;
 
 public interface IFachada {

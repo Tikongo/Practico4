@@ -5,8 +5,10 @@ import java.rmi.RemoteException;
 import logicaPersistencia.excepciones.*;
 import grafica.ventanas.VentListarFolios;
 import logica.IFachada;
-import logicaPersistencia.valueObjects.VOFolio;
-import logicaPersistencia.valueObjects.ListaVOFolios;
+import logica.excepciones.ExcepAccesoADatos;
+import logica.excepciones.ExcepNoHayFoliosRegistrados;
+import logica.valueObjects.ListaVOFolios;
+import logica.valueObjects.VOFolio;
 
 public class ContListarFolios {
 	

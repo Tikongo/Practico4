@@ -8,8 +8,9 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import grafica.controladores.ContListarRevisiones;
-import logicaPersistencia.valueObjects.ListaVORevisiones;
-import logicaPersistencia.valueObjects.VORevision;
+import logica.valueObjects.ListaVORevisiones;
+import logica.valueObjects.VORevision;
+
 import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;

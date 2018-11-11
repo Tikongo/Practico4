@@ -3,10 +3,10 @@ package persistencia.daos;
 import java.util.List;
 
 import logica.Folio;
-import logicaPersistencia.accesoBD.IConexion;
-import logicaPersistencia.excepciones.ExcepAccesoADatos;
-import logicaPersistencia.valueObjects.VOFolio;
-import logicaPersistencia.valueObjects.VOFolioMaxRev;
+import logica.excepciones.ExcepAccesoADatos;
+import logica.valueObjects.VOFolio;
+import logica.valueObjects.VOFolioMaxRev;
+import persistencia.accesoDB.IConexion;
 
 public interface IDAOFolios {
 
