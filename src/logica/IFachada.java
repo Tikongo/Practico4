@@ -14,9 +14,6 @@ import logica.valueObjects.ListaVORevisiones;
 import logica.valueObjects.VOFolio;
 import logica.valueObjects.VOFolioMaxRev;
 import logica.valueObjects.VORevision;
-import logicaPersistencia.valueObjects.*;
-import logicaPersistencia.excepciones.*;
-
 import java.rmi.RemoteException;
 
 public interface IFachada {

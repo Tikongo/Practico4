@@ -2,39 +2,25 @@ package logica;
 
 import java.util.List;
 import java.util.Properties;
-
-import logica.excepciones.ExcepAccesoADatos;
-import logica.excepciones.ExcepFolioNoExiste;
-import logica.excepciones.ExcepFolioSinRevisiones;
-import logica.excepciones.ExcepFolioYaExiste;
-import logica.excepciones.ExcepNoHayFoliosRegistrados;
-import logica.excepciones.ExcepRevisionNoExiste;
-import logica.valueObjects.ListaVOFolios;
-import logica.valueObjects.ListaVORevisiones;
-import logica.valueObjects.VOFolio;
-import logica.valueObjects.VOFolioMaxRev;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import logica.excepciones.*;
+import logica.valueObjects.*;
+import java.io.*;
 import java.util.ArrayList;
-
-import logicaPersistencia.excepciones.*;
-import logicaPersistencia.valueObjects.*;
 import persistencia.accesoDB.IConexion;
 import persistencia.accesoDB.IPoolConexiones;
-import persistencia.daos.DAOFolios;
+import persistencia.daos.*;
 import java.rmi.RemoteException;
-
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 
-public class Fachada implements IFachada {
+public class Fachada extends UnicastRemoteObject implements IFachada {
 	
 	private IPoolConexiones ipool;
-	private DAOFolios folio;
+	private IDAOFolios folio;
+	private static final long serialVersionUID = 1L;
+	private static Fachada instanciaFachada;
 
-	public Fachada() {
+	public Fachada() throws RemoteException {
 		Properties prop = new Properties();
 		InputStream input = null;
 		try {
@@ -54,7 +40,18 @@ public class Fachada implements IFachada {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+	}
+	
+	public static Fachada getInstancia() {
+		if(instanciaFachada==null)
+		{
+			try {
+				instanciaFachada= new Fachada();
+			} catch(RemoteException remEx) {
+				remEx.printStackTrace();
+			}
+		}		
+		return instanciaFachada;
 	}
 	
 	/* (non-Javadoc)

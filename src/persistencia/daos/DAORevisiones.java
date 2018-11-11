@@ -11,7 +11,6 @@ import logica.Revision;
 import logica.excepciones.ExcepAccesoADatos;
 import logica.valueObjects.VOFolio;
 import logica.valueObjects.VORevision;
-import logicaPersistencia.excepciones.*;
 import persistencia.accesoDB.IConexion;
 import persistencia.consultas.Consultas;
 

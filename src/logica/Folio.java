@@ -6,7 +6,6 @@ import java.util.List;
 import logica.excepciones.ExcepAccesoADatos;
 import logica.valueObjects.VOFolio;
 import logica.valueObjects.VORevision;
-import logicaPersistencia.excepciones.*;
 import persistencia.accesoDB.IConexion;
 import persistencia.daos.DAORevisiones;
 import persistencia.daos.IDAORevisiones;

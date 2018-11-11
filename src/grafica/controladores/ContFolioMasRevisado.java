@@ -4,7 +4,6 @@ import java.rmi.RemoteException;
 import logica.IFachada;
 import logica.excepciones.ExcepAccesoADatos;
 import logica.valueObjects.VOFolioMaxRev;
-import logicaPersistencia.excepciones.*;
 import grafica.ventanas.VentFolioMasRevisado;
 
 public class ContFolioMasRevisado {

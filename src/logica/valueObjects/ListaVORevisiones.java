@@ -2,7 +2,6 @@ package logica.valueObjects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import logicaPersistencia.valueObjects.*;
 
 public class ListaVORevisiones implements Serializable {
 	

@@ -2,15 +2,15 @@ package persistencia.accesoDB;
 
 import java.sql.Connection;
 
-public class Conexion implements IConexion {
+public class Conexion<T> implements IConexion {
 	
-	private Connection con;
+	private T con;
 	
-	public Conexion (Connection c) {
-		con = c;
+	public Conexion (T conexion) {
+		con = conexion;
 	}
 	
-	public Connection getConexion() {
+	public T getConexion() {
 		return con;
 	}
 }

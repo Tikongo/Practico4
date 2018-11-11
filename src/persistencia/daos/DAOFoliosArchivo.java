@@ -16,8 +16,9 @@ public class DAOFoliosArchivo implements IDAOFolios{
 	
 	@Override
 	public boolean member(IConexion icon, String cod) throws ExcepAccesoADatos {
-		
-		return false;
+		boolean member = false;
+		File file = new File();
+		return member;
 	}
 
 	@Override

@@ -5,16 +5,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
-
 import logica.excepciones.ExcepAccesoADatos;
-import logicaPersistencia.excepciones.*;
 
 public class PoolConexiones implements IPoolConexiones {
 	
+	private String tipoPersistencia;
 	private String driver;
 	private String url;
 	private String user;
 	private String pwd;
+	private String archivoPath;
 	private int nivelTran;
 	private int TAM;
 	private int tope;
@@ -63,15 +63,17 @@ public class PoolConexiones implements IPoolConexiones {
 			
 		} catch (IOException ex) {
 			ex.printStackTrace();
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		} finally {
 			if (input != null) {
 				try {
 					input.close();
 				} catch (IOException e) {
 					e.printStackTrace();
+					throw new ExcepAccesoADatos("Error de acceso a los datos");
 				}
 			}
 		}
@@ -99,6 +101,7 @@ public class PoolConexiones implements IPoolConexiones {
 					try {
 						c = DriverManager.getConnection(url,user,pwd);
 					} catch (SQLException e) {
+						e.printStackTrace();
 						throw new ExcepAccesoADatos("Error de Acceso a la BD");
 					}
 					con = new Conexion(c);
@@ -114,8 +117,8 @@ public class PoolConexiones implements IPoolConexiones {
 					{	}
 				}
 			}
-			
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new ExcepAccesoADatos("Error de Acceso a la BD");
 		}
 		return con;
