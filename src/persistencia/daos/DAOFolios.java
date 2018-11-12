@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import logica.Folio;
 import logica.excepciones.ExcepAccesoADatos;
-import logica.valueObjects.VOFolio;
-import logica.valueObjects.VOFolioMaxRev;
-import logica.valueObjects.VORevision;
+import logica.valueObjects.*;
 import persistencia.accesoDatos.*;
 import persistencia.consultas.*;
 
@@ -114,9 +112,9 @@ public class DAOFolios implements IDAOFolios{
 	
 	//Listar todos los folios
 	@Override
-	public List<VOFolio> listarFolios(IConexion icon) throws ExcepAccesoADatos{
+	public ListaVOFolios listarFolios(IConexion icon) throws ExcepAccesoADatos{
 		Conexion<Connection> c = (Conexion<Connection>)icon;
-		List<VOFolio> listaFolios = new ArrayList<>();
+		ListaVOFolios listaFolios = new ListaVOFolios();
 		try {
 			Consultas consultas = new Consultas();
 			Connection con= c.getConexion();
@@ -130,7 +128,7 @@ public class DAOFolios implements IDAOFolios{
 				String caratula = rs.getString("caratula");
 				int paginas = rs.getInt("paginas");
 				VOFolio unFolio = new VOFolio(codigo, caratula, paginas);
-				listaFolios.add(unFolio);
+				listaFolios.insert(unFolio);
 			}
 			rs.close();		
 			pstmt.close();

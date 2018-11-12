@@ -1,11 +1,9 @@
 package persistencia.daos;
 
 import java.util.List;
-
 import logica.Folio;
 import logica.excepciones.ExcepAccesoADatos;
-import logica.valueObjects.VOFolio;
-import logica.valueObjects.VOFolioMaxRev;
+import logica.valueObjects.*;
 import persistencia.accesoDatos.IConexion;
 
 public interface IDAOFolios {
@@ -18,7 +16,7 @@ public interface IDAOFolios {
 	
 	public void delete (IConexion icon, String cod) throws ExcepAccesoADatos;
 	
-	public List<VOFolio> listarFolios(IConexion icon) throws ExcepAccesoADatos;
+	public ListaVOFolios listarFolios(IConexion icon) throws ExcepAccesoADatos;
 	
 	public boolean esVacio(IConexion icon) throws ExcepAccesoADatos;
 	

@@ -4,35 +4,44 @@ import java.util.List;
 import logica.Folio;
 import logica.excepciones.ExcepAccesoADatos;
 import logica.excepciones.ExcepArchivoNoEncontrado;
-import logica.valueObjects.VOFolio;
-import logica.valueObjects.VOFolioMaxRev;
+import logica.valueObjects.*;
 import persistencia.accesoDatos.*;
 import java.io.*;
 
 public class DAOFoliosArchivo implements IDAOFolios{
-
 	
 	@Override
 	public boolean member(IConexion iCon, String cod) throws ExcepAccesoADatos {
-		Conexion<PrintWriter> con = (Conexion<PrintWriter>)iCon;
-		
+		Conexion<String> con = (Conexion<String>)iCon;
 		boolean member = false;
-		
+		File f = new File(con.getConexion(),cod);
+		member = f.exists();
 		return member;
 	}
 
 	@Override
 	public void insert(IConexion iCon, Folio fol) throws ExcepAccesoADatos {
-		// TODO Auto-generated method stub
-		Conexion<FileWriter> c = (Conexion<FileWriter>)iCon;
-		//FileWriter f = new FileWriter
-		BufferedWriter b = new BufferedWriter(c.getConexion());
+		try {
+			Conexion<String> con = (Conexion<String>)iCon;
+			String filename = fol.getCodigo()+".txt";
+			File f = new File(con.getConexion(),filename);
+			PrintWriter pw = new PrintWriter(f);
+			pw.println(fol.getCodigo());
+			pw.println(fol.getCaratula());
+			pw.println(Integer.toString(fol.getPaginas()));
+			pw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
+		}
 	}
 
 	@Override
 	public Folio find(IConexion icon, String cod) throws ExcepAccesoADatos {
 		// TODO Auto-generated method stub
-		return null;
+		Folio folio = null;
+		
+		return folio;
 	}
 
 	@Override
@@ -42,7 +51,7 @@ public class DAOFoliosArchivo implements IDAOFolios{
 	}
 
 	@Override
-	public List<VOFolio> listarFolios(IConexion icon) throws ExcepAccesoADatos {
+	public ListaVOFolios listarFolios(IConexion icon) throws ExcepAccesoADatos {
 		// TODO Auto-generated method stub
 		return null;
 	}

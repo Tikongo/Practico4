@@ -35,33 +35,27 @@ public class PoolConexionesArchivo implements IPoolConexiones {
 	public synchronized IConexion obtenerConexion(Boolean t) throws ExcepAccesoADatos {
 		/* t=TRUE: ESCRITURA.
 		 * t=FALSE: LECTURA.*/
-		Conexion<FileWriter> con = null;
+		Conexion<String> con = null;
 		if (tope > 0) {
 			//Devuelvo la conexi�n que est� al final del arreglo.
 			con = arrConexiones[tope-1];
 			tope = tope - 1;
 		} else {
-			try {
-				if (creadas < TAM) {
-					FileWriter f = new FileWriter(archivoPath);
-					con = (Conexion<FileWriter>) new Conexion(f);
-					creadas = creadas + 1;
-				} else {
-					//A dormir.
-					try {
-						wait();
-					} catch (InterruptedException iExc) { }
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw new ExcepAccesoADatos("Error al acceder a los datos");
+			if (creadas < TAM) {
+				con = (Conexion<String>) new Conexion(archivoPath);
+				creadas = creadas + 1;
+			} else {
+				//A dormir.
+				try {
+					wait();
+				} catch (InterruptedException iExc) { }
 			}
 		}
 		return con;
 	}
 	
 	public synchronized void liberarConexion(IConexion iC, Boolean t) {
-		Conexion<FileWriter> conex = (Conexion<FileWriter>)iC;
+		Conexion<String> conex = (Conexion<String>)iC;
 		arrConexiones[tope] = conex;
 		tope++;
 		notify();
