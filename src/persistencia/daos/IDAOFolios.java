@@ -6,7 +6,7 @@ import logica.Folio;
 import logica.excepciones.ExcepAccesoADatos;
 import logica.valueObjects.VOFolio;
 import logica.valueObjects.VOFolioMaxRev;
-import persistencia.accesoDB.IConexion;
+import persistencia.accesoDatos.IConexion;
 
 public interface IDAOFolios {
 

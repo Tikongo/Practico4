@@ -11,7 +11,8 @@ import logica.Revision;
 import logica.excepciones.ExcepAccesoADatos;
 import logica.valueObjects.VOFolio;
 import logica.valueObjects.VORevision;
-import persistencia.accesoDB.IConexion;
+import persistencia.accesoDatos.Conexion;
+import persistencia.accesoDatos.IConexion;
 import persistencia.consultas.Consultas;
 
 public class DAORevisiones implements IDAORevisiones{
@@ -26,9 +27,10 @@ public class DAORevisiones implements IDAORevisiones{
 	}
 	@Override
 	public void insBack (IConexion icon,Revision rev) throws ExcepAccesoADatos{
+		Conexion<Connection> c = (Conexion<Connection>)icon;
 		try {
 			Consultas consultas = new Consultas();
-			Connection con= (icon).getConexion();
+			Connection con= c.getConexion();
 			String insert = consultas.queryAgregarRevision();
 			PreparedStatement pstmt = con.prepareStatement(insert);
 			pstmt.setInt(1, rev.getNumero());
@@ -43,9 +45,10 @@ public class DAORevisiones implements IDAORevisiones{
 	}
 	@Override
 	public int largo (IConexion icon) throws ExcepAccesoADatos{
+		Conexion<Connection> c = (Conexion<Connection>)icon;
 		int largo=0;
 		Consultas consultas = new Consultas();
-		Connection con= (icon).getConexion();
+		Connection con= c.getConexion();
 		String cantR = consultas.queryCantRevision();
 		PreparedStatement pstmt;
 		try {
@@ -54,7 +57,6 @@ public class DAORevisiones implements IDAORevisiones{
 		ResultSet rs = pstmt.executeQuery();
 		while (rs.next()) {
 			largo++;
-			
 		}
 		largo=largo+1;
 		rs.close();	
@@ -66,10 +68,11 @@ public class DAORevisiones implements IDAORevisiones{
 	}
 	@Override
 	public Revision kesimo(IConexion icon,int numero) throws ExcepAccesoADatos{
+		Conexion<Connection> c = (Conexion<Connection>)icon;
 		Revision rev=null;
 		try {
 			Consultas consultas = new Consultas();
-			Connection con= (icon).getConexion();
+			Connection con= c.getConexion();
 			String devolerR = consultas.queryDarRevision();
 			PreparedStatement pstmt = con.prepareStatement(devolerR);
 			pstmt.setString(1, codigoFolio);
@@ -91,11 +94,11 @@ public class DAORevisiones implements IDAORevisiones{
 	}
 	@Override
     public List<VORevision> listarRevisiones(IConexion icon) throws ExcepAccesoADatos{
-		
+		Conexion<Connection> c = (Conexion<Connection>)icon;
 		List<VORevision> listaRevisiones = new ArrayList<>();
 		try {
 			Consultas consultas = new Consultas();
-			Connection con= (icon).getConexion();
+			Connection con= c.getConexion();
 			String listarRevisiones = consultas.queryListarRevisiones();
 			PreparedStatement pstmt = con.prepareStatement(listarRevisiones);
 			pstmt.setString(1, codigoFolio);		
@@ -118,9 +121,10 @@ public class DAORevisiones implements IDAORevisiones{
 	}
 	@Override
     public void borrarRevisiones (IConexion icon) throws ExcepAccesoADatos{
-    	try {
+		Conexion<Connection> c = (Conexion<Connection>)icon;
+		try {
 			Consultas consultas = new Consultas();
-			Connection con= (icon).getConexion();
+			Connection con= c.getConexion();
 			String delete = consultas.queryBorrarFolioRevisiones();
 			PreparedStatement pstmt = con.prepareStatement(delete);
 			pstmt.setString(1, codigoFolio);

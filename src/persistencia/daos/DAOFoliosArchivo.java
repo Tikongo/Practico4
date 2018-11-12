@@ -1,15 +1,13 @@
 package persistencia.daos;
 
-
 import java.util.List;
-
 import logica.Folio;
 import logica.excepciones.ExcepAccesoADatos;
 import logica.excepciones.ExcepArchivoNoEncontrado;
 import logica.valueObjects.VOFolio;
 import logica.valueObjects.VOFolioMaxRev;
-import persistencia.accesoDB.IConexion;
-
+import persistencia.accesoDatos.*;
+import java.io.*;
 
 public class DAOFoliosArchivo implements IDAOFolios{
 
@@ -17,14 +15,17 @@ public class DAOFoliosArchivo implements IDAOFolios{
 	@Override
 	public boolean member(IConexion icon, String cod) throws ExcepAccesoADatos {
 		boolean member = false;
-		File file = new File();
+		File file = new File("path");
+		member = file.exists();
 		return member;
 	}
 
 	@Override
-	public void insert(IConexion icon, Folio fol) throws ExcepAccesoADatos {
+	public void insert(IConexion iCon, Folio fol) throws ExcepAccesoADatos {
 		// TODO Auto-generated method stub
+		Conexion<FileWriter> c = (Conexion<FileWriter>)iCon;
 		
+		BufferedWriter b = new BufferedWriter(c.getConexion());
 	}
 
 	@Override

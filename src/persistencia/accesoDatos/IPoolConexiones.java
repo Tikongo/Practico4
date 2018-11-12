@@ -1,13 +1,12 @@
-package persistencia.accesoDB;
+package persistencia.accesoDatos;
 
 import java.sql.SQLException;
-
 import logica.excepciones.ExcepAccesoADatos;
 
 public interface IPoolConexiones {
 	
 	public IConexion obtenerConexion(Boolean t) throws ExcepAccesoADatos;
 	
-	public void liberarConexion(IConexion iC, Boolean t);
+	public void liberarConexion(IConexion iC, Boolean t) throws ExcepAccesoADatos;
 	
 }

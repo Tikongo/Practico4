@@ -10,5 +10,4 @@ public class FabricaArchivo implements FabricaAbstracta{
 		// TODO Auto-generated method stub
 		return new DAOFoliosArchivo();
 	}
-
 }

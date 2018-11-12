@@ -6,13 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import logica.Folio;
 import logica.excepciones.ExcepAccesoADatos;
 import logica.valueObjects.VOFolio;
 import logica.valueObjects.VOFolioMaxRev;
 import logica.valueObjects.VORevision;
-import persistencia.accesoDB.IConexion;
+import persistencia.accesoDatos.*;
+import persistencia.consultas.*;
 
 public class DAOFolios implements IDAOFolios{
 	
@@ -27,10 +27,11 @@ public class DAOFolios implements IDAOFolios{
 	@Override
 	public boolean member(IConexion icon, String cod) throws ExcepAccesoADatos{
 		boolean esta=false;
+		Conexion<Connection> c = (Conexion<Connection>)icon;
 		try {
-			persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
+			Consultas consultas = new Consultas();
 			String query = consultas.existeFolio();
-			Connection con= (icon).getConexion();
+			Connection con= c.getConexion();
 			PreparedStatement pstmt = con.prepareStatement(query);
 			pstmt.setString(1, cod);
 			ResultSet rs = pstmt.executeQuery();
@@ -49,9 +50,10 @@ public class DAOFolios implements IDAOFolios{
 	//Insertar un Folio
 	@Override
 	public void insert(IConexion icon, Folio fol) throws ExcepAccesoADatos{
+		Conexion<Connection> c = (Conexion<Connection>)icon;
 		try {
-			persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
-			Connection con= (icon).getConexion();
+			Consultas consultas = new Consultas();
+			Connection con= c.getConexion();
 			String insert = consultas.queryAgregarFolio();
 			PreparedStatement pstmt = con.prepareStatement(insert);
 			pstmt.setString(1, fol.getCodigo());
@@ -69,9 +71,10 @@ public class DAOFolios implements IDAOFolios{
 	@Override
 	public Folio find(IConexion icon, String cod) throws ExcepAccesoADatos {
 		Folio unFolio=null;
+		Conexion<Connection> c = (Conexion<Connection>)icon;
 		try {
-			persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
-			Connection con= (icon).getConexion();
+			Consultas consultas = new Consultas();
+			Connection con= c.getConexion();
 			String devolerF = consultas.queryFindFolio();
 			PreparedStatement pstmt = con.prepareStatement(devolerF);
 			pstmt.setString(1, cod);
@@ -95,29 +98,28 @@ public class DAOFolios implements IDAOFolios{
 	//Eliminar Folio
 	@Override
 	public void delete (IConexion icon, String cod) throws ExcepAccesoADatos {
-			try {
-				persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
-				Connection con= (icon).getConexion();
-				String delete = consultas.queryBorrarFolio();
-				PreparedStatement pstmt = con.prepareStatement(delete);
-				pstmt.setString(1, cod);
-				pstmt.executeUpdate();
-				pstmt.close();
-				
-			}catch (SQLException e) {
-				throw new ExcepAccesoADatos("Error de acceso a los datos");
-			}
+		Conexion<Connection> c = (Conexion<Connection>)icon;	
+		try {
+			Consultas consultas = new Consultas();
+			Connection con= c.getConexion();
+			String delete = consultas.queryBorrarFolio();
+			PreparedStatement pstmt = con.prepareStatement(delete);
+			pstmt.setString(1, cod);
+			pstmt.executeUpdate();
+			pstmt.close();
+		}catch (SQLException e) {
+			throw new ExcepAccesoADatos("Error de acceso a los datos");			
+		}
 	}
 	
 	//Listar todos los folios
 	@Override
 	public List<VOFolio> listarFolios(IConexion icon) throws ExcepAccesoADatos{
-		
+		Conexion<Connection> c = (Conexion<Connection>)icon;
 		List<VOFolio> listaFolios = new ArrayList<>();
-		
 		try {
-			persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
-			Connection con= (icon).getConexion();
+			Consultas consultas = new Consultas();
+			Connection con= c.getConexion();
 			String listarFolios = consultas.queryListarFolios();
 			PreparedStatement pstmt = con.prepareStatement(listarFolios);
 					
@@ -142,10 +144,11 @@ public class DAOFolios implements IDAOFolios{
 	//Verifico si hay al menos un folio
 	@Override
 	public boolean esVacio(IConexion icon) throws ExcepAccesoADatos{
+		Conexion<Connection> c = (Conexion<Connection>)icon;
 		boolean existe=false;
 		try {
-			persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
-			Connection con= (icon).getConexion();
+			Consultas consultas = new Consultas();
+			Connection con= c.getConexion();
 			String listarFolios = consultas.queryListarFolios();
 			PreparedStatement pstmt = con.prepareStatement(listarFolios);
 					
@@ -163,10 +166,11 @@ public class DAOFolios implements IDAOFolios{
 	//Devuelvo folio con mas revisiones
 	@Override
 	public VOFolioMaxRev folioMasRevisado(IConexion icon) throws ExcepAccesoADatos {
+		Conexion<Connection> c = (Conexion<Connection>)icon;
 		VOFolioMaxRev unFolio=null;
 		try {
-			persistencia.consultas.Consultas consultas = new persistencia.consultas.Consultas();
-			Connection con= (icon).getConexion();
+			Consultas consultas = new Consultas();
+			Connection con= c.getConexion();
 			String folioMaxRev = consultas.queryFolioMasRevisado();
 			PreparedStatement pstmt = con.prepareStatement(folioMaxRev);
 			

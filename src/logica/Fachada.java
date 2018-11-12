@@ -6,8 +6,9 @@ import logica.excepciones.*;
 import logica.valueObjects.*;
 import java.io.*;
 import java.util.ArrayList;
-import persistencia.accesoDB.IConexion;
-import persistencia.accesoDB.IPoolConexiones;
+
+import persistencia.accesoDatos.IConexion;
+import persistencia.accesoDatos.IPoolConexiones;
 import persistencia.daos.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -59,12 +60,11 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 	 */
 	@Override
 	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste,ExcepAccesoADatos, RemoteException{
-		IConexion iCon=null;
+		IConexion iCon = null;
 		String msjError="";
 		boolean existeCodigo=false;
 		boolean errorPersistencia=false;
-
-			
+		
 			try {
 				iCon = ipool.obtenerConexion(true);
 				String codigo = voF.getCodigo();
@@ -96,7 +96,6 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 			}
 		}
 		}
-	
 	
 	/* (non-Javadoc)
 	 * @see logicaPersistencia.IFachada#agregarRevision(java.lang.String, java.lang.String)

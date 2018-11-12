@@ -5,7 +5,7 @@ import java.util.List;
 import logica.Revision;
 import logica.excepciones.ExcepAccesoADatos;
 import logica.valueObjects.VORevision;
-import persistencia.accesoDB.IConexion;
+import persistencia.accesoDatos.IConexion;
 
 public class DAORevisionesArchivo implements IDAORevisiones{
 

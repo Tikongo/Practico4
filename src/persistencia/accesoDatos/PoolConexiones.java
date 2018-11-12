@@ -1,4 +1,4 @@
-package persistencia.accesoDB;
+package persistencia.accesoDatos;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,22 +23,23 @@ public class PoolConexiones implements IPoolConexiones {
 	
 	
 	private Conexion setTransactionIsolation (boolean t, Conexion con) {
+		Conexion<Connection> conex = con;
 		if (t) {
 			try {
-				con.getConexion().setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+				conex.getConexion().setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {
 			try {
-				con.getConexion().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+				conex.getConexion().setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		return con;
+		return conex;
 	}
 	
 	public PoolConexiones() throws ExcepAccesoADatos {
@@ -77,7 +78,7 @@ public class PoolConexiones implements IPoolConexiones {
 				}
 			}
 		}
-		arrConexiones= new Conexion[TAM];
+		arrConexiones = new Conexion[TAM];
 		tope = 0;
 		creadas = 0;
 	}
@@ -85,7 +86,7 @@ public class PoolConexiones implements IPoolConexiones {
 	public synchronized IConexion obtenerConexion(Boolean t) throws ExcepAccesoADatos{
 		/* t=TRUE: MODIFICACION.
 		 * t=FALSE: LECTURA.*/
-		Conexion con = null;
+		Conexion<Connection> con = null;
 		/*PASO 1: Ver si hay conexiones libres.*/
 		try {
 			if (tope > 0) {
@@ -104,17 +105,15 @@ public class PoolConexiones implements IPoolConexiones {
 						e.printStackTrace();
 						throw new ExcepAccesoADatos("Error de Acceso a la BD");
 					}
-					con = new Conexion(c);
+					con = (Conexion<Connection>) new Conexion(c);
 					creadas = creadas + 1;
 					con = setTransactionIsolation(t, con);
+					con.getConexion().setAutoCommit(false);
 				} else {
 					/*PASO 3: Mandar a dormir al usuario.*/
-					try
-					{
+					try {
 						wait();
-					}
-					catch(InterruptedException iExc)
-					{	}
+					} catch(InterruptedException iExc) { }
 				}
 			}
 		} catch (SQLException e) {
@@ -124,18 +123,20 @@ public class PoolConexiones implements IPoolConexiones {
 		return con;
 	}
 	
-	public synchronized void liberarConexion(IConexion iC, Boolean t) {
+	public synchronized void liberarConexion(IConexion iC, Boolean t) throws ExcepAccesoADatos {
+		Conexion<Connection> conex = (Conexion<Connection>)iC;
 		try {
-			if (tope < TAM) {
-				arrConexiones[tope] = (Conexion)iC;
-				tope++;
-				notify();
+			if (t) {
+				conex.getConexion().commit();
 			} else {
-				iC.getConexion().close();
+				conex.getConexion().rollback();
 			}
 		} catch (SQLException e) {
-			
+			e.printStackTrace();
+			throw new ExcepAccesoADatos("Error al acceder a los datos");
 		}
-		
+		arrConexiones[tope] = conex;
+		tope++;
+		notify();
 	}
 }
