@@ -13,10 +13,11 @@ public class DAOFoliosArchivo implements IDAOFolios{
 
 	
 	@Override
-	public boolean member(IConexion icon, String cod) throws ExcepAccesoADatos {
+	public boolean member(IConexion iCon, String cod) throws ExcepAccesoADatos {
+		Conexion<PrintWriter> con = (Conexion<PrintWriter>)iCon;
+		
 		boolean member = false;
-		File file = new File("path");
-		member = file.exists();
+		
 		return member;
 	}
 
@@ -24,7 +25,7 @@ public class DAOFoliosArchivo implements IDAOFolios{
 	public void insert(IConexion iCon, Folio fol) throws ExcepAccesoADatos {
 		// TODO Auto-generated method stub
 		Conexion<FileWriter> c = (Conexion<FileWriter>)iCon;
-		
+		//FileWriter f = new FileWriter
 		BufferedWriter b = new BufferedWriter(c.getConexion());
 	}
 

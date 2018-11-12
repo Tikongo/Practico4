@@ -32,7 +32,7 @@ public class PoolConexionesArchivo implements IPoolConexiones {
 		creadas = 0;
 	}
 	
-	public synchronized IConexion obtenerConexion(Boolean t) throws ExcepAccesoADatos{
+	public synchronized IConexion obtenerConexion(Boolean t) throws ExcepAccesoADatos {
 		/* t=TRUE: ESCRITURA.
 		 * t=FALSE: LECTURA.*/
 		Conexion<FileWriter> con = null;
@@ -41,15 +41,20 @@ public class PoolConexionesArchivo implements IPoolConexiones {
 			con = arrConexiones[tope-1];
 			tope = tope - 1;
 		} else {
-			if (creadas < TAM) {
-				FileWriter f = null;
-				con = (Conexion<FileWriter>) new Conexion(f);
-				creadas = creadas + 1;
-			} else {
-				//A dormir.
-				try {
-					wait();
-				} catch (InterruptedException iExc) { }
+			try {
+				if (creadas < TAM) {
+					FileWriter f = new FileWriter(archivoPath);
+					con = (Conexion<FileWriter>) new Conexion(f);
+					creadas = creadas + 1;
+				} else {
+					//A dormir.
+					try {
+						wait();
+					} catch (InterruptedException iExc) { }
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new ExcepAccesoADatos("Error al acceder a los datos");
 			}
 		}
 		return con;

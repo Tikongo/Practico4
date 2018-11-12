@@ -90,11 +90,11 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 			finally {
 				if (existeCodigo) { 
 					throw new ExcepFolioYaExiste(msjError);
+				}
+				if (errorPersistencia) {
+					throw new ExcepAccesoADatos(msjError);
+				}
 			}
-			if (errorPersistencia) {
-				throw new ExcepAccesoADatos(msjError);
-			}
-		}
 		}
 	
 	/* (non-Javadoc)
