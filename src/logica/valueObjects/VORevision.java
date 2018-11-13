@@ -20,6 +20,18 @@ public class VORevision implements Serializable{
 		codFolio = codF;
 	}
 	
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public void setCodFolio(String codFolio) {
+		this.codFolio = codFolio;
+	}
+
 	public int getNumero(){
 		return numero;
 	}
