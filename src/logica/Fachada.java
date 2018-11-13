@@ -26,6 +26,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 		InputStream input = null;
 		try {
 			input = new FileInputStream("dbEstudioJuridico.properties");
+			prop.load(input);
 			String poolConcreto = prop.getProperty("nombrePool");
 			ipool = (IPoolConexiones) Class.forName(poolConcreto).newInstance();
 			String nomFabrica = prop.getProperty("persistencia");
@@ -41,6 +42,9 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
