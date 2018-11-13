@@ -8,8 +8,11 @@ import java.util.List;
 
 import logica.Revision;
 import logica.excepciones.ExcepAccesoADatos;
+import logica.valueObjects.ListaVOFolios;
+import logica.valueObjects.ListaVORevisiones;
 import logica.valueObjects.VOFolio;
 import logica.valueObjects.VORevision;
+import persistencia.accesoDatos.Conexion;
 import persistencia.accesoDatos.IConexion;
 import persistencia.accesoDatos.Monitor;
 
@@ -62,11 +65,25 @@ public class DAORevisionesArchivo implements IDAORevisiones{
 	}
 
 	@Override
-	public List<VORevision> listarRevisiones(IConexion icon) throws ExcepAccesoADatos {
+	public ListaVORevisiones listarRevisiones(IConexion icon) throws ExcepAccesoADatos {
 		// TODO Auto-generated method stub
-		
-		
-		return null;
+		ListaVORevisiones listaRevisiones = new ListaVORevisiones();
+		VORevision voR = null;
+		monitor.comienzoLectura();
+		try {
+			Conexion<String> con = (Conexion<String>)icon;
+			File f = new File(con.getConexion());
+			for (final File arch : f.listFiles()) {
+				if (arch.isFile()) {
+					voR = leerVORevision(arch);
+					listaRevisiones.insert(voR);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ExcepAccesoADatos("Error al acceder a los datos");
+		}
+		return listaRevisiones;
 	}
 
 	@Override

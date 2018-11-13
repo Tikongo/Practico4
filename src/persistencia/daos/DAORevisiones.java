@@ -9,6 +9,7 @@ import java.util.List;
 import logica.Folio;
 import logica.Revision;
 import logica.excepciones.ExcepAccesoADatos;
+import logica.valueObjects.ListaVORevisiones;
 import logica.valueObjects.VOFolio;
 import logica.valueObjects.VORevision;
 import persistencia.accesoDatos.Conexion;
@@ -93,9 +94,9 @@ public class DAORevisiones implements IDAORevisiones{
 		
 	}
 	@Override
-    public List<VORevision> listarRevisiones(IConexion icon) throws ExcepAccesoADatos{
+    public ListaVORevisiones listarRevisiones(IConexion icon) throws ExcepAccesoADatos{
 		Conexion<Connection> c = (Conexion<Connection>)icon;
-		List<VORevision> listaRevisiones = new ArrayList<>();
+		ListaVORevisiones listaRevisiones = new ListaVORevisiones();
 		try {
 			Consultas consultas = new Consultas();
 			Connection con= c.getConexion();
@@ -109,7 +110,7 @@ public class DAORevisiones implements IDAORevisiones{
 				String codigoF = rs.getString("codigoFolio");
 				String desc = rs.getString("descripcion");
 				VORevision revision = new VORevision(numero,desc,codigoF);
-				listaRevisiones.add(revision);
+				listaRevisiones.insert(revision);
 			}
 			rs.close();		
 			pstmt.close();
