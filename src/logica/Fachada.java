@@ -6,10 +6,10 @@ import logica.excepciones.*;
 import logica.valueObjects.*;
 import java.io.*;
 import java.util.ArrayList;
-
 import persistencia.accesoDatos.IConexion;
 import persistencia.accesoDatos.IPoolConexiones;
 import persistencia.daos.*;
+import persistencia.Fabricas.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
@@ -17,7 +17,7 @@ import java.sql.*;
 public class Fachada extends UnicastRemoteObject implements IFachada {
 	
 	private IPoolConexiones ipool;
-	private IDAOFolios folio;
+	private IDAOFolios folios;
 	private static final long serialVersionUID = 1L;
 	private static Fachada instanciaFachada;
 
@@ -26,8 +26,11 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 		InputStream input = null;
 		try {
 			input = new FileInputStream("dbEstudioJuridico.properties");
-			String poolConcreto=prop.getProperty("nombrePool");
+			String poolConcreto = prop.getProperty("nombrePool");
 			ipool = (IPoolConexiones) Class.forName(poolConcreto).newInstance();
+			String nomFabrica = prop.getProperty("persistencia");
+			FabricaAbstracta fabrica = Class.forName(nomFabrica).newInstance();
+			folios = fabrica.crearIDAOFolios();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,10 +77,10 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 				//AccesoBD abd = new AccesoBD();
 				//boolean existeCodigo =  abd.existeFolio(con, codigo);
 				
-				existeCodigo = folio.member(iCon, codigo);
+				existeCodigo = folios.member(iCon, codigo);
 				if(!existeCodigo) {
 					Folio fol = new Folio(codigo,caratula,paginas);
-					folio.insert(iCon, fol);
+					folios.insert(iCon, fol);
 				} else {
 					msjError = "Folio ya ingresado";
 				}
@@ -113,10 +116,10 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 			  con.setAutoCommit(false);*/
 			iCon = ipool.obtenerConexion(true);
 			
-			existeCodigo = folio.member(iCon, codF);
+			existeCodigo = folios.member(iCon, codF);
 			
 			if(existeCodigo) {
-				Folio fol=folio.find(iCon, codF);
+				Folio fol=folios.find(iCon, codF);
 				Revision rev = new Revision(fol.cantidadRevisiones(iCon), descripcion);
 				fol.addRevision(iCon, rev);
 			} else {
@@ -149,11 +152,11 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 		boolean errorPersistencia=false;
 		try {
 			icon = ipool.obtenerConexion(true);
-			existeCodigo = folio.member(icon, codF);
+			existeCodigo = folios.member(icon, codF);
 			if(existeCodigo) {
-				Folio fol = folio.find(icon, codF);
+				Folio fol = folios.find(icon, codF);
 				fol.borrarRevisiones(icon);
-				folio.delete(icon, codF);
+				folios.delete(icon, codF);
 			} else {
 				msjError = "Folio no registrado";  
 			}
@@ -185,7 +188,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 		String msjError="Error de Acceso a los datos";
 		try {
 			icon = ipool.obtenerConexion (true);
-			Folio fol=folio.find(icon, codF);
+			Folio fol=folios.find(icon, codF);
 			Revision rev=fol.obtenerRevision(icon, numR);
 			desc=rev.getDescripcion();
 			ipool.liberarConexion (icon, true);
@@ -207,7 +210,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 		String msjError="Error de Acceso a los datos";
 		try {
 			icon = ipool.obtenerConexion (true);
-			listaFolios=(ListaVOFolios) folio.listarFolios(icon);
+			listaFolios=(ListaVOFolios) folios.listarFolios(icon);
 			ipool.liberarConexion (icon, true);
 			
 		}catch(ExcepAccesoADatos e) {
@@ -229,7 +232,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 		String msjError="Error de Acceso a los datos";
 		try {
 			icon = ipool.obtenerConexion (true);
-			Folio fol=folio.find(icon, codF);
+			Folio fol=folios.find(icon, codF);
 			listaRevisiones=(ListaVORevisiones) fol.listarRevisiones(icon);
 			ipool.liberarConexion (icon, true);
 			
@@ -251,7 +254,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 		String msjError="Error de Acceso a los datos";
 		try {
 			icon = ipool.obtenerConexion (true);
-			voFMR=folio.folioMasRevisado(icon);
+			voFMR=folios.folioMasRevisado(icon);
 			ipool.liberarConexion (icon, true);
 			
 		}catch(ExcepAccesoADatos e) {
