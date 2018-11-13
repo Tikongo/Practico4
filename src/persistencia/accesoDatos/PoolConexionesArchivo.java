@@ -9,7 +9,9 @@ import java.sql.Connection;
 
 public class PoolConexionesArchivo implements IPoolConexiones {
 	
-	private String archivoPath;
+	private String[] archivoPath; 
+		/*Posicion[0]=Folios
+		  Posicion[1]=Revisiones*/
 	private int TAM;
 	private int tope;
 	private int creadas;
@@ -21,7 +23,8 @@ public class PoolConexionesArchivo implements IPoolConexiones {
 		try {
 			input = new FileInputStream("dbEstudioJuridico.properties");
 			prop.load(input);
-			archivoPath = prop.getProperty("path");
+			archivoPath[0] = prop.getProperty("pathFolios");
+			archivoPath[1] = prop.getProperty("pathRevisiones");
 			TAM = Integer.parseInt(prop.getProperty("TAM"));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -35,14 +38,14 @@ public class PoolConexionesArchivo implements IPoolConexiones {
 	public synchronized IConexion obtenerConexion(Boolean t) throws ExcepAccesoADatos {
 		/* t=TRUE: ESCRITURA.
 		 * t=FALSE: LECTURA.*/
-		Conexion<String> con = null;
+		Conexion<String[]> con = null;
 		if (tope > 0) {
 			//Devuelvo la conexi�n que est� al final del arreglo.
 			con = arrConexiones[tope-1];
 			tope = tope - 1;
 		} else {
 			if (creadas < TAM) {
-				con = (Conexion<String>) new Conexion(archivoPath);
+				con = (Conexion<String[]>) new Conexion(archivoPath);
 				creadas = creadas + 1;
 			} else {
 				//A dormir.
@@ -55,7 +58,7 @@ public class PoolConexionesArchivo implements IPoolConexiones {
 	}
 	
 	public synchronized void liberarConexion(IConexion iC, Boolean t) {
-		Conexion<String> conex = (Conexion<String>)iC;
+		Conexion<String[]> conex = (Conexion<String[]>)iC;
 		arrConexiones[tope] = conex;
 		tope++;
 		notify();

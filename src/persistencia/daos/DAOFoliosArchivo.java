@@ -41,9 +41,11 @@ public class DAOFoliosArchivo implements IDAOFolios{
 	
 	@Override
 	public boolean member(IConexion iCon, String cod) throws ExcepAccesoADatos {
-		Conexion<String> con = (Conexion<String>)iCon;
+		Conexion<String[]> con = (Conexion<String[]>)iCon;
 		boolean member = false;
-		File f = new File(con.getConexion(),cod);
+		String path = con.getConexion()[0];
+		String filename = cod+".txt";
+		File f = new File(path,filename);
 		monitor.comienzoLectura();
 		member = f.exists();
 		monitor.terminoLectura();
@@ -54,9 +56,9 @@ public class DAOFoliosArchivo implements IDAOFolios{
 	public void insert(IConexion iCon, Folio fol) throws ExcepAccesoADatos {
 		monitor.comienzoEscritura();
 		try {
-			Conexion<String> con = (Conexion<String>)iCon;
+			Conexion<String[]> con = (Conexion<String[]>)iCon;
 			String filename = fol.getCodigo()+".txt";
-			File f = new File(con.getConexion(),filename);
+			File f = new File(con.getConexion()[0],filename);
 			PrintWriter pw = new PrintWriter(f);
 			pw.println(fol.getCodigo());
 			pw.println(fol.getCaratula());
@@ -76,9 +78,9 @@ public class DAOFoliosArchivo implements IDAOFolios{
 		Folio folio = null;
 		monitor.comienzoLectura();
 		try {
-			Conexion<String> con = (Conexion<String>)iCon;
+			Conexion<String[]> con = (Conexion<String[]>)iCon;
 			String filename = cod+".txt";
-			File f = new File(con.getConexion(),filename);
+			File f = new File(con.getConexion()[0],filename);
 			FileReader fr = new FileReader(f);
 			BufferedReader br = new BufferedReader(fr);
 			String leido = br.readLine();
@@ -107,15 +109,13 @@ public class DAOFoliosArchivo implements IDAOFolios{
 		return folio;
 	}
 	
-	//private void deleteRevisiones ()
-	
 	@Override
 	public void delete(IConexion iCon, String cod) throws ExcepAccesoADatos {
 		// TODO Auto-generated method stub
 		monitor.comienzoEscritura();
-		Conexion<String> con = (Conexion<String>)iCon;
+		Conexion<String[]> con = (Conexion<String[]>)iCon;
 		String filename = cod+".txt";
-		File f = new File(con.getConexion(),filename);
+		File f = new File(con.getConexion()[0],filename);
 		//ANTES DE BORRAR SE DEBEN BORRAR TODAS SUS REVISIONES.
 		boolean borrado = f.delete();
 		if (!borrado) {
@@ -131,8 +131,8 @@ public class DAOFoliosArchivo implements IDAOFolios{
 		VOFolio voF = null;
 		monitor.comienzoLectura();
 		try {
-			Conexion<String> con = (Conexion<String>)iCon;
-			File f = new File(con.getConexion());
+			Conexion<String[]> con = (Conexion<String[]>)iCon;
+			File f = new File(con.getConexion()[0]);
 			for (final File arch : f.listFiles()) {
 				if (arch.isFile()) {
 					voF = leerVOFolio(arch);
@@ -150,8 +150,8 @@ public class DAOFoliosArchivo implements IDAOFolios{
 	public boolean esVacio(IConexion iCon) throws ExcepAccesoADatos {
 		// TODO Auto-generated method stub
 		boolean vacio = false;
-		Conexion<String> con = (Conexion<String>)iCon;
-		File f = new File(con.getConexion());
+		Conexion<String[]> con = (Conexion<String[]>)iCon;
+		File f = new File(con.getConexion()[0]);
 		if (f.isDirectory()) {
 			if (f.list().length == 0)
 				vacio = true;
@@ -160,9 +160,34 @@ public class DAOFoliosArchivo implements IDAOFolios{
 	}
 
 	@Override
-	public VOFolioMaxRev folioMasRevisado(IConexion icon) throws ExcepAccesoADatos {
+	public VOFolioMaxRev folioMasRevisado(IConexion iCon) throws ExcepAccesoADatos {
 		// TODO Auto-generated method stub
-		return null;
+		int cantRev = 0;
+		DAORevisiones daoRev = null;
+		VOFolio voF = null;
+		VOFolio voFFinal = null;
+		VOFolioMaxRev folioMaxRev = null;
+		monitor.comienzoLectura();
+		try {
+			Conexion<String[]> con = (Conexion<String[]>)iCon;
+			File fFolio = new File(con.getConexion()[0]);
+			File fRev = new File(con.getConexion()[1]);
+			for (final File arch : fFolio.listFiles()) {
+				if (arch.isFile()) {
+					voF = leerVOFolio(arch);
+					daoRev = new DAORevisiones(voF.getCodigo());
+					if (daoRev.largo(con) > cantRev) {
+						cantRev = daoRev.largo(con);
+						voFFinal = voF;
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ExcepAccesoADatos("Error de acceso a los datos");
+		}
+		folioMaxRev = new VOFolioMaxRev(voFFinal.getCodigo(),voFFinal.getCaratula(),voFFinal.getPaginas(),cantRev);
+		return folioMaxRev;
 	}
 
 }

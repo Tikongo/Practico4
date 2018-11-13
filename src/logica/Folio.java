@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import logica.excepciones.ExcepAccesoADatos;
+import logica.valueObjects.ListaVORevisiones;
 import logica.valueObjects.VOFolio;
 import logica.valueObjects.VORevision;
 import persistencia.accesoDatos.IConexion;
@@ -73,9 +74,9 @@ public class Folio {
 		return rev; 
 	}
 	
-	public List<VORevision> listarRevisiones(IConexion icon) throws ExcepAccesoADatos{
+	public ListaVORevisiones listarRevisiones(IConexion icon) throws ExcepAccesoADatos{
 	
-		List<VORevision> listaRevisiones=null;
+		ListaVORevisiones listaRevisiones=null;
 		try {
 			listaRevisiones = secuencia.listarRevisiones(icon);
 		} catch (ExcepAccesoADatos e) {
