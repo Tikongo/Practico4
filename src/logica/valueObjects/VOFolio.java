@@ -32,5 +32,17 @@ public class VOFolio implements Serializable{
 	public int getPaginas(){
 		return paginas;
 	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public void setCaratula(String caratula) {
+		this.caratula = caratula;
+	}
+
+	public void setPaginas(int paginas) {
+		this.paginas = paginas;
+	}
 	
 }
