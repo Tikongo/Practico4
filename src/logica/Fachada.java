@@ -29,7 +29,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 			String poolConcreto = prop.getProperty("nombrePool");
 			ipool = (IPoolConexiones) Class.forName(poolConcreto).newInstance();
 			String nomFabrica = prop.getProperty("persistencia");
-			FabricaAbstracta fabrica = Class.forName(nomFabrica).newInstance();
+			FabricaAbstracta fabrica = (FabricaAbstracta) Class.forName(nomFabrica).newInstance();
 			folios = fabrica.crearIDAOFolios();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
