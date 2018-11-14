@@ -1,7 +1,7 @@
-package Main;
+package cliente;
 
 import grafica.controladores.ContSingletonIFachada;
-import grafica.ventanas.VentPrincipal;
+import grafica.ventanas.*;
 import logica.IFachada;
 
 public class Cliente {

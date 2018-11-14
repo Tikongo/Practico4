@@ -18,7 +18,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 	
 	private IPoolConexiones ipool;
 	private IDAOFolios folios;
-	private static final long serialVersionUID = 1L;
+	//private static final long serialVersionUID = 1L;
 	private static Fachada instanciaFachada;
 
 	public Fachada() throws RemoteException {

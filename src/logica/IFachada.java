@@ -2,7 +2,6 @@ package logica;
 
 import java.sql.SQLException;
 import java.util.List;
-
 import logica.excepciones.ExcepAccesoADatos;
 import logica.excepciones.ExcepFolioNoExiste;
 import logica.excepciones.ExcepFolioSinRevisiones;
@@ -14,9 +13,9 @@ import logica.valueObjects.ListaVORevisiones;
 import logica.valueObjects.VOFolio;
 import logica.valueObjects.VOFolioMaxRev;
 import logica.valueObjects.VORevision;
-import java.rmi.RemoteException;
+import java.rmi.*;
 
-public interface IFachada {
+public interface IFachada extends Remote {
 
 	void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste, ExcepAccesoADatos, RemoteException;
 
