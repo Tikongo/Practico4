@@ -112,7 +112,7 @@ public class VentListarRevisiones {
 	public void mostrarResultado(String res)
 	{
 		JOptionPane.showMessageDialog(VentListarRevisiones, res, "Resultado", JOptionPane.INFORMATION_MESSAGE);
-		VentListarRevisiones.dispose();
+		//VentListarRevisiones.dispose();
 	}
 	
 	public void mostrarError(String res)
@@ -129,19 +129,23 @@ public class VentListarRevisiones {
 	}
 	
 	public void armarTablaRevisiones(ListaVORevisiones lVoR) {
-		DefaultTableModel modelo=new DefaultTableModel();
-		modelo.addColumn("NUMERO DE REVISION");
-		modelo.addColumn("DESCRIPCION");
-		Object rowData[]= new Object[2];
-		rowData[0] = "<html><b>" + modelo.getColumnName(0) + "</html></b>";
-		rowData[1] = "<html><b>" + modelo.getColumnName(1) + "</html></b>";
-		modelo.addRow(rowData);
-		for (VORevision voR: lVoR.getRevisiones()) {
-			rowData[0] = voR.getNumero();
-			rowData[1] = voR.getDescripcion();
+		if (lVoR == null) {
+			mostrarError("Ningun folio tiene revisiones para mostrar");
+		} else {
+			DefaultTableModel modelo=new DefaultTableModel();
+			modelo.addColumn("NUMERO DE REVISION");
+			modelo.addColumn("DESCRIPCION");
+			Object rowData[]= new Object[2];
+			rowData[0] = "<html><b>" + modelo.getColumnName(0) + "</html></b>";
+			rowData[1] = "<html><b>" + modelo.getColumnName(1) + "</html></b>";
 			modelo.addRow(rowData);
+			for (VORevision voR: lVoR.getRevisiones()) {
+				rowData[0] = voR.getNumero();
+				rowData[1] = voR.getDescripcion();
+				modelo.addRow(rowData);
+			}
+			tableRevisiones.setModel(modelo);
 		}
-		tableRevisiones.setModel(modelo);
 	}
 	
 	public void setVisible(boolean valor)

@@ -122,7 +122,7 @@ public class VentDarDescripcion {
 	public void mostrarResultado(String res)
 	{
 		JOptionPane.showMessageDialog(ventDarDescripcion, res, "Resultado", JOptionPane.INFORMATION_MESSAGE);
-		ventDarDescripcion.dispose();
+		//ventDarDescripcion.dispose();
 	}
 	
 	public void mostrarError(String res)

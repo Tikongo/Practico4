@@ -101,7 +101,7 @@ public class VentListarFolios {
 	public void mostrarResultado(String res)
 	{
 		JOptionPane.showMessageDialog(ventListarFolios, res, "Resultado", JOptionPane.INFORMATION_MESSAGE);
-		ventListarFolios.dispose();
+		//ventListarFolios.dispose();
 	}
 	
 	public void mostrarError(String res)

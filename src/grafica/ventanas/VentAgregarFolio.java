@@ -131,7 +131,7 @@ public class VentAgregarFolio {
 	public void mostrarResultado(String res)
 	{
 		JOptionPane.showMessageDialog(ventAgregarFolio, res, "Resultado", JOptionPane.INFORMATION_MESSAGE);
-		ventAgregarFolio.dispose();
+		//ventAgregarFolio.dispose();
 	}
 	
 	public void mostrarError(String res)

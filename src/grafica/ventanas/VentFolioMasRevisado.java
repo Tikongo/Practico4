@@ -97,7 +97,7 @@ public class VentFolioMasRevisado {
 	public void mostrarResultado(String res)
 	{
 		JOptionPane.showMessageDialog(ventFolioMasRevisado, res, "Resultado", JOptionPane.INFORMATION_MESSAGE);
-		ventFolioMasRevisado.dispose();
+		//ventFolioMasRevisado.dispose();
 	}
 	
 	public void mostrarError(String res)

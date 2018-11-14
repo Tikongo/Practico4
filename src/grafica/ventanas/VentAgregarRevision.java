@@ -122,7 +122,7 @@ public class VentAgregarRevision {
 	public void mostrarResultado(String res)
 	{
 		JOptionPane.showMessageDialog(ventAgregarRevision, res, "Resultado", JOptionPane.INFORMATION_MESSAGE);
-		ventAgregarRevision.dispose();
+		//ventAgregarRevision.dispose();
 	}
 	
 	public void mostrarError(String res)
