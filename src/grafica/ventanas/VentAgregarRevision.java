@@ -129,5 +129,10 @@ public class VentAgregarRevision {
 	{
 		JOptionPane.showMessageDialog(ventAgregarRevision, res, "Resultado", JOptionPane.ERROR_MESSAGE);
 	}
+	
+	public void setVisible(boolean valor)
+	{
+		ventAgregarRevision.setVisible(valor);
+	}
 
 }

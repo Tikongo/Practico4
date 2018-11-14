@@ -118,5 +118,10 @@ public class VentFolioMasRevisado {
 		rowData[3] = voFMR.getCantRevisiones();
 		tableFolioMasRevisado.setModel(modelo);
 	}
+	
+	public void setVisible(boolean valor)
+	{
+		ventFolioMasRevisado.setVisible(valor);
+	}
 
 }

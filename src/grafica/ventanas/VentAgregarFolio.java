@@ -130,5 +130,10 @@ public class VentAgregarFolio {
 	{
 		JOptionPane.showMessageDialog(ventAgregarFolio, res, "Resultado", JOptionPane.ERROR_MESSAGE);
 	}
+	
+	public void setVisible(boolean valor)
+	{
+		ventAgregarFolio.setVisible(valor);
+	}
 
 }

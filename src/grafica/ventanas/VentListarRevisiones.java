@@ -139,5 +139,10 @@ public class VentListarRevisiones {
 		}
 		tableRevisiones.setModel(modelo);
 	}
+	
+	public void setVisible(boolean valor)
+	{
+		VentListarRevisiones.setVisible(valor);
+	}
 
 }

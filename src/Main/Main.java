@@ -15,7 +15,7 @@ public class Main {
 			/* 2. una vez cargado el driver, me conecto con el motor de la base, de forma gen�rica 
 			 * porque vamos a crear la base en el pr�ximo paso.*/
 			String url = "jdbc:mysql://localhost:3306/";
-			Connection con = DriverManager.getConnection(url,"root","root");
+			Connection con = DriverManager.getConnection(url,"root","BD32018");
 			
 			//3. creo un PreparedStatement para crear la base de datos./ 
 			String qCreateDB = "CREATE DATABASE ESTUDIOJURIDICO";
@@ -26,7 +26,7 @@ public class Main {
 
 			/* 4. creamos las tablas de la base de datos.*/
 			String url2 = "jdbc:mysql://localhost:3306/ESTUDIOJURIDICO";
-			Connection con2 = DriverManager.getConnection(url2,"root","root");
+			Connection con2 = DriverManager.getConnection(url2,"root","BD32018");
 			
 			String qCreateTableExamenes = "CREATE TABLE Folios (codigo VARCHAR(60) PRIMARY KEY, caratula VARCHAR(60), paginas INT)";
 			String qCreateTableResultados = "CREATE TABLE Revisiones (numero INT, codigoFolio VARCHAR(60), descripcion VARCHAR(60), PRIMARY KEY (numero,codigoFolio), FOREIGN KEY (codigoFolio) REFERENCES Folios(codigo))";

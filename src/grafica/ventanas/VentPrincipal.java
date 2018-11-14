@@ -1,13 +1,11 @@
 package grafica.ventanas;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
@@ -18,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import grafica.ventanas.*;
 
 public class VentPrincipal {
 
@@ -73,7 +72,6 @@ public class VentPrincipal {
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
 		mnArchivo.add(mntmSalir);
-		
 		mntmSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == mntmSalir) {
@@ -91,24 +89,60 @@ public class VentPrincipal {
 		
 		JMenuItem mntmAgregarFolios = new JMenuItem("Agregar Folio");
 		mnIngresoDeDatos.add(mntmAgregarFolios);
+		mntmAgregarFolios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentAgregarFolio ventAgregarFolio = new VentAgregarFolio();
+				ventAgregarFolio.setVisible(true);
+			}
+		});
 		
 		JMenuItem mntmBorrarFolio = new JMenuItem("Borrar Folio");
 		mnIngresoDeDatos.add(mntmBorrarFolio);
+		mntmBorrarFolio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentBorrarFolio ventBorrarFolio = new VentBorrarFolio();
+				ventBorrarFolio.setVisible(true);
+			}
+		});
 		
 		JMenuItem mntmAgregarRevision = new JMenuItem("Agregar Revision");
 		mnIngresoDeDatos.add(mntmAgregarRevision);
+		mntmAgregarRevision.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentAgregarRevision ventAgregarRevision = new VentAgregarRevision();
+				ventAgregarRevision.setVisible(true);
+			}
+		});
 		
 		JMenu mnListados = new JMenu("Listados");
 		menuBar.add(mnListados);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Listar Folios");
-		mnListados.add(mntmNewMenuItem);
+		JMenuItem mntmListarFolios = new JMenuItem("Listar Folios");
+		mnListados.add(mntmListarFolios);
+		mntmListarFolios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentListarFolios ventListarFolios = new VentListarFolios();
+				ventListarFolios.setVisible(true);
+			}
+		});
 		
 		JMenuItem mntmListarRevisiones = new JMenuItem("Listar Revisiones");
 		mnListados.add(mntmListarRevisiones);
+		mntmListarRevisiones.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentListarRevisiones ventListarRevisiones = new VentListarRevisiones();
+				ventListarRevisiones.setVisible(true);
+			}
+		});
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Ver Descripcion");
-		mnListados.add(mntmNewMenuItem_1);
+		JMenuItem mntmDarDescripcion = new JMenuItem("Ver Descripcion");
+		mnListados.add(mntmDarDescripcion);
+		mntmDarDescripcion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentDarDescripcion ventDarDescripcion = new VentDarDescripcion();
+				ventDarDescripcion.setVisible(true);
+			}
+		});
 		
 		JMenuItem mntmVerFolioMas = new JMenuItem("Ver Folio mas Revisado");
 		mnListados.add(mntmVerFolioMas);
@@ -148,6 +182,12 @@ public class VentPrincipal {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
+		mntmAgregarFolios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VentFolioMasRevisado ventFolioMasRevisado = new VentFolioMasRevisado();
+				ventFolioMasRevisado.setVisible(true);
+			}
+		});
 		
 		JLabel lblExpedienpress = new JLabel("EXPEDIENPRESS");
 		lblExpedienpress.setFont(new Font("Agency FB", Font.BOLD, 55));

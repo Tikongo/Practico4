@@ -140,5 +140,10 @@ public class VentDarDescripcion {
 		}
 		return desc;
 	}
+	
+	public void setVisible(boolean valor)
+	{
+		ventDarDescripcion.setVisible(valor);
+	}
 
 }

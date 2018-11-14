@@ -120,4 +120,9 @@ public class VentBorrarFolio {
 			mostrarError("Debe completar todos los campos");
 		}
 	}
+	
+	public void setVisible(boolean valor)
+	{
+		ventBorrarFolio.setVisible(valor);
+	}
 }

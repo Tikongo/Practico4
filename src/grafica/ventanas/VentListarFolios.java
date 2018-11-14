@@ -123,5 +123,10 @@ public class VentListarFolios {
 		}
 		tableFolios.setModel(modelo);
 	}
+	
+	public void setVisible(boolean valor)
+	{
+		ventListarFolios.setVisible(valor);
+	}
 
 }
