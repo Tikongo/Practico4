@@ -182,7 +182,7 @@ public class VentPrincipal {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
-		mntmAgregarFolios.addActionListener(new ActionListener() {
+		mntmVerFolioMas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VentFolioMasRevisado ventFolioMasRevisado = new VentFolioMasRevisado();
 				ventFolioMasRevisado.setVisible(true);

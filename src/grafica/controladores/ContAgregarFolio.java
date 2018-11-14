@@ -18,9 +18,9 @@ public class ContAgregarFolio {
 		interfazFachada = ContSingletonIFachada.getInstancia().getInterfazFachada();
 	}
 	
-	public void agregarFolio(String cod, String car) {
-		int pag = 0;
-		VOFolio voF = new VOFolio(cod,car,pag);
+	public void agregarFolio(String cod, String car, String pag) {
+		int paginas = Integer.parseInt(pag);
+		VOFolio voF = new VOFolio(cod,car,paginas);
 		try {
 			interfazFachada.agregarFolio(voF);
 			ventana.mostrarResultado("Folio ingresado exitosamente");

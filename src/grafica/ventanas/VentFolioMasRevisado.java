@@ -107,15 +107,21 @@ public class VentFolioMasRevisado {
 	
 	public void armarTablaFolioMasRevisado(VOFolioMaxRev voFMR) {
 		DefaultTableModel modelo=new DefaultTableModel();
-		modelo.addColumn("CODIGO");
+		modelo.addColumn("CODIGO DE FOLIO");
 		modelo.addColumn("CARATULA");
-		modelo.addColumn("NRO PAGINAS");
-		modelo.addColumn("CANT REVISIONES");
+		modelo.addColumn("CANTIDAD DE PAGINAS");
+		modelo.addColumn("CANTIDAD DE REVISIONES");
 		Object rowData[]= new Object[4];
+		rowData[0] = "<html><b>" + modelo.getColumnName(0) + "</html></b>";
+		rowData[1] = "<html><b>" + modelo.getColumnName(1) + "</html></b>";
+		rowData[2] = "<html><b>" + modelo.getColumnName(2) + "</html></b>";
+		rowData[3] = "<html><b>" + modelo.getColumnName(3) + "</html></b>";
+		modelo.addRow(rowData);
 		rowData[0] = voFMR.getCodigo();
 		rowData[1] = voFMR.getCaratula();
 		rowData[2] = voFMR.getPaginas();
 		rowData[3] = voFMR.getCantRevisiones();
+		modelo.addRow(rowData);
 		tableFolioMasRevisado.setModel(modelo);
 	}
 	

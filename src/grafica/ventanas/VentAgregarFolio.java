@@ -20,6 +20,7 @@ public class VentAgregarFolio {
 	private JTextField textFieldCodigo;
 	private JTextField textFieldCaratula;
 	private ContAgregarFolio controlador;
+	private JTextField textFieldPaginas;
 
 	/**
 	 * Launch the application.
@@ -92,6 +93,13 @@ public class VentAgregarFolio {
 		ventAgregarFolio.getContentPane().add(textFieldCaratula, "6, 8, left, default");
 		textFieldCaratula.setColumns(10);
 		
+		JLabel lblPaginas = new JLabel("Paginas");
+		ventAgregarFolio.getContentPane().add(lblPaginas, "4, 10, right, default");
+		
+		textFieldPaginas = new JTextField();
+		ventAgregarFolio.getContentPane().add(textFieldPaginas, "6, 10, left, default");
+		textFieldPaginas.setColumns(10);
+		
 		JButton btnIngresarFolio = new JButton("Ingresar Folio");
 		ventAgregarFolio.getContentPane().add(btnIngresarFolio, "6, 12, left, default");
 		btnIngresarFolio.addActionListener(new ActionListener() {
@@ -112,9 +120,9 @@ public class VentAgregarFolio {
 	}
 	
 	public void validarCamposIngresarFolio() {
-		if (!textFieldCaratula.getText().isEmpty() && !textFieldCodigo.getText().isEmpty()) {
+		if (!textFieldCaratula.getText().isEmpty() && !textFieldCodigo.getText().isEmpty() && !textFieldPaginas.getText().isEmpty()) {
 			//Llamar al metodo del controlador.
-			controlador.agregarFolio(textFieldCodigo.getText(), textFieldCaratula.getText());
+			controlador.agregarFolio(textFieldCodigo.getText(), textFieldCaratula.getText(),textFieldPaginas.getText());
 		} else {
 			mostrarError("Debe completar todos los campos");
 		}

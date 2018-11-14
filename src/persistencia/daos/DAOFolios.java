@@ -171,13 +171,12 @@ public class DAOFolios implements IDAOFolios{
 			Connection con= c.getConexion();
 			String folioMaxRev = consultas.queryFolioMasRevisado();
 			PreparedStatement pstmt = con.prepareStatement(folioMaxRev);
-			
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
 				String codigo = rs.getString("codigo");
 				String caratula = rs.getString("caratula");
 				int paginas = rs.getInt("paginas");
-				int cantRev = rs.getInt("cantRevisiones");
+				int cantRev = rs.getInt("TotalRev");
 				unFolio = new VOFolioMaxRev(codigo, caratula, paginas,cantRev);
 			}
 			rs.close();			

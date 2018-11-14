@@ -86,8 +86,7 @@ public class VentListarFolios {
 				controlador.listarFolios();
 			}
 		});
-		
-		
+				
 		JButton btnVolverAPrincipal = new JButton("Volver a Principal");
 		ventListarFolios.getContentPane().add(btnVolverAPrincipal, "4, 8");
 		btnVolverAPrincipal.addActionListener(new ActionListener() {
@@ -112,14 +111,19 @@ public class VentListarFolios {
 	
 	public void armarTablaFolios(ListaVOFolios lVoF) {
 		DefaultTableModel modelo=new DefaultTableModel();
-		modelo.addColumn("CODIGO");
+		modelo.addColumn("CODIGO DE FOLIO");
 		modelo.addColumn("CARATULA");
-		modelo.addColumn("NRO PAGINAS");
+		modelo.addColumn("CANTIDAD PAGINAS");
 		Object rowData[]= new Object[3];
+		rowData[0] = "<html><b>" + modelo.getColumnName(0) + "</html></b>";
+		rowData[1] = "<html><b>" + modelo.getColumnName(1) + "</html></b>";
+		rowData[2] = "<html><b>" + modelo.getColumnName(2) + "</html></b>";
+		modelo.addRow(rowData);
 		for(VOFolio voF: lVoF.getFolios()) {
 			rowData[0] = voF.getCodigo();
 			rowData[1] = voF.getCaratula();
 			rowData[2] = voF.getPaginas();
+			modelo.addRow(rowData);
 		}
 		tableFolios.setModel(modelo);
 	}

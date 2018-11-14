@@ -49,7 +49,7 @@ public class Folio {
 	public int cantidadRevisiones(IConexion icon) throws ExcepAccesoADatos{
 		int cant=0;
 		try {
-			cant= secuencia.largo(icon);
+			cant = secuencia.largo(icon);
 		} catch (ExcepAccesoADatos e) {
 			throw new ExcepAccesoADatos("Error de conexion");
 		}
@@ -74,8 +74,7 @@ public class Folio {
 		return rev; 
 	}
 	
-	public ListaVORevisiones listarRevisiones(IConexion icon) throws ExcepAccesoADatos{
-	
+	public ListaVORevisiones listarRevisiones(IConexion icon) throws ExcepAccesoADatos {
 		ListaVORevisiones listaRevisiones=null;
 		try {
 			listaRevisiones = secuencia.listarRevisiones(icon);

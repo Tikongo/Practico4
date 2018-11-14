@@ -27,7 +27,7 @@ public class DAORevisiones implements IDAORevisiones{
 		this.codigoFolio = codigoFolio;
 	}
 	@Override
-	public void insBack (IConexion icon,Revision rev) throws ExcepAccesoADatos{
+	public void insBack (IConexion icon,Revision rev) throws ExcepAccesoADatos {
 		Conexion<Connection> c = (Conexion<Connection>)icon;
 		try {
 			Consultas consultas = new Consultas();
@@ -47,7 +47,7 @@ public class DAORevisiones implements IDAORevisiones{
 	@Override
 	public int largo (IConexion icon) throws ExcepAccesoADatos{
 		Conexion<Connection> c = (Conexion<Connection>)icon;
-		int largo=0;
+		int total = 0;
 		Consultas consultas = new Consultas();
 		Connection con= c.getConexion();
 		String cantR = consultas.queryCantRevision();
@@ -57,15 +57,14 @@ public class DAORevisiones implements IDAORevisiones{
 		pstmt.setString(1, codigoFolio);
 		ResultSet rs = pstmt.executeQuery();
 		while (rs.next()) {
-			largo++;
+			total = rs.getInt("TotalRev") + 1;
 		}
-		largo=largo+1;
-		rs.close();	
+		rs.close();
 		pstmt.close();
 		}catch (SQLException e) {
 			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		}
-		return largo;
+		return total;
 	}
 	@Override
 	public Revision kesimo(IConexion icon,int numero) throws ExcepAccesoADatos{

@@ -7,7 +7,7 @@ public class Consultas {
 		return query;
 	}
 	public String queryAgregarFolio() {
-		String query = "INSERT INTO Folios (codigo,caratula,pagina) values (?,?,?)";
+		String query = "INSERT INTO Folios (codigo,caratula,paginas) values (?,?,?)";
 		return query;
 	}
 	
@@ -42,7 +42,7 @@ public class Consultas {
 	}
 	
 	public String queryFolioMasRevisado() {
-		String query = "SELECT * FROM Folios f,Revisiones r where f.codigo=r.codigoFolio GROUP BY r.numero ORDER BY COUNT (r.numero) DESC LIMIT 1 ";
+		String query = "SELECT F.codigo, f.caratula, F.paginas, count(R.numero) as TotalRev FROM Folios F, Revisiones R where F.codigo=R.codigoFolio GROUP BY F.codigo ORDER BY TotalRev DESC LIMIT 1";
 		return query;
 	}
 	
@@ -57,7 +57,7 @@ public class Consultas {
 	}
 	
 	public String queryCantRevision() {
-		String query = "SELECT COUNT(*) FROM Revisiones where codigoFolio= (?) ";
+		String query = "SELECT count(*) as TotalRev FROM Revisiones WHERE codigoFolio = (?) ";
 		return query;
 	}
 }

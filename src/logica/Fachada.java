@@ -66,12 +66,11 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 	 * @see logicaPersistencia.IFachada#agregarFolio(logicaPersistencia.valueObjects.VOFolio)
 	 */
 	@Override
-	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste,ExcepAccesoADatos, RemoteException{
+	public void agregarFolio(VOFolio voF) throws ExcepFolioYaExiste,ExcepAccesoADatos,RemoteException {
 		IConexion iCon = null;
 		String msjError="";
 		boolean existeCodigo=false;
 		boolean errorPersistencia=false;
-		
 			try {
 				iCon = ipool.obtenerConexion(true);
 				String codigo = voF.getCodigo();
@@ -119,9 +118,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 			  con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			  con.setAutoCommit(false);*/
 			iCon = ipool.obtenerConexion(true);
-			
 			existeCodigo = folios.member(iCon, codF);
-			
 			if(existeCodigo) {
 				Folio fol=folios.find(iCon, codF);
 				Revision rev = new Revision(fol.cantidadRevisiones(iCon), descripcion);
@@ -130,7 +127,6 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 				msjError = "No existe Folio";  
 			}
 			ipool.liberarConexion(iCon, true);	
-			
 		} catch (ExcepAccesoADatos e) {
 			ipool.liberarConexion(iCon, false);
 			errorPersistencia=true;
@@ -188,18 +184,29 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 	@Override   //precondicion que el folio exista y tenga una revisioÌ�n con ese nuÌ�mero
 	public String darDescripcion(String codF,int numR) throws ExcepAccesoADatos, RemoteException, ExcepFolioNoExiste, ExcepRevisionNoExiste{
 		String desc = null;
-		IConexion icon=null;
-		String msjError="Error de Acceso a los datos";
+		IConexion iCon=null;
+		boolean existeFolio = true;
+		Revision rev = null;
 		try {
-			icon = ipool.obtenerConexion (true);
-			Folio fol=folios.find(icon, codF);
-			Revision rev=fol.obtenerRevision(icon, numR);
+			iCon = ipool.obtenerConexion (true);
+			existeFolio = folios.member(iCon, codF);
+			if (existeFolio) {
+				rev=folios.find(iCon,codF).obtenerRevision(iCon, numR);
+			}
 			desc=rev.getDescripcion();
-			ipool.liberarConexion (icon, true);
+			ipool.liberarConexion (iCon, true);
 		}catch(ExcepAccesoADatos e) {
-			if (icon != null) 
-				ipool.liberarConexion (icon, false);
-            throw new ExcepAccesoADatos(msjError);
+			if (iCon != null) {
+				ipool.liberarConexion (iCon, false);
+			}
+            throw new ExcepAccesoADatos("");
+		} finally {
+			if (!existeFolio) {
+				throw new ExcepFolioNoExiste("El folio requerido no existe");
+			}
+			if (rev == null) {
+				throw new ExcepRevisionNoExiste("La revision requerida no existe");
+			}
 		}
 		return desc;
 	}
@@ -232,18 +239,25 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 	@Override   //precondicion que el folio este registrado.
 	public ListaVORevisiones listarRevisiones(String codF) throws ExcepAccesoADatos, RemoteException, ExcepFolioNoExiste, ExcepFolioSinRevisiones{
 		ListaVORevisiones listaRevisiones = null;
-		IConexion icon=null;
+		IConexion iCon=null;
 		String msjError="Error de Acceso a los datos";
+		boolean existeFolio = true;
 		try {
-			icon = ipool.obtenerConexion (true);
-			Folio fol=folios.find(icon, codF);
-			listaRevisiones=(ListaVORevisiones) fol.listarRevisiones(icon);
-			ipool.liberarConexion (icon, true);
-			
-		}catch(ExcepAccesoADatos e) {
-			if (icon != null) 
-				ipool.liberarConexion (icon, false);
-            throw new ExcepAccesoADatos(msjError);
+			iCon = ipool.obtenerConexion(false);
+			existeFolio = folios.member(iCon, codF);
+			if (existeFolio) {
+				listaRevisiones = folios.find(iCon,codF).listarRevisiones(iCon);
+			}
+			ipool.liberarConexion (iCon, true);
+		} catch (ExcepAccesoADatos e) {
+			throw new ExcepAccesoADatos(e.darMensaje());
+		} finally {
+			if (!existeFolio) {
+				throw new ExcepFolioNoExiste("El folio requerido no existe");
+			}
+			if (listaRevisiones.esVacia()) {
+				throw new ExcepFolioSinRevisiones("EL folio requerido no tiene revisiones");
+			}
 		}
 		return listaRevisiones;
 	}
@@ -260,7 +274,6 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 			icon = ipool.obtenerConexion (true);
 			voFMR=folios.folioMasRevisado(icon);
 			ipool.liberarConexion (icon, true);
-			
 		}catch(ExcepAccesoADatos e) {
 			if (icon != null) 
 				ipool.liberarConexion (icon, false);

@@ -130,12 +130,16 @@ public class VentListarRevisiones {
 	
 	public void armarTablaRevisiones(ListaVORevisiones lVoR) {
 		DefaultTableModel modelo=new DefaultTableModel();
-		modelo.addColumn("NUMERO");
+		modelo.addColumn("NUMERO DE REVISION");
 		modelo.addColumn("DESCRIPCION");
 		Object rowData[]= new Object[2];
+		rowData[0] = "<html><b>" + modelo.getColumnName(0) + "</html></b>";
+		rowData[1] = "<html><b>" + modelo.getColumnName(1) + "</html></b>";
+		modelo.addRow(rowData);
 		for (VORevision voR: lVoR.getRevisiones()) {
 			rowData[0] = voR.getNumero();
-			rowData[1] = voR.getDescripcion(); 
+			rowData[1] = voR.getDescripcion();
+			modelo.addRow(rowData);
 		}
 		tableRevisiones.setModel(modelo);
 	}
