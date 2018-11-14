@@ -20,6 +20,7 @@ public class PoolConexionesArchivo implements IPoolConexiones {
 	public PoolConexionesArchivo() throws ExcepAccesoADatos {
 		Properties prop = new Properties();
 		InputStream input = null;
+		archivoPath = new String[2];
 		try {
 			input = new FileInputStream("dbEstudioJuridico.properties");
 			prop.load(input);
