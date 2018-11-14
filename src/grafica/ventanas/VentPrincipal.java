@@ -157,5 +157,10 @@ public class VentPrincipal {
 		lblSoftwareParaEstudio.setFont(new Font("Agency FB", Font.PLAIN, 24));
 		ventPrincipal.getContentPane().add(lblSoftwareParaEstudio, "6, 8, center, default");
 	}
+	
+	public void setVisible(boolean valor)
+	{
+		ventPrincipal.setVisible(valor);
+	}
 
 }
