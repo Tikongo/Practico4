@@ -1,7 +1,9 @@
 package persistencia.Fabricas;
 
 import persistencia.daos.DAOFolios;
+import persistencia.daos.DAORevisiones;
 import persistencia.daos.IDAOFolios;
+import persistencia.daos.IDAORevisiones;
 
 public class FabricaMySQL implements FabricaAbstracta{
 
@@ -11,6 +13,9 @@ public class FabricaMySQL implements FabricaAbstracta{
 		return new DAOFolios();
 	}
 
-	
+	@Override
+	public IDAORevisiones crearIDAORevisiones(String cod) {
+		return new DAORevisiones(cod);
+	}
 	
 }

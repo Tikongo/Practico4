@@ -13,6 +13,7 @@ import logica.valueObjects.VOFolio;
 import logica.valueObjects.VORevision;
 import persistencia.accesoDatos.IConexion;
 import persistencia.daos.*;
+import persistencia.Fabricas.*;
 
 public class Folio {
 	
@@ -33,13 +34,22 @@ public class Folio {
 			prop.load(input);
 			String metodo = prop.getProperty("metodoPersistencia").toString();
 			if (metodo.equalsIgnoreCase("archivo")) {
-				this.secuencia = new DAORevisionesArchivo(codigo);
+				String nomFabrica = "persistencia.Fabricas.FabricaArchivo";
+				FabricaAbstracta fabrica = (FabricaAbstracta) Class.forName(nomFabrica).newInstance();
+				this.secuencia = fabrica.crearIDAORevisiones(codigo);
 			}
 			if (metodo.equalsIgnoreCase("mysql")) {
-				this.secuencia = new DAORevisiones(codigo);
+				String nomFabrica = "persistencia.Fabricas.FabricaMySQL";
+				FabricaAbstracta fabrica = (FabricaAbstracta) Class.forName(nomFabrica).newInstance();
+				this.secuencia = fabrica.crearIDAORevisiones(codigo);
 			}
-			
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
 			e.printStackTrace();
 		}
 	}

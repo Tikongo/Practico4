@@ -1,21 +1,30 @@
 package Main;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.Properties;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-	
+		Properties prop = new Properties();
+		InputStream input = null;
 		try {
+			input = new FileInputStream("dbEstudioJuridico.properties");
+			prop.load(input);
 			//1. cargo dinamicamente el driver de MySQL/ 
-			String driver = "com.mysql.jdbc.Driver";
+			String driver = prop.getProperty("driver");
 			Class.forName(driver);
 			
 			/* 2. una vez cargado el driver, me conecto con el motor de la base, de forma gen�rica 
 			 * porque vamos a crear la base en el pr�ximo paso.*/
-			String url = "jdbc:mysql://localhost:3306/";
-			Connection con = DriverManager.getConnection(url,"root","BD32018");
+			String url = prop.getProperty("dbengine");
+			String user = prop.getProperty("dbuser");
+			String pwd = prop.getProperty("dbpassword");
+			Connection con = DriverManager.getConnection(url,user,pwd);
 			
 			//3. creo un PreparedStatement para crear la base de datos./ 
 			String qCreateDB = "CREATE DATABASE ESTUDIOJURIDICO";
@@ -25,8 +34,8 @@ public class Main {
 			con.close();
 
 			/* 4. creamos las tablas de la base de datos.*/
-			String url2 = "jdbc:mysql://localhost:3306/ESTUDIOJURIDICO";
-			Connection con2 = DriverManager.getConnection(url2,"root","BD32018");
+			String url2 = prop.getProperty("database");
+			Connection con2 = DriverManager.getConnection(url2,user,pwd);
 			
 			String qCreateTableExamenes = "CREATE TABLE Folios (codigo VARCHAR(60) PRIMARY KEY, caratula VARCHAR(60), paginas INT)";
 			String qCreateTableResultados = "CREATE TABLE Revisiones (numero INT, codigoFolio VARCHAR(60), descripcion VARCHAR(60), PRIMARY KEY (numero,codigoFolio), FOREIGN KEY (codigoFolio) REFERENCES Folios(codigo))";
@@ -50,6 +59,10 @@ public class Main {
 			e.printStackTrace();
 		}
 		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
