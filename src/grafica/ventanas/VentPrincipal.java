@@ -16,7 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import grafica.ventanas.*;
 
 public class VentPrincipal {
 
@@ -50,8 +49,9 @@ public class VentPrincipal {
 	 */
 	private void initialize() {
 		ventPrincipal = new JFrame();
+		ventPrincipal.setResizable(false);
 		ventPrincipal.setTitle("Expedienpress - Principal");
-		ventPrincipal.setBounds(100, 100, 450, 300);
+		ventPrincipal.setBounds(100, 100, 584, 304);
 		ventPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		ventPrincipal.addWindowListener(new WindowAdapter() {
