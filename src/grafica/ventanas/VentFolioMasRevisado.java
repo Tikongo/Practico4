@@ -79,7 +79,11 @@ public class VentFolioMasRevisado {
 		btnVerFolioMas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VOFolioMaxRev voFMR = controlador.folioMasRevisado();
-				armarTablaFolioMasRevisado(voFMR);
+				if (voFMR == null) {
+					mostrarError("No hay revisiones ingresadas en el sistema");
+				} else {
+					armarTablaFolioMasRevisado(voFMR);
+				}
 			}
 		});
 		

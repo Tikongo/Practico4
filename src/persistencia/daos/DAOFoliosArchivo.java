@@ -186,7 +186,9 @@ public class DAOFoliosArchivo implements IDAOFolios{
 			e.printStackTrace();
 			throw new ExcepAccesoADatos("Error de acceso a los datos");
 		}
-		folioMaxRev = new VOFolioMaxRev(voFFinal.getCodigo(),voFFinal.getCaratula(),voFFinal.getPaginas(),cantRev);
+		if (voFFinal != null) {
+			folioMaxRev = new VOFolioMaxRev(voFFinal.getCodigo(),voFFinal.getCaratula(),voFFinal.getPaginas(),cantRev);
+		}
 		return folioMaxRev;
 	}
 
