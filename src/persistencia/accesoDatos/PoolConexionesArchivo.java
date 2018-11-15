@@ -49,10 +49,12 @@ public class PoolConexionesArchivo implements IPoolConexiones {
 				con = (Conexion<String[]>) new Conexion(archivoPath);
 				creadas = creadas + 1;
 			} else {
-				//A dormir.
-				try {
-					wait();
-				} catch (InterruptedException iExc) { }
+				while (tope == 0) {
+					//A dormir.
+					try {
+						wait();
+					} catch (InterruptedException iExc) { /*fail*/}
+				}
 			}
 		}
 		return con;

@@ -25,41 +25,54 @@ public class DAORevisionesArchivo implements IDAORevisiones{
 	
 	private String codigoFolio;
 	Monitor monitor=new Monitor();
-	private String indice;
-		
+	//private String indice;
+	
+	/*private void crearIndice() {
+		boolean exito = false;
+		try {
+			File ind = new File(indice);
+			exito = ind.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}*/
+	
 	public DAORevisionesArchivo(String cod) {
 		codigoFolio = cod;
-		Properties prop = new Properties();
+		/*Properties prop = new Properties();
 		InputStream input = null;
-		String filename = "indiceRev-"+cod+".txt";
+		String filename = "indiceRev-"+cod+"-.txt";
 		try {
 			input = new FileInputStream("dbEstudioJuridico.properties");
 			prop.load(input);
 			indice = prop.getProperty("pathRevisiones")+filename;
+			crearIndice();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	private VORevision leerVORevision(File f) throws IOException {
 		VORevision voR = null;
 		monitor.comienzoLectura();
+		String nroRevS = null;
+		int nroRev = 0;
+		String descRev = null;
+		String codFol = null;
 		try {
 			FileReader fr = new FileReader(f);
 			BufferedReader br = new BufferedReader(fr);
-			String leido = br.readLine();
-			if (leido != null) {
-				voR.setDescripcion(leido);
-				leido = br.readLine();
+			nroRevS = br.readLine();
+			if (nroRevS != null) {
+				nroRev = Integer.parseInt(nroRevS);
+				descRev = br.readLine();
+				if (descRev != null) {
+					codFol = br.readLine(); 
+				}
 			}
-			if (leido != null) {
-				voR.setCodFolio(leido);
-				leido = br.readLine(); 
-			}
-			if (leido != null) {
-				voR.setNumero(Integer.parseInt(leido));
-				leido = br.readLine();
-			}
+			voR = new VORevision(nroRev,descRev,codFol);
+			br.close();
+			fr.close();
 			monitor.terminoLectura();
 		} catch (IOException e) {
 			throw new IOException(e.getMessage());
@@ -67,7 +80,7 @@ public class DAORevisionesArchivo implements IDAORevisiones{
 		return voR;		
 	}
 	
-	private void actualizarIndice(String filename) {
+	/*private void actualizarIndice(String filename) {
 		monitor.comienzoEscritura();
 		try {
 			File f = new File(indice);
@@ -79,7 +92,7 @@ public class DAORevisionesArchivo implements IDAORevisiones{
 			e.printStackTrace();
 			monitor.terminoEscritura();
 		}
-	}
+	}*/
 	
 	@Override
 	public void insBack(IConexion iCon, Revision rev) throws ExcepAccesoADatos {
@@ -96,7 +109,7 @@ public class DAORevisionesArchivo implements IDAORevisiones{
 			pw.println(codigoFolio);
 			pw.close();
 			monitor.terminoEscritura();
-			actualizarIndice(filename);
+			//actualizarIndice(filename);
 			//actualizarIndice();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -111,20 +124,15 @@ public class DAORevisionesArchivo implements IDAORevisiones{
 		monitor.comienzoLectura();
 		String leido = null;
 		int largo = 0;
-		try {
-			FileReader fr = new FileReader(indice);
-			BufferedReader br = new BufferedReader(fr);
-			leido = br.readLine();
-			while (leido != null) {
+		Conexion<String[]> con = (Conexion<String[]>)iCon;
+		File dir = new File(con.getConexion()[1]);
+		String sufijo = codigoFolio+".txt";
+		for (final File arch : dir.listFiles()) {
+			if (arch.isFile() && arch.getName().endsWith(sufijo)) {
 				largo++;
-				leido = br.readLine();
 			}
-			monitor.terminoLectura();
-		} catch (IOException e) {
-			e.printStackTrace();
-			monitor.terminoLectura();
-			throw new ExcepAccesoADatos("Error al acceder a los datos");
 		}
+		monitor.terminoLectura();
 		return largo;
 	}
 
@@ -132,21 +140,20 @@ public class DAORevisionesArchivo implements IDAORevisiones{
 	public Revision kesimo(IConexion iCon, int numero) throws ExcepAccesoADatos {
 		// TODO Auto-generated method stub
 		Revision rev = null;
-		String leido = null;
+		VORevision voR = null;
 		int pos = 0;
 		monitor.comienzoLectura();
 		try {
 			Conexion<String[]> con = (Conexion<String[]>)iCon;
-			FileReader fr = new FileReader(indice);
-			BufferedReader br = new BufferedReader(fr);
-			leido = br.readLine();
-			while (leido!=null && Integer.parseInt(leido.substring(0,1))!=numero) {
-				leido = br.readLine();
+			File dir = new File(con.getConexion()[1]);
+			String prefijo = Integer.toString(numero);
+			String sufijo = codigoFolio+".txt";
+			for (final File arch : dir.listFiles()) {
+				if (arch.isFile() && arch.getName().startsWith(prefijo) && arch.getName().endsWith(sufijo)) {
+					voR = leerVORevision(arch);
+				}
 			}
-			String filename = leido+".txt";
-			File f = new File(con.getConexion()[1],filename);
-			VORevision voR = leerVORevision(f);
-			rev = new Revision(voR.getNumero(),voR.getDescripcion());
+			rev = new Revision(numero,voR.getDescripcion());
 			monitor.terminoLectura();
 		} catch (IOException e) {
 			e.printStackTrace();

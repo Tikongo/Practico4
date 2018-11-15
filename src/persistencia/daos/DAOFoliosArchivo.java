@@ -15,28 +15,26 @@ public class DAOFoliosArchivo implements IDAOFolios{
 	
 	private VOFolio leerVOFolio(File f) throws IOException {
 		VOFolio voF = null;
+		String codigo = null;
+		String caratula = null;
+		int paginas = 0;
 		monitor.comienzoLectura();
 		try {
 			FileReader fr = new FileReader(f);
 			BufferedReader br = new BufferedReader(fr);
-			String leido = br.readLine();
-			if (leido != null) {
-				voF.setCodigo(leido);
-				leido = br.readLine();
+			codigo = br.readLine();
+			if (codigo != null) {
+				caratula = br.readLine();
+				if (caratula != null) {
+					paginas = Integer.parseInt(br.readLine());
+				}
 			}
-			if (leido != null) {
-				voF.setCaratula(leido);
-				leido = br.readLine(); 
-			}
-			if (leido != null) {
-				voF.setPaginas(Integer.parseInt(leido));
-				leido = br.readLine();
-			}
+			voF = new VOFolio(codigo,caratula,paginas);
 			monitor.terminoLectura();
 		} catch (IOException e) {
 			throw new IOException(e.getMessage());
 		}
-		return voF;		
+		return voF;
 	}
 	
 	@Override
@@ -76,26 +74,27 @@ public class DAOFoliosArchivo implements IDAOFolios{
 	public Folio find(IConexion iCon, String cod) throws ExcepAccesoADatos {
 		// TODO Auto-generated method stub
 		Folio folio = null;
+		String leido = null;
 		monitor.comienzoLectura();
 		try {
 			Conexion<String[]> con = (Conexion<String[]>)iCon;
 			String filename = cod+".txt";
+			String codigo = null;
+			String caratula = null;
+			int paginas = 0;
 			File f = new File(con.getConexion()[0],filename);
 			FileReader fr = new FileReader(f);
 			BufferedReader br = new BufferedReader(fr);
-			String leido = br.readLine();
-			if (leido != null) {
-				folio.setCodigo(leido);
-				leido = br.readLine();
+			codigo = br.readLine();
+			if (codigo != null) {
+				caratula = br.readLine();
+				if (caratula != null) {
+					paginas = Integer.parseInt(br.readLine());
+				}
 			}
-			if (leido != null) {
-				folio.setCaratula(leido);
-				leido = br.readLine(); 
-			}
-			if (leido != null) {
-				folio.setPaginas(Integer.parseInt(leido));
-				leido = br.readLine();
-			}
+			folio = new Folio(codigo,caratula,paginas);
+			br.close();
+			fr.close();
 			monitor.terminoLectura();
 		} catch (FileNotFoundException e) {
 			monitor.terminoLectura();
@@ -115,6 +114,7 @@ public class DAOFoliosArchivo implements IDAOFolios{
 		monitor.comienzoEscritura();
 		Conexion<String[]> con = (Conexion<String[]>)iCon;
 		String filename = cod+".txt";
+		//String fullPath = "C:"+File.separator+"Folios"+File.separator+"folio-a-borrar.txt";
 		File f = new File(con.getConexion()[0],filename);
 		//ANTES DE BORRAR SE DEBEN BORRAR TODAS SUS REVISIONES.
 		boolean borrado = f.delete();
@@ -163,19 +163,19 @@ public class DAOFoliosArchivo implements IDAOFolios{
 	public VOFolioMaxRev folioMasRevisado(IConexion iCon) throws ExcepAccesoADatos {
 		// TODO Auto-generated method stub
 		int cantRev = 0;
-		DAORevisiones daoRev = null;
+		DAORevisionesArchivo daoRev = null;
 		VOFolio voF = null;
 		VOFolio voFFinal = null;
 		VOFolioMaxRev folioMaxRev = null;
 		monitor.comienzoLectura();
 		try {
 			Conexion<String[]> con = (Conexion<String[]>)iCon;
-			File fFolio = new File(con.getConexion()[0]);
-			File fRev = new File(con.getConexion()[1]);
-			for (final File arch : fFolio.listFiles()) {
+			File dirFolio = new File(con.getConexion()[0]);
+			//File dirRev = new File(con.getConexion()[1]);
+			for (final File arch : dirFolio.listFiles()) {
 				if (arch.isFile()) {
 					voF = leerVOFolio(arch);
-					daoRev = new DAORevisiones(voF.getCodigo());
+					daoRev = new DAORevisionesArchivo(voF.getCodigo());
 					if (daoRev.largo(con) > cantRev) {
 						cantRev = daoRev.largo(con);
 						voFFinal = voF;

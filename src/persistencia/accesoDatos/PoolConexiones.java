@@ -110,10 +110,12 @@ public class PoolConexiones implements IPoolConexiones {
 					con = setTransactionIsolation(t, con);
 					con.getConexion().setAutoCommit(false);
 				} else {
-					/*PASO 3: Mandar a dormir al usuario.*/
-					try {
-						wait();
-					} catch(InterruptedException iExc) { }
+					while (tope == 0) {
+						/*PASO 3: Mandar a dormir al usuario.*/
+						try {
+							wait();
+						} catch(InterruptedException iExc) { }
+					}
 				}
 			}
 		} catch (SQLException e) {

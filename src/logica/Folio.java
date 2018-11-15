@@ -1,15 +1,18 @@
 package logica;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Properties;
 import logica.excepciones.ExcepAccesoADatos;
 import logica.valueObjects.ListaVORevisiones;
 import logica.valueObjects.VOFolio;
 import logica.valueObjects.VORevision;
 import persistencia.accesoDatos.IConexion;
-import persistencia.daos.DAORevisiones;
-import persistencia.daos.IDAORevisiones;
+import persistencia.daos.*;
 
 public class Folio {
 	
@@ -23,7 +26,22 @@ public class Folio {
 		this.codigo = codigo;
 		this.caratula = caratula;
 		this.paginas = paginas;
-		this.secuencia = new DAORevisiones(codigo);
+		Properties prop = new Properties();
+		InputStream input = null;
+		try {
+			input = new FileInputStream("dbEstudioJuridico.properties");
+			prop.load(input);
+			String metodo = prop.getProperty("metodoPersistencia").toString();
+			if (metodo.equalsIgnoreCase("archivo")) {
+				this.secuencia = new DAORevisionesArchivo(codigo);
+			}
+			if (metodo.equalsIgnoreCase("mysql")) {
+				this.secuencia = new DAORevisiones(codigo);
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String getCodigo() {

@@ -27,11 +27,21 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 		try {
 			input = new FileInputStream("dbEstudioJuridico.properties");
 			prop.load(input);
-			String poolConcreto = prop.getProperty("nombrePool");
-			ipool = (IPoolConexiones) Class.forName(poolConcreto).newInstance();
-			String nomFabrica = prop.getProperty("persistencia");
-			FabricaAbstracta fabrica = (FabricaAbstracta) Class.forName(nomFabrica).newInstance();
-			folios = fabrica.crearIDAOFolios();
+			String metodo = prop.getProperty("metodoPersistencia").toString();
+			if (metodo.equalsIgnoreCase("archivo")) {
+				String poolConcreto = "persistencia.accesoDatos.PoolConexionesArchivo";
+				ipool = (IPoolConexiones) Class.forName(poolConcreto).newInstance();
+				String nomFabrica = "persistencia.Fabricas.FabricaArchivo";
+				FabricaAbstracta fabrica = (FabricaAbstracta) Class.forName(nomFabrica).newInstance();
+				folios = fabrica.crearIDAOFolios();
+			}
+			if (metodo.equalsIgnoreCase("mysql")) {
+				String poolConcreto = "persistencia.accesoDatos.PoolConexiones";
+				ipool = (IPoolConexiones) Class.forName(poolConcreto).newInstance();
+				String nomFabrica = "persistencia.Fabricas.FabricaMySQL";
+				FabricaAbstracta fabrica = (FabricaAbstracta) Class.forName(nomFabrica).newInstance();
+				folios = fabrica.crearIDAOFolios();
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,7 +131,8 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 			existeCodigo = folios.member(iCon, codF);
 			if(existeCodigo) {
 				Folio fol=folios.find(iCon, codF);
-				Revision rev = new Revision(fol.cantidadRevisiones(iCon), descripcion);
+				int nroRev = fol.cantidadRevisiones(iCon) + 1;
+				Revision rev = new Revision(nroRev, descripcion);
 				fol.addRevision(iCon, rev);
 			} else {
 				msjError = "No existe Folio";  
@@ -150,18 +161,18 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 		String msjError="";
 		boolean existeCodigo=false;
 		boolean errorPersistencia=false;
+		Folio fol = null;
 		try {
 			icon = ipool.obtenerConexion(true);
 			existeCodigo = folios.member(icon, codF);
 			if(existeCodigo) {
-				Folio fol = folios.find(icon, codF);
-				fol.borrarRevisiones(icon);
+				fol = folios.find(icon,codF);
+				//fol.borrarRevisiones(icon);
 				folios.delete(icon, codF);
 			} else {
 				msjError = "Folio no registrado";  
 			}
-			ipool.liberarConexion(icon, true);	
-			
+			ipool.liberarConexion(icon, true);
 		} catch (ExcepAccesoADatos e) {
 			ipool.liberarConexion(icon, false);
 			errorPersistencia=true;
@@ -175,7 +186,6 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 				throw new ExcepAccesoADatos(msjError);
 			}
 		}
-		
 	}
 	
 	/* (non-Javadoc)
@@ -221,15 +231,12 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 		String msjError="Error de Acceso a los datos";
 		try {
 			icon = ipool.obtenerConexion (true);
-			listaFolios=(ListaVOFolios) folios.listarFolios(icon);
+			listaFolios = folios.listarFolios(icon);
 			ipool.liberarConexion (icon, true);
-			
-		}catch(ExcepAccesoADatos e) {
-			if (icon != null) 
-				ipool.liberarConexion (icon, false);
+		} catch(ExcepAccesoADatos e) {
+			ipool.liberarConexion (icon, false);
             throw new ExcepAccesoADatos(msjError);
 		}
-		
 		return listaFolios;
 	}
 	
